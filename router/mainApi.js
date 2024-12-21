@@ -84,7 +84,7 @@ router.use('/panel/crm',CRMPanelApi)
  router.get('/get-customers', async (req,res)=>{
     try{
         const customerList = await GetHesabFa(
-            {"queryInfo":{take:5,skip:0}},"/contact/getcontacts")
+            {"queryInfo":{take:200,skip:0}},"/contact/getcontacts")
         var result = []
         if(customerList&&customerList.Success)
             result = customerList.Result.List

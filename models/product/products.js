@@ -25,6 +25,7 @@ const ProductSchema = new Schema({
     unit:String,
     nodeName:String,
     nodeId:Number,
+    isMaster:{type:Boolean,default:false},
     priceList:{type:Array,default:[]}, 
     categories:{type:Array,default:[]}
 })

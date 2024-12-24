@@ -155,10 +155,10 @@ router.get('/get-product', async (req,res)=>{
             var updateResult = await products.updateOne({sku:result[i].Code},
                 {$set:query}
             )
-            if(!updateResult.matchedCount){
+            try{if(!updateResult.matchedCount){
                 newProduct++
                 await products.create(query)
-            }
+            }}catch{}
             if(updateResult.modifiedCount){
                 updateProduct++
             }

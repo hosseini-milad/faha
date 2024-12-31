@@ -119,15 +119,15 @@ function Customers(props) {
           </div>
         </div>
         <div className="od-header-btn">
-          <label className="edit-btn" onClick={() => setShowSMS(1)}>
+          {/* <label className="edit-btn" onClick={() => setShowSMS(1)}>
             <i className="fa-solid fa-envelope-o"></i>
             {tabletrans.sendSms[lang]}
-          </label>
+          </label> */}
 
-          <label className="edit-btn" onClick={() => setShowPop(1)}>
+          {/* <label className="edit-btn" onClick={() => setShowPop(1)}>
             <i className="fa-solid fa-bell"></i>
             {tabletrans.sendPop[lang]}
-          </label>
+          </label> */}
           <label
             className="edit-btn"
             onClick={() => (window.location.href = "#")}

@@ -113,7 +113,7 @@ function Orders(props) {
             <p>{errortrans.orders[lang]}</p>
           </div>
         </div>
-        <div className="od-header-btn">
+        {/* <div className="od-header-btn">
           <label
             className="edit-btn"
             onClick={() => (window.location.href = "/orders/business")}
@@ -121,7 +121,7 @@ function Orders(props) {
             <i className="fa-solid fa-plus"></i>
             {tabletrans.orderReg[lang]}
           </label>
-        </div>
+        </div> */}
       </div>
       <div className="list-container">
       <StatusBar

@@ -1,9 +1,9 @@
 const menutrans ={
     title:{
-        english:"Barzegar",
-        persian:"برزگر",
+        english:"Faha",
+        persian:"فاها",
         icon:"fa-eercast",
-        href:"https://sharifoilco.com"
+        href:"https://fahascrubs.com/"
         
     },
     menu:[

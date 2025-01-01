@@ -75,8 +75,7 @@ fetch(env.siteApi + "/panel/faktor/price",postOptions)
               <label className="form-label">{errortrans.typeHere[lang]}</label>
               <input type="text" className="form-control" />
             </div> */}
-            <span className="LivePrice">قیمت طلا: <i onClick={()=>setRefresh(Refresh+1)} class="fa fa-refresh" aria-hidden="true"></i>{normalPriceCount(LivePrice)}
-            </span>
+            
             
           </div>
           <ul

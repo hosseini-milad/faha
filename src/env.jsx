@@ -1,10 +1,12 @@
 
 const env={
     // siteApi:'http://localhost:6060/api',
+    // siteApi:'https://fahaadmin.dkmehr.com/api',
     siteApi:'https://admin.fahascrubs.com/api',
     // siteApi:'https://zaradmin.dkmehr.com/api',
     
     // siteApiUrl:'http://localhost:6060',
+    // siteApiUrl:'https://fahaadmin.dkmehr.com',
     siteApiUrl:'https://admin.fahascrubs.com',
     // siteApiUrl:'https://zaradmin.dkmehr.com',
     cookieName:'faha-login',

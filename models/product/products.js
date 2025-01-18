@@ -17,6 +17,7 @@ const ProductSchema = new Schema({
     productUrl:String,
     metaTitle:String,
     productMeta:String,
+    filters:Object,
     fullDesc:String,
     stock:Number,
     buyPrice:Number,

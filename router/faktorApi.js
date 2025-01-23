@@ -55,6 +55,7 @@ const SetTransaction = require('../middleware/SetTransaction');
 const CheckAccess = require('../middleware/CheckAccess');
 const transaction = require('../models/param/transaction');
 const CalcFaktor = require('../middleware/Calc/CalcFaktor');
+const FindColor = require('../middleware/Calc/FindColor');
 const {TaxRate} = process.env
 router.post('/products', async (req,res)=>{
     try{
@@ -82,12 +83,12 @@ router.post('/list-product', async (req,res)=>{
             {$match:search?{$or:[
                 {sku:{$regex: search, $options : 'i'}},
                 {title:{$regex: search, $options : 'i'}}
-            ]}:{}},
-            {$match:{imageUrl:{$exists:true}}},
+            ]}:{}}, 
             { $match:categoryFilter?{categories:{$elemMatch:
                 {catCode:categoryFilter.toString()}}}:{}},
-            {$match:isMaster?{isMaster:true}:{}},
-            {$match:isMojood?{isMojood:true}:{}}
+            /*{$match:{imageUrl:{$exists:true}}},
+            {$match:isMojood?{isMojood:true}:{}}*/
+            {$match:isMaster?{isMaster:true}:{}}
         ])
         const priceRaw = await FindPrice()
         const productList = products.slice(offset,
@@ -155,23 +156,27 @@ router.post('/list-product-sale', async (req,res)=>{
 router.post('/fetch-product', async (req,res)=>{
     const sku = req.body.sku
     try{
-        var productData = await productSchema.findOne({sku:sku}).lean()
-        if(!productData.isMojood){
-            const productTemp = await productSchema.findOne(
-            {masterSku:sku, isMojood:true,imageUrl:{$exists:true}}).lean()
-            if(productTemp){
-                productData = productTemp
+        var productData = await productSchema.findOne({sku:sku})
+        if(!productData.isMaster){
+            res.status(400).json({error:"محصول اصلی نیست"})
+        }
+        var filters = new Object()
+        var productList = await productSchema.find({masterSku:sku}).lean()
+        for(var f=0;f<productList.length;f++){
+            if(productList[f].filters){
+                var filterData = productList[f].filters
+                for (var prop in filterData) {
+                    if(!filters[prop])
+                        filters[prop]=[]
+                    var filterData = await FindColor(filterData[prop])
+                    filters&&filters[prop].indexOf(filterData) === -1&&
+                        filters[prop].push(filterData)
+                }
             }
         }
-        const priceRaw = await FindPrice()
-            
-        var TAX = await tax.findOne().sort({date:-1})
-        const fullPrice =  CalcPrice(productData,priceRaw,TAX&&TAX.percent)
-        productData.price = fullPrice.price
-        productData.priceDetail = fullPrice.priceDetail
-        res.json({data:productData})
+        res.json({mainProduct:productData,productList,filters})
 
-    }
+    } 
     catch(error){
         res.status(500).json({message: error.message})
     }

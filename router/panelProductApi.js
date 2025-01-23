@@ -229,7 +229,7 @@ router.post('/editProduct',jsonParser,async(req,res)=>{
     var productId= req.body.productId?req.body.productId:''
     if(productId === "new")productId=''
     try{ 
-        const data = {
+        const data = { 
             title:  req.body.title,
             categories: req.body.categories,
             brandId: req.body.brandId,

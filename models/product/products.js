@@ -11,8 +11,6 @@ const ProductSchema = new Schema({
     imageUrl: {type:String},
     thumbUrl: {type:String},
     offer:Boolean,
-    range:Array,
-    rangeText:String,
     description:String,
     productUrl:String,
     metaTitle:String,

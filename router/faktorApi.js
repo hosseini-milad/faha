@@ -56,6 +56,8 @@ const CheckAccess = require('../middleware/CheckAccess');
 const transaction = require('../models/param/transaction');
 const CalcFaktor = require('../middleware/Calc/CalcFaktor');
 const FindColor = require('../middleware/Calc/FindColor');
+const FindSimilar = require('../middleware/Calc/FindSimilar');
+const FindProduct = require('../middleware/Calc/FindProduct');
 const {TaxRate} = process.env
 router.post('/products', async (req,res)=>{
     try{
@@ -168,10 +170,11 @@ router.post('/fetch-product', async (req,res)=>{
                 for (var prop in filterData) {
                     if(!filters[prop])
                         filters[prop]=[]
-                    var filterData = await FindColor(filterData[prop])
-                    filters&&filters[prop].indexOf(filterData) === -1&&
-                        filters[prop].push(filterData)
+                    var outData = await FindColor(filterData[prop])
+                    if(!FindSimilar(filters&&filters[prop],outData))
+                        filters[prop].push(outData)
                 }
+                console.log('---------------------')
             }
         }
         res.json({mainProduct:productData,productList,filters})
@@ -438,19 +441,27 @@ router.post('/add-cart',auth,jsonParser, async (req,res)=>{
     const data={
         userId:userId,
         sku:req.body.sku,
+        filters:req.body.filters,
         count:req.body.count,
         date:req.body.date?req.body.date:Date.now(),
         progressDate:Date.now()
     }
     try{
+        var FindProductData = await FindProduct(data)
+        if(!FindProductData){
+            res.status(400).json({error:"کد با فیلترها مطابقت ندارد"})
+            return
+        }
+        data.sku = FindProductData.sku
+
         const userData = await users.findOne({_id:req.headers['userid']})
         const cartData = await cart.find({userId:userId})
         
-        const cartItems = await CreateCart(cartData,data.sku,userId)
+        const cartItems = await CreateCart(cartData,data.sku,userId,data.count)
         if(cartItems.error){
             res.status(400).json({error:cartItems.error})
             return
-        }
+        } 
         else{
             const cart = await CalcCart(userId,0,req.headers['userid'])
             res.json({...cart,message:"آیتم اضافه شد"})
@@ -463,44 +474,9 @@ router.post('/add-cart',auth,jsonParser, async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
-router.post('/add-purchase-cart',auth,jsonParser, async (req,res)=>{
-    const userId =req.body.userId?req.body.userId:req.headers['userid']
-    
-    const data={
-        userId:userId,
-        purchase:req.body.purchase,
-        weight:req.body.weight,
-        ayar:req.body.ayar,
-        title:req.body.title,
-        purchaseType:req.body.purchaseType,
-        price:req.body.price,
-        lab:req.body.lab,
-        riang:req.body.riang,
-        count:req.body.count,
-        description:req.body.description,
-        date:req.body.date?req.body.date:Date.now(),
-        progressDate:Date.now()
-    }
-    try{
-        const cartItems = await CreateCartPurchase(data,userId)
-        if(cartItems.error){
-            res.status(400).json({error:cartItems.error})
-            return
-        }
-        else{
-            const cart = await CalcCart(userId,0,req.headers['userid'])
-            res.json({...cart,message:"آیتم اضافه شد"})
-            return
-        } 
-        //const cartDetails = await findCartFunction(userId,req.headers['userid'])
-        
-    }
-    catch(error){
-        res.status(500).json({message: error.message})
-    }
-})
-router.post('/update-purchase-cart',auth,jsonParser, async (req,res)=>{
-    const userId =req.body.userId?req.body.userId:req.headers['userid']
+
+router.post('/update-cart',auth,jsonParser, async (req,res)=>{
+    const userId =req.headers['userid']
     const id = req.body.id
     if(!id){
         res.status(400).json({error:"کد سطر وارد نشده است"})
@@ -508,33 +484,17 @@ router.post('/update-purchase-cart',auth,jsonParser, async (req,res)=>{
     }
     const data={
         userId:userId,
-        weight:req.body.weight,
-        ayar:req.body.ayar,
-        title:req.body.title,
-        purchaseType:req.body.purchaseType,
-        price:req.body.price,
+        count:req.body.count,
         progressDate:Date.now()
     }
     try{
-        const cartDetail = await cart.findOne({_id:ObjectID(id)})
+        await cart.updateOne({_id:ObjectID(id)},{$set:{count:data.count}})
         //console.log(cartDetail.priceDetail)
-        const cartItems = await CalcPurchase(data.ayar?data.ayar:cartDetail.priceDetail.Ayar,
-            cartDetail.unitPrice,data.weight?data.weight:cartDetail.priceDetail.weight.toString())
-        if(data.price)
-            cartItems.priceDetail.roundPrice = data.price
-        const cartUpdate = await cart.updateOne({_id:ObjectID(id)},
-            {$set:{...data,priceDetail:cartItems.priceDetail,
-                price:data.price?data.price:cartItems.price
-            }}) 
-        if(cartItems.error){
-            res.status(400).json({error:cartItems.error})
+        
+        const cartData = await CalcCart(userId,0,req.headers['userid'])
+            res.json({...cartData,message:"سبد بروز شد"})
             return
-        }
-        else{
-            const cart = await CalcCart(userId,0,req.headers['userid'])
-            res.json({...cart,message:"سبد بروز شد"})
-            return
-        } 
+        
         //const cartDetails = await findCartFunction(userId,req.headers['userid'])
         
     }
@@ -551,20 +511,18 @@ router.post('/find-purchase-price',jsonParser, async (req,res)=>{
     const priceDetail = CalcPurchase(data.ayar,priceRaw,data.weight)
     res.json(priceDetail)
     })
-router.post('/remove-cart-item',auth,jsonParser, async (req,res)=>{
+router.post('/remove-cart',auth,jsonParser, async (req,res)=>{
     const id=req.body.id
-    const sku = req.body.sku
-    const userId=req.body.userId?req.body.userId:req.headers['userid']
-    if(!id&&!sku){
+    const userId=req.headers['userid']
+    if(!id){
         res.status(400).json({error:"ردیف وارد نشده است"})
         return
     }
     
     try{
         if(id)await cart.deleteOne({userId:userId,_id:ObjectID(id)})
-        if(sku)await cart.deleteOne({userId:userId,sku:sku})
         const cartDetail = await CalcCart(userId,0,req.headers['userid'])
-        res.json({cart:cartDetail,message:"آیتم حذف شد"})
+        res.json({...cartDetail,message:"آیتم حذف شد"})
         return
         //const cartDetails = await findCartFunction(userId,req.headers['userid'])
         
@@ -574,12 +532,12 @@ router.post('/remove-cart-item',auth,jsonParser, async (req,res)=>{
     }
 })
 router.get('/delete-cart',auth,jsonParser, async (req,res)=>{    const id=req.body.id
-    const userId =req.body.userId?req.body.userId:req.headers['userid']
+    const userId =req.headers['userid']
     try{
         await cart.deleteMany({userId:userId})
         
         const cartDetail = await CalcCart(userId,0,req.headers['userid'])
-        res.json({cart:cartDetail,message:"سبد خالی شد"})
+        res.json({...cartDetail,message:"سبد خالی شد"})
         return
         //const cartDetails = await findCartFunction(userId,req.headers['userid'])
         

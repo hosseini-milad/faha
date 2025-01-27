@@ -84,7 +84,7 @@ router.use('/panel/crm',CRMPanelApi)
  router.get('/get-customers', async (req,res)=>{
     try{
         const customerList = await GetHesabFa(
-            {"queryInfo":{take:200,skip:0}},"/contact/getcontacts")
+            {"queryInfo":{take:2000,skip:0}},"/contact/getcontacts")
         var result = []
         if(customerList&&customerList.Success)
             result = customerList.Result.List
@@ -130,7 +130,7 @@ router.use('/panel/crm',CRMPanelApi)
 router.get('/get-product', async (req,res)=>{
     try{
         const productList = await GetHesabFa(
-            {"queryInfo":{take:1000,skip:0}},"/item/getitems")
+            {"queryInfo":{take:10000,skip:0}},"/item/getitems")
             var result = []
         if(productList&&productList.Success)
             result = productList.Result.List
@@ -139,7 +139,9 @@ router.get('/get-product', async (req,res)=>{
         var updateProduct = 0
         var newProduct = 0
         for(var i=1;i<result.length;i++){
-            if(result[i]){
+            if(result[i].Code == "000002")
+                console.log(result[i])
+            if(result[i]){ 
             outPut.push(result[i])
             var query = {title:result[i].SalesTitle,
                 sku:result[i].ProductCode,
@@ -152,7 +154,7 @@ router.get('/get-product', async (req,res)=>{
                 nodeName:result[i].NodeName,
                 active:result[i].Active,
                 priceList:result[i].PriceList}
-            var updateResult = await products.updateOne({sku:result[i].Code},
+            var updateResult = await products.updateOne({ItemID:result[i].Code},
                 {$set:query}
             )
             try{if(!updateResult.matchedCount){

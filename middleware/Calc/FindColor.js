@@ -4,9 +4,9 @@ const FindColor=async(search)=>{
     const colorData = await Colors.findOne({title:search},{_id:0})
     if(colorData)
         return({
-            title:colorCode.title,
-            value:colorCode.enTitle,
-            colorCode:colorCode.colorCode
+            title:colorData.title,
+            value:colorData.enTitle,
+            colorCode:colorData.colorCode
         })
     else
         return({

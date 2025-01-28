@@ -5,7 +5,7 @@ const FindSimilar=(array,item)=>{
     if(!item) return(0)
     for(var i=0;i<array.length;i++){
         if(array[i] == item) return(1)
-        if(array[i].enTitle&&array[i].enTitle==item.enTitle) return(1)
+        if(array[i].value&&array[i].enTitle==item.value) return(1)
     }
 return(0)
 }

@@ -174,7 +174,6 @@ router.post('/fetch-product', async (req,res)=>{
                     if(!FindSimilar(filters&&filters[prop],outData))
                         filters[prop].push(outData)
                 }
-                console.log('---------------------')
             }
         }
         res.json({mainProduct:productData,productList,filters})

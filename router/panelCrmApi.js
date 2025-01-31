@@ -106,7 +106,7 @@ router.post('/update-faktor-tasks',auth,jsonParser,async (req,res)=>{
     const taskId = req.body.id?req.body.id:""
     var body = req.body
     try{
-        const faktorItem = await faktorItems.findOne({_id:ObjectID(taskId)})
+        const faktorItem = await faktors.findOne({_id:ObjectID(taskId)})
         if(!faktorItem){
             res.status(400).json({error:"شماره فاکتور موجود نیست"})
             return
@@ -120,7 +120,7 @@ router.post('/update-faktor-tasks',auth,jsonParser,async (req,res)=>{
             return
         }
         if(taskId)
-            await faktorItems.updateOne({_id:ObjectID(taskId)},{$set:body})
+            await faktors.updateOne({_id:ObjectID(taskId)},{$set:body})
     
         const userId=req.headers["userid"]
         const tasksList = await calcTasks(userId)
@@ -137,7 +137,7 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
     var taskId = url.split('/')[2]
     var buttons=[]
     try{
-        const faktorItem = await faktorItems.findOne({_id:ObjectID(taskId)}).lean()
+        const faktorItem = await faktors.findOne({_id:ObjectID(taskId)}).lean()
         if(!faktorItem){
             res.status(400).json({error:"شماره فاکتور موجود نیست"})
             return

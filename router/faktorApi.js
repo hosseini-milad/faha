@@ -562,8 +562,8 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             const { _id: _, ...newObj } = cartItem;
             var status = "inprogress"
             await faktorItems.create({...newObj,faktorNo:faktorNo,
-                status:status,
-                priceDetail:priceData.priceDetail,cName:userData.username,phone:userData.phone})
+                status:status,cartDetail,
+                cName:userData.username,phone:userData.phone})
             await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
             
         }

@@ -154,7 +154,7 @@ router.get('/get-product', async (req,res)=>{
                 nodeName:result[i].NodeName,
                 active:result[i].Active,
                 priceList:result[i].PriceList}
-            var updateResult = await products.updateOne({ItemID:result[i].Code},
+            var updateResult = await products.updateOne({sku:result[i].ProductCode},
                 {$set:query}
             )
             try{if(!updateResult.matchedCount){

@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 const ProductSchema = new Schema({
     title:  { type: String},
     sku: { type: String , unique: true},
-    ItemID:{ type: String , unique: true},
+    ItemID:{ type: String},
     enTitle:String,
     weight:String,
     imageUrl: {type:String},

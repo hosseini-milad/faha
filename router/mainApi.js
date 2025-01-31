@@ -157,6 +157,7 @@ router.get('/get-product', async (req,res)=>{
             var updateResult = await products.updateOne({sku:result[i].ProductCode},
                 {$set:query}
             )
+            var newItem = []
             try{if(!updateResult.matchedCount){
                 newProduct++
                 await products.create(query)

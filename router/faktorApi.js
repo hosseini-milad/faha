@@ -501,15 +501,7 @@ router.post('/update-cart',auth,jsonParser, async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
-router.post('/find-purchase-price',jsonParser, async (req,res)=>{
-    const priceRaw = await FindPrice()
-    const data={
-        ayar:req.body.ayar,
-        weight:req.body.weight
-    }
-    const priceDetail = CalcPurchase(data.ayar,priceRaw,data.weight)
-    res.json(priceDetail)
-    })
+
 router.post('/remove-cart',auth,jsonParser, async (req,res)=>{
     const id=req.body.id
     const userId=req.headers['userid']
@@ -547,40 +539,32 @@ router.get('/delete-cart',auth,jsonParser, async (req,res)=>{    const id=req.bo
 })
 
 router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
-    const userId =req.body.userId?req.body.userId:req.headers['userid']
+    const userId =req.headers['userid']
     try{
-        const priceRaw = await FindPrice()
         const userData = await customers.findOne({_id:userId})
         const userCode = userData.phone&&userData.phone.substr(userData.phone.length - 4)
         const faktorNo = await NewCode("z"+userCode)
         const cartDetail = await CalcCart(userId,0,req.headers['userid'])
         
-        var TAX = await tax.findOne().sort({date:-1})
-        var PRE = await prepaid.findOne().sort({date:-1})
         var totalPrice = 0
-        var totalWeight = 0
-        var totalFull = 0
+        var totalCount = 0
         if(!cartDetail.cart||!cartDetail.cart.length){
             res.status(400).json({error:"سبد خرید خالی است"})
             return
         }
+        const cartData = cartDetail.cartDetail
+        totalPrice=cartData.cartPrice
+        totalCount = cartData.cartCount
         for(var i=0;i<(cartDetail.cart&&cartDetail.cart.length);i++){
             var cartItem = cartDetail.cart[i]
             const productDetail = await products.findOne({sku:cartItem.sku})
-            const priceData = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
-            const fullPrice = priceData.price
-            totalFull+=fullPrice
-            const price = cartItem.isReserve?
-                (parseFloat(PRE&&PRE.percent)*fullPrice/100):fullPrice
-            totalPrice+=price
-            totalWeight+= NormalNumber(productDetail&&productDetail.weight)
+            
             const { _id: _, ...newObj } = cartItem;
-            var status = cartItem.isReserve?"needtobuild":"accept"
+            var status = "inprogress"
             await faktorItems.create({...newObj,faktorNo:faktorNo,
-                fullPrice:fullPrice,price,unitPrice:priceRaw, status:status,
+                status:status,
                 priceDetail:priceData.priceDetail,cName:userData.username,phone:userData.phone})
             await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
-            0&&await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
             
         }
 
@@ -592,9 +576,7 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             status:"inprogress",
             isActive:true, isEdit:false,
             totalPrice:NormalNumber(totalPrice),
-            fullPrice:NormalNumber(totalFull),
-            totalWeight:NormalNumber(totalWeight),
-            unitPrice:NormalNumber(priceRaw)
+            totalCount:NormalNumber(totalCount)
         }
         await faktor.create(faktorData)
         await cart.deleteMany({userId:userId})
@@ -607,173 +589,7 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
-router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
-    const userId =req.body.userId?req.body.userId:req.headers['userid']
-    const bankData = req.body.bankData
-    try{
-        const priceRaw = await FindPrice()
-        const userData = await customers.findOne({_id:userId})
-        const userCode = userData.phone&&userData.phone.substr(userData.phone.length - 4)
-        const faktorNo = await NewCode("z"+userCode)
-        const cartDetail = await CalcCart(userId,0,req.headers['userid'])
-        const clientRemain = userData&&await GetTahHesab(
-            {"getmandehesabbycode":[userData.cCode]}
-        ) 
-        const clientStatus = ClientStatus(clientRemain)
 
-        var TAX = await tax.findOne().sort({date:-1})
-        var PRE = await prepaid.findOne().sort({date:-1})
-        var totalPrice = 0
-        var totalWeight = 0
-        var totalFull = 0
-        if(!cartDetail.cart||!cartDetail.cart.length){
-            res.status(400).json({error:"سبد خرید خالی است"})
-            return
-        }
-        var result = []
-        
-        await SetTransaction(userId,faktorNo)
-        for(var i=0;i<(cartDetail.cart&&cartDetail.cart.length);i++){
-            var cartItem = cartDetail.cart[i]
-            if(cartItem.purchase){
-                var priceDetail = cartItem.priceDetail
-                const cartItems = CalcPurchase(priceDetail.Ayar,
-                    priceRaw,priceDetail.weight&&priceDetail.weight.toString())
-
-                const price = cartItems.price
-                totalFull-=price
-                totalPrice-=price
-                totalWeight-= parseFloat(priceDetail.weight)
-                const { _id: _, ...newObj } = cartItem;
-                const faktorItem ={...newObj,faktorNo:faktorNo,
-                    price,unitPrice:priceRaw, status:"status",purchase:true,
-                    weight:priceDetail.weight,cName:userData.username,phone:userData.phone}
-                //await faktorItems.create(faktorItem)
-                var hesabResult = await SetTahHesabItem(faktorItem,i+1)
-                await faktorItems.create({...faktorItem,result:hesabResult})
-                await CreateFaktorLog(userId,faktorNo,"purchaseOrder","purchase","","",newObj)
-            }
-            else{
-            const productDetail = await products.findOne({sku:cartItem.sku})
-            const priceData = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
-            const fullPrice = priceData.price
-            totalFull+=fullPrice
-            const price = cartItem.isReserve?
-                (parseFloat(PRE&&PRE.percent)*fullPrice/100):fullPrice
-            totalPrice+=price
-            totalWeight+= parseFloat(productDetail&&productDetail.weight.replace( /\//g, '.'))
-            const { _id: _, ...newObj } = cartItem;
-            var status = cartItem.isReserve?"needtobuild":"accept"
-            const faktorItem ={...newObj,faktorNo:faktorNo,
-                fullPrice:fullPrice,price,unitPrice:priceRaw, status:status,
-                priceDetail:priceData.priceDetail,cName:userData.username,phone:userData.phone}
-            
-            await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
-            const hesabResult = await SetTahHesabItem(faktorItem,i)
-            
-            /*if(customerList&&customerList["OK"]){
-                await faktorItems.updateOne({_id:ObjectID(faktorNoId)},
-                {$set:{query:query,invoiceId:customerList["OK"]}})
-            }*/
-            await faktorItems.create({...faktorItem,result:hesabResult})
-            await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
-            } 
-        }
-        await SetTransaction(userId,faktorNo)
-        //res.json({result:result})
-        //return
-        const faktorResult = {
-            faktorNo:faktorNo,
-            userId:userId, 
-            manageId:req.headers['userid'],
-            initDate:Date.now(),
-            clientStatus:clientStatus,
-            progressDate:Date.now(),
-            status:"inprogress",
-            isActive:true, isEdit:false,
-            totalPrice:NormalNumber(totalPrice),
-            fullPrice:NormalNumber(totalFull),
-            totalWeight:totalWeight,
-            unitPrice:NormalNumber(priceRaw)
-        }
-        //await SetTahHesab()
-        await faktor.create(faktorResult)
-        await cart.deleteMany({userId:userId})
-        //await setTransaction(bankData,userId,faktorNo)
-        const cartDetails = await CalcCart(userId,0,req.headers['userid'])
-        res.json({...cartDetails,faktorNo:faktorNo,faktorResult,message:"سفارش ثبت شد"})
-        return
-        //const cartDetails = await findCartFunction(userId,req.headers['userid'])
-        
-         }
-    catch(error){
-        res.status(500).json({message: error.message})
-    }
-})
-
-router.post('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
-    const userId =req.body.userId?req.body.userId:req.headers['userid']
-    try{
-        const priceRaw = await FindPrice()
-        const userData = await customers.findOne({_id:userId})
-        const userCode = userData.phone&&userData.phone.substr(userData.phone.length - 4)
-        const faktorNo = await NewCode("z"+userCode)
-        const cartDetail = await CalcCart(userId,0,req.headers['userid'])
-        
-        var TAX = await tax.findOne().sort({date:-1})
-        var PRE = await prepaid.findOne().sort({date:-1})
-        var totalPrice = 0
-        var totalWeight = 0
-        var totalFull = 0
-        if(!cartDetail.cart||!cartDetail.cart.length){
-            res.status(400).json({error:"سبد خرید خالی است"})
-            return
-        }
-        for(var i=0;i<(cartDetail.cart&&cartDetail.cart.length);i++){
-            var cartItem = cartDetail.cart[i]
-            const productDetail = await products.findOne({sku:cartItem.sku})
-            const priceData = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
-            const fullPrice = priceData.price
-            totalFull+=fullPrice
-            const price = cartItem.isReserve?
-                (parseFloat(PRE&&PRE.percent)*fullPrice/100):fullPrice
-            totalPrice+=price
-            totalWeight+= NormalNumber(productDetail&&productDetail.weight)
-            const { _id: _, ...newObj } = cartItem;
-            var status = cartItem.isReserve?"needtobuild":"accept"
-            await faktorItems.create({...newObj,faktorNo:faktorNo,
-                fullPrice:fullPrice,price,unitPrice:priceRaw, status:status,
-                priceDetail:priceData.priceDetail,cName:userData.username,phone:userData.phone})
-            await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
-            0&&await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
-
-        }
-
-        const faktorData = {
-            faktorNo:faktorNo,
-            userId:userId, 
-            initDate:Date.now(),
-            progressDate:Date.now(),
-            status:"inprogress",
-            isActive:true, isEdit:false,
-            totalPrice:NormalNumber(totalPrice),
-            fullPrice:NormalNumber(totalFull),
-            totalWeight:NormalNumber(totalWeight),
-            unitPrice:NormalNumber(priceRaw)
-        }
-        await faktor.create(faktorData)
-        await cart.deleteMany({userId:userId})
-        const cartData = await CalcCart(userId,0,req.headers['userid'])
-        res.json({...cartData,faktorNo:faktorNo,
-            message:`سفارش با کد ${faktorNo} ثبت شد`})
-        return
-        //const cartDetails = await findCartFunction(userId,req.headers['userid'])
-        
-    }
-    catch(error){
-        res.status(500).json({message: error.message})
-    }
-})
 router.post('/faktor', async (req,res)=>{
     const offset =req.body.offset?parseInt(req.body.offset):0 
     const userId =req.body.userId?req.body.userId:req.headers['userid'];

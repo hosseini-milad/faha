@@ -20,6 +20,8 @@ const Filters = require('../models/product/Filters');
 const factory = require('../models/product/factory');
 const crmlist = require('../models/crm/crmlist');
 const sepidarPOST = require('../middleware/SepidarPost');
+const customers = require('../models/auth/customers');
+const GetHesabFa = require('../middleware/GetHesabFa');
 
 
 router.post('/fetch-user',jsonParser,async (req,res)=>{
@@ -221,6 +223,37 @@ router.post('/update-customer',jsonParser,async (req,res)=>{
         const userData = await customer.updateOne({_id: ObjectID(userId)},
         {$set:data})
        res.json({data:userData,success:"تغییرات اعمال شدند"})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+router.post('/official-customer',jsonParser,auth,async (req,res)=>{
+    var userId = req.body.userId
+    const customerData = await customer.findOne({_id:ObjectID(userId)})
+    if(!customerData){
+        res.status(400).json({error:"Customer Not Found"})
+        return
+    }
+    if(customerData.cCode){
+        res.status(400).json({error:"Customer is Official"})
+        return
+    }
+    try{
+        const query = {
+            name: customerData.username,
+            firstName: customerData.cName,
+            lastName: customerData.sName,
+            mobile: customerData.phone,
+            phone: customerData.phone,
+            contactType: 1,
+            nodeFamily:"مشتری سایت"
+        }
+        //res.json(query)
+        //return
+        const customerInfo = await GetHesabFa(
+            {"contact":query},"/contact/save")
+        res.json({query,hesabFa:customerInfo})
     }
     catch(error){
         res.status(500).json({message: error.message})

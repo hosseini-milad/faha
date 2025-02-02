@@ -20,8 +20,6 @@ const customerSchema = new mongoose.Schema({
   status:{ type: String },
   cCode:{ type: String },
   birthDay:{ type: Object },
-
-  CustomerID:{ type: String },
   Address:{ type: String },
   AddressID:{ type: String },
   meliCode:{ type: String },  

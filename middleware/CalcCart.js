@@ -10,13 +10,16 @@ var ObjectID = require('mongodb').ObjectID;
 
 const CalcCart=async(userId,manageId)=>{
     var totalPrice = 0
+    var totalCount = 0
     const cartDetails = await cart.find({userId:userId}).lean()
     for(var c=0;c<cartDetails.length;c++){
-        unitPrice = cartDetails[c].unitPrice
-        totalPrice += parseFloat(cartDetails[c].price)*cartDetails[c].count
+        unitPrice = Number(cartDetails[c].unitPrice)
+        totalPrice += unitPrice*cartDetails[c].count
+        totalCount += cartDetails[c].count
     }
     return({cart:cartDetails,
         cartDetail: {
+            "totalCount":totalCount,
             "cartDiscount": 0,
             "cartPrice": totalPrice
         }

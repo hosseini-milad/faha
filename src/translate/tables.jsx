@@ -8,8 +8,8 @@ const tabletrans ={
         persian:"پاپ آپ"
     },
     newCu:{
-        english: "Non-official Customers",
-        persian: "مشتریان غیررسمی"
+        english: "New Customers",
+        persian: "مشتریان جدید"
     },
     message:{
         english:"Message",

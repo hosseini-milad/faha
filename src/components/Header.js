@@ -104,7 +104,7 @@ fetch(env.siteApi + "/panel/faktor/price",postOptions)
 
             <li className="nav-item d-flex align-items-center">
               <a
-                href="#"
+                href="/messages"
                 className="nav-link text-body p-0"
                 id="dropdownMenuButton"
                 data-bs-toggle="dropdown"

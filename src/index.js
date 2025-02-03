@@ -62,7 +62,8 @@ import DocDetailHolder from "./modules/Documents/DocPanel/DocData/DocDetailHolde
 import DocumentList from "./pages/DocumentList";
 import Documents from "./pages/Document";
 import SalesSetting from "./pages/SalesSetting";
-
+import Message from "./pages/message";
+import NewUsers from "./pages/NewUsers";
 const cookies = new Cookies();
 const style = document.getElementById("style-direction");
 var lang = JSON.parse(localStorage.getItem(env.cookieLang));
@@ -192,6 +193,14 @@ root.render(
           element={
             <Layout>
               <AccessHolder lang={lang} />
+            </Layout>
+          }
+        />
+        <Route
+          path="/messages"
+          element={
+            <Layout>
+              <Message lang={lang} />
             </Layout>
           }
         />
@@ -404,6 +413,14 @@ root.render(
           element={
             <Layout>
               <Discount lang={lang} />
+            </Layout>
+          }
+        />
+        <Route
+          path="/newusers"
+          element={
+            <Layout>
+              <NewUsers lang={lang} />
             </Layout>
           }
         />

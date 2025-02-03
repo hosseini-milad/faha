@@ -765,19 +765,17 @@ dialog {
   display: flex;
   gap: 10px;
 }
-.taskAction .create-text{
+.taskAction .create-text {
   padding: 0.5rem;
   border-radius: 0.5rem;
   border: none;
   outline: none;
-  
 }
-.taskAction .create-button{
+.taskAction .create-button {
   padding: 0.5rem;
   border-radius: 0.5rem;
   border: none;
   outline: none;
-  
 }
 .btn-crm {
   border-radius: 4px;
@@ -1276,7 +1274,7 @@ dialog {
   .order-wrapper .col p {
     width: 100%;
   }
-  .bu-name{
+  .bu-name {
     width: 100%;
   }
   .bu-name span {
@@ -1301,13 +1299,12 @@ dialog {
     gap: 10px;
     margin: 5px 0;
     align-items: center;
-  
 
-    p{
+    p {
       font-size: 0.85rem;
       white-space: nowrap;
     }
-    strong{
+    strong {
       direction: ltr;
       font-size: 0.85rem;
     }
@@ -1519,25 +1516,25 @@ dialog {
   width: 90%;
   margin: 0 auto;
 }
-.Print-store{
+.Print-store {
   width: 100%;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   direction: rtl;
 
-  .tables-container{
+  .tables-container {
     width: 100%;
     display: flex;
     flex-direction: column;
   }
-  .category{
+  .category {
     width: 80%;
-    margin:20px auto 0;
+    margin: 20px auto 0;
     font-size: 1.3rem;
   }
 }
-.Print-store .table-wrapper{
+.Print-store .table-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1548,13 +1545,15 @@ dialog {
   border: 2px solid black;
   border-radius: 0.5rem;
 }
-.Print-store .table-wrapper .header,.Print-store .table-wrapper .main{
+.Print-store .table-wrapper .header,
+.Print-store .table-wrapper .main {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   width: 100%;
 
-  .header-item,.main-item{
+  .header-item,
+  .main-item {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1562,7 +1561,7 @@ dialog {
     border-bottom: 1px solid black;
     height: 45px;
 
-    p{
+    p {
       margin: 0;
       height: 100%;
       width: 50px;
@@ -1572,28 +1571,29 @@ dialog {
       padding: 0.5rem 0;
       border-left: 1px solid black;
     }
-    p:nth-child(2){
+    p:nth-child(2) {
       width: 100%;
       font-size: 0.8rem;
     }
-    p:nth-child(3){
+    p:nth-child(3) {
       border-width: 2px;
     }
   }
-  .main-item{
-    width: calc(100%/2);
+  .main-item {
+    width: calc(100% / 2);
   }
-  .header-item p{
+  .header-item p {
     font-size: 14px;
     font-weight: 600;
   }
-  .header-item:nth-child(2n),.main-item:nth-child(2n){
-    p:last-child{
+  .header-item:nth-child(2n),
+  .main-item:nth-child(2n) {
+    p:last-child {
       border-left: 0;
     }
   }
 }
-.Print-store .table-wrapper .main{
+.Print-store .table-wrapper .main {
   flex-wrap: wrap;
   justify-content: flex-start;
 }
@@ -1628,44 +1628,91 @@ dialog {
 .delete-btn {
   background-color: red;
 }
-.sub-active{
+.sub-active {
   display: inherit;
 }
-.fa-ellipsis-v{
+.fa-ellipsis-v {
   width: 20px;
 }
-.num-input{
+.num-input {
   width: 100px;
   text-align: center;
 }
-.num-view{
+.num-view {
   margin: 0;
   font-weight: 600;
 }
 
-.single-product-table .product-tr td:first-child{
+.single-product-table .product-tr td:first-child {
   display: none;
 }
-.new-input.new-input{
-  width: 100%!important;
+.new-input.new-input {
+  width: 100% !important;
 
-  input{
+  input {
     width: unset;
     text-align: center;
   }
 }
-.have-des{
+.have-des {
   color: lightgreen !important;
 }
-.LivePrice{
+.LivePrice {
   padding: 0.2rem 0.5rem;
   margin-right: 1rem;
   border: 1px solid goldenrod;
   border-radius: 1rem;
   color: orange;
 
-  i{
+  i {
     cursor: pointer;
     margin-right: 10px !important;
+  }
+}
+.message-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
+  border-radius: 0.5rem;
+  border: 2px solid grey;
+  margin-bottom: 0.5rem;
+  padding: 1rem;
+
+  .title {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  .date {
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+    color: grey;
+
+    span {
+      font-size: 0.8rem;
+    }
+  }
+  .action {
+    margin-top: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+
+    .detail-btn {
+      padding: 0.2rem 1rem;
+      color: white;
+      background-color: rgb(86, 86, 86);
+      border-radius: 8px;
+    }
+  }
+  .close-btn {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-size: 1.2rem;
   }
 }

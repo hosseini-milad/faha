@@ -1,12 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import "./css/App.css";
-import "./css/board.css";
-import "./css/order.css";
+// import "./css/App.css";
+// import "./css/board.css";
+// import "./css/order.css";
 import "./css/fontAwesome.css";
-import "./css/salimi.css";
-import "./css/reyham.css";
+// import "./css/salimi.css";
+// import "./css/reyham.css";
+import "./css/test2.css";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
@@ -31,7 +32,7 @@ import Brands from "./pages/Brands";
 import BrandDetailHolder from "./modules/Brands/BrandData/BrandDetailHolder";
 import Category from "./pages/Category";
 import CatDetailHolder from "./modules/Category/CatData/CatDetailHolder";
-import Sepidar from "./modules/Config/Sepidar";
+
 import Sliders from "./pages/Sliders";
 import SliderDetailHolder from "./modules/Sliders/SliderData/SliderDetailHolder";
 import Transactions from "./pages/Transactions";
@@ -64,6 +65,7 @@ import Documents from "./pages/Document";
 import SalesSetting from "./pages/SalesSetting";
 import Message from "./pages/message";
 import NewUsers from "./pages/NewUsers";
+import Sepidar from "./pages/Sepidar";
 const cookies = new Cookies();
 const style = document.getElementById("style-direction");
 var lang = JSON.parse(localStorage.getItem(env.cookieLang));
@@ -434,7 +436,7 @@ root.render(
         />
 
         <Route
-          path="/config/sepidar"
+          path="/config/update"
           element={
             <Layout>
               <Sepidar lang={lang} />

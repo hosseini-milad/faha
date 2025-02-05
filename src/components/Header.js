@@ -18,29 +18,29 @@ const Header = (props) => {
     cookies.remove(env.cookieName, { path: "/" });
     setTimeout(() => (document.location.reload(), 500));
   };
-  useEffect(()=>{
-    setLivePrice("")
-    var postOptions={
-      method:'get',
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": token && token.token,
-        userId: token && token.userId,
-      },
-    }
-fetch(env.siteApi + "/panel/faktor/price",postOptions)
-.then(res => res.json())
-.then(
-  (result) => {
-    setLivePrice(result.data)
-  },
-    (error) => {
-      console.log(error);
-    }
-)  
+//   useEffect(()=>{
+//     setLivePrice("")
+//     var postOptions={
+//       method:'get',
+//       headers: {
+//         "Content-Type": "application/json",
+//         "x-access-token": token && token.token,
+//         userId: token && token.userId,
+//       },
+//     }
+// fetch(env.siteApi + "/panel/faktor/price",postOptions)
+// .then(res => res.json())
+// .then(
+//   (result) => {
+//     setLivePrice(result.data)
+//   },
+//     (error) => {
+//       console.log(error);
+//     }
+// )  
     
     
-  },[Refresh])
+//   },[Refresh])
 
   return (
     <nav

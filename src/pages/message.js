@@ -4,8 +4,6 @@ import errortrans from "../translate/error";
 import { useEffect } from "react";
 import { useState } from "react";
 import env from "../env";
-import tabletrans from "../translate/tables";
-import MessageTable from "../modules/message/messageTable";
 import {
   getFiltersFromUrl,
   updateUrlWithFilters,

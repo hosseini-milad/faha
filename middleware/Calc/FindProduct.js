@@ -1,4 +1,6 @@
+const Colors = require("../../models/product/Colors")
 const products = require("../../models/product/products")
+const FindColor = require("./FindColor")
 
 const FindProduct=async(data)=>{
     const productList = await products.find({masterSku:data.sku})
@@ -9,7 +11,12 @@ const FindProduct=async(data)=>{
         var found = 1
         for (var prop in filterData) {
             try{
-                if(filters[prop] != filterData[prop]){
+                var finalFilter = await FindColor(filters[prop])
+                if(!finalFilter) {
+                    found(0)
+                    return
+                }
+                if(finalFilter.value != filterData[prop]){
                     found = 0
                     break
                 }

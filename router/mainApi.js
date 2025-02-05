@@ -32,6 +32,7 @@ const city = require('../models/main/city');
 const quickCart = require('../models/product/quickCart');
 const price = require('../models/price');
 const GetHesabFa = require('../middleware/GetHesabFa');
+const users = require('../models/auth/users');
 const { ONLINE_URL} = process.env;
  
 router.get('/main', async (req,res)=>{
@@ -81,7 +82,8 @@ router.use('/panel/crm',CRMPanelApi)
         { method: 'POST' });
     }catch{}
  })
- router.get('/get-customers', async (req,res)=>{
+ router.get('/get-customers',auth, async (req,res)=>{
+    const managerId = req.headers['userid']
     try{
         const customerList = await GetHesabFa(
             {"queryInfo":{take:2000,skip:0}},"/contact/getcontacts")
@@ -121,13 +123,20 @@ router.use('/panel/crm',CRMPanelApi)
             }
             }
         }
+        const userData = await users.findOne({_id:ObjectID(managerId)})
+        await updateLog.create({ 
+            updateQuery: "customers",
+            updateUser:userData.username,
+            date: Date.now()
+        })
         res.json({updateCustomer,newCustomer})
     }
     catch(error){
         res.status(500).json({message: error.message})
     }
 })
-router.get('/get-product', async (req,res)=>{
+router.get('/get-product',auth, async (req,res)=>{
+    const managerId = req.headers['userid']
     try{
         const productList = await GetHesabFa(
             {"queryInfo":{take:10000,skip:0}},"/item/getitems")
@@ -154,9 +163,10 @@ router.get('/get-product', async (req,res)=>{
                 nodeName:result[i].NodeName,
                 active:result[i].Active,
                 priceList:result[i].PriceList}
-            var updateResult = await products.updateOne({ItemID:result[i].Code},
+            var updateResult = await products.updateOne({sku:result[i].ProductCode},
                 {$set:query}
             )
+            var newItem = []
             try{if(!updateResult.matchedCount){
                 newProduct++
                 await products.create(query)
@@ -166,6 +176,12 @@ router.get('/get-product', async (req,res)=>{
             }
             }
         }
+        const userData = await users.findOne({_id:ObjectID(managerId)})
+        await updateLog.create({ 
+            updateQuery: "products",
+            updateUser:userData.username,
+            date: Date.now()
+        })
         res.json({updateProduct,newProduct})
     }
     catch(error){
@@ -173,11 +189,21 @@ router.get('/get-product', async (req,res)=>{
     }
 })
 
-router.get('/sepidar-update-log', async (req,res)=>{
+router.get('/update-log', async (req,res)=>{
     try{ 
-        const sepidarLog = await updateLog.find({}).sort({"date":-1})
-        
-        res.json({log:sepidarLog,message:"done"})
+        const userData = await users.findOne({_id:ObjectID(req.headers['userid'])})
+        if(!userData){
+            res.status(400).json({error:"error not found"})
+            return
+        }
+        const productLog = await updateLog.find({updateQuery:"product"}).sort({ "date": -1 }).limit(5)
+        const customerLog = await updateLog.find({updateQuery:"customer"}).sort({ "date": -1 }).limit(5)
+
+        const sepidarLog = await updateLog.find({}).sort({ "date": -1 }).limit(20)
+
+        res.json({ log: sepidarLog,
+            countLog,productLog,priceLog,customerLog,
+             message: "done" })
     }
     catch(error){
         res.status(500).json({message: error.message})

@@ -806,6 +806,35 @@ router.post('/list-faktor-sale',auth, async (req,res)=>{
     }
 })
 
+router.post('/my-faktor',auth, async (req,res)=>{
+    var pageSize = req.body.pageSize?req.body.pageSize:"10";
+    var offset = req.body.offset?(parseInt(req.body.offset)):0;
+    var userId = req.headers['userid']
+    try{
+        const userData = await customers.findOne({_id:ObjectID(userId)})
+        if(!userData){
+            res.status(400).json({error:"اطلاعات کاربری مجاز نیست"})
+            return 
+        }
+        const faktorData = 
+            await FaktorSchema.find({userId:userId}).sort({initDate:-1}).lean()
+        const faktorList = faktorData.slice(offset,
+            (parseInt(offset)+parseInt(pageSize))) 
+        for(var i=0;i<faktorList.length;i++){
+            var faktorNo = faktorData[i].faktorNo
+            const faktorItemData = await faktorItems.find({faktorNo:faktorNo})
+            faktorData[i].items = faktorItemData
+            faktorData[i].rahId	=faktorNo
+            faktorData[i].userDetail=userData
+            //itemRefs.push(faktorItem)
+        }
+        res.json({data:faktorData,size:faktorData.length})
+    }
+    catch(error){
+        res.status(500).json({error: error.message})
+    }
+})
+
 router.post('/fetch-faktor-2', async (req,res)=>{
     const userId =req.body.userId?req.body.userId:req.headers['userid'];
     const faktorID=req.body.faktorID

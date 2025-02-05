@@ -202,7 +202,7 @@ router.get('/update-log', async (req,res)=>{
         const sepidarLog = await updateLog.find({}).sort({ "date": -1 }).limit(20)
 
         res.json({ log: sepidarLog,
-            countLog,productLog,priceLog,customerLog,
+            productLog,customerLog,
              message: "done" })
     }
     catch(error){

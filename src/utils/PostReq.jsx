@@ -1,6 +1,7 @@
 import Cookies from "universal-cookie";
 import env from "../env";
 import ReactDOM from "react-dom/client";
+import { useState } from "react";
 
 const PostReq = async (props) => {
   const cookies = new Cookies();
@@ -13,7 +14,8 @@ const PostReq = async (props) => {
     "x-access-token": token && token.token,
     userid: token && token.userId,
   };
-
+  var color = props.color?props.color:"lignBlue"
+    var icon = props.icon?props.icon:"info-circle"
   var options =
     method == "GET"
       ? {
@@ -30,7 +32,17 @@ const PostReq = async (props) => {
     .then(
       (result) => {
         if (result.error) {
-          error.render(<h1>{result.error}</h1>);
+          error.render(<div className="notification-modal">
+            <div className="n-m-box" style={{borderColor:color}}>
+              <p className="top-p" style={{backgroundColor:color}}>
+                    {"status"}</p>
+              <i className={`fa fa-lg fa-${icon}` }
+                style={{color: color}}></i>
+              <p>{result.error}</p>
+              <a href="#" style={{color:color}}>{"Text"}</a>
+            </div>
+        </div>);
+        setTimeout(()=>error.render(),3000)
         } else {
           return result;
         }

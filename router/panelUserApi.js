@@ -243,7 +243,7 @@ router.post('/update-client',jsonParser,auth,async (req,res)=>{
         const userData = await customer.updateOne({_id: ObjectID(userId)},
         {$set:data})
         const userNew = await customer.findOne({_id: ObjectID(userId)})
-       res.json({data:userNew,success:"تغییرات اعمال شدند"})
+       res.json({data:userNew,update:userData,success:"تغییرات اعمال شدند"})
     }
     catch(error){
         res.status(500).json({message: error.message})

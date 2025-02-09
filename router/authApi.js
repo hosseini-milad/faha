@@ -184,11 +184,11 @@ router.post('/customer-otp',jsonParser,async(req,res)=>{
 router.post('/login-otp',jsonParser,async(req,res)=>{
 try {
   // Get user input
-  const data ={ username, otp } = req.body;
+  const { username, otp } = req.body;
 
   // Validate user input
   if (!(username && otp)) {
-    res.status(400).send("All input is required");
+    res.status(400).send({error:"تمامی مقادیر باید وارد شوند"});
     return;
   }
   // Validate if user exist in our database
@@ -212,9 +212,7 @@ try {
     return;
   }
   if(user && otp!==user.otp){
-    res.status(200).json({
-      "error":"wrong otp"
-    });
+    res.status(200).json({error:"wrong otp"});
   }
   //res.status(400).send("Invalid Credentials");
 } catch (err) {

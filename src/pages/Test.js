@@ -3,15 +3,16 @@ import Cookies from "universal-cookie";
 import { useEffect } from "react";
 import { useState } from "react";
 import env from "../env";
-import PostReq  from "../utils/PostReq";
+import PostReq from "../utils/PostReq";
 function Test(props) {
+  const [Content, setContent] = useState();
   const TestApi = async () => {
     const result = await PostReq({
       method: "Post",
       url: "/auth/login-otp",
       body: { username: "09214234099", otp: "5000" },
     });
-    console.log(result);
+    setContent(result);
   };
 
   return (

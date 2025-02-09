@@ -24,11 +24,11 @@ const PostReq = async (props) => {
           method: "POST",
           headers: header,
           body: JSON.stringify(body),
-        }; 
-  const res= await fetch(env.siteApi + props.url, options)
+        };
+  const res = await fetch(env.siteApi + props.url, options)
     .then((res) => res.json())
     .then(
-      (result) => { 
+      (result) => {
         if (result.error) {
           error.render(<h1>{result.error}</h1>);
         } else {
@@ -39,7 +39,7 @@ const PostReq = async (props) => {
         return error.render(<h1>{error}</h1>);
       }
     );
-  return(res)
+  return res;
 };
 
 export default PostReq;

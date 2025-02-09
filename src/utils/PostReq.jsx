@@ -14,8 +14,8 @@ const PostReq = async (props) => {
     "x-access-token": token && token.token,
     userid: token && token.userId,
   };
-  var color = props.color?props.color:"lignBlue"
-    var icon = props.icon?props.icon:"info-circle"
+  var color = props.color ? props.color : "lignBlue";
+  var icon = props.icon ? props.icon : "info-circle";
   var options =
     method == "GET"
       ? {
@@ -32,17 +32,24 @@ const PostReq = async (props) => {
     .then(
       (result) => {
         if (result.error) {
-          error.render(<div className="notification-modal">
-            <div className="n-m-box" style={{borderColor:color}}>
-              <p className="top-p" style={{backgroundColor:color}}>
-                    {"status"}</p>
-              <i className={`fa fa-lg fa-${icon}` }
-                style={{color: color}}></i>
-              <p>{result.error}</p>
-              <a href="#" style={{color:color}}>{"Text"}</a>
+          error.render(
+            <div className="notification-modal">
+              <div className="n-m-box" style={{ borderColor: color }}>
+                <p className="top-p" style={{ backgroundColor: color }}>
+                  {"status"}
+                </p>
+                <i
+                  className={`fa fa-lg fa-${icon}`}
+                  style={{ color: color }}
+                ></i>
+                <p>{result.error}</p>
+                <a href="#" style={{ color: color }}>
+                  {"Text"}
+                </a>
+              </div>
             </div>
-        </div>);
-        setTimeout(()=>error.render(),3000)
+          );
+          setTimeout(() => error.render(), 3000);
         } else {
           return result;
         }

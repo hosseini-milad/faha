@@ -66,6 +66,7 @@ import SalesSetting from "./pages/SalesSetting";
 import Message from "./pages/message";
 import NewUsers from "./pages/NewUsers";
 import Sepidar from "./pages/Sepidar";
+import Test from "./pages/Test";
 const cookies = new Cookies();
 const style = document.getElementById("style-direction");
 var lang = JSON.parse(localStorage.getItem(env.cookieLang));
@@ -114,6 +115,14 @@ root.render(
           element={
             <Layout>
               <Dashboard lang={lang} />
+            </Layout>
+          }
+        />
+        <Route
+          path="/Test"
+          element={
+            <Layout>
+              <Test lang={lang} />
             </Layout>
           }
         />

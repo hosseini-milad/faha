@@ -204,7 +204,7 @@ router.post('/list-customers',jsonParser,async (req,res)=>{
     } 
 })
 router.post('/update-customer',jsonParser,async (req,res)=>{
-    var userId = req.body.userId
+    var userId = req.body.userId?req.body.userId:req.headers['userid']
     const data=req.body
     if(req.body.imageUrl1) data.imageUrl1 = req.body.imageUrl1
     if(req.body.imageUrl2) data.imageUrl2 = req.body.imageUrl2
@@ -212,6 +212,26 @@ router.post('/update-customer',jsonParser,async (req,res)=>{
     if(req.body.shopUrl1) data.shopUrl1 = req.body.shopUrl1
     if(req.body.shopUrl2) data.shopUrl2 = req.body.shopUrl2
     if(req.body.shopUrl3) data.shopUrl3 = req.body.shopUrl3
+    const userOld = await customer.findOne({_id: ObjectID(userId)})
+    if(!userOld){
+        res.status(400).json({
+            error:"کاربر پیدا نشد"
+        })
+        return
+    }
+    try{
+        const userData = await customer.updateOne({_id: ObjectID(userId)},
+        {$set:data})
+       res.json({data:userData,success:"تغییرات اعمال شدند"})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+router.post('/update-client',jsonParser,auth,async (req,res)=>{
+    var userId =req.headers['userid']
+    const data=req.body
+    
     const userOld = await customer.findOne({_id: ObjectID(userId)})
     if(!userOld){
         res.status(400).json({

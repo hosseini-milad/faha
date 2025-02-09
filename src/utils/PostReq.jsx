@@ -1,8 +1,10 @@
 import Cookies from "universal-cookie";
 import env from "../env";
+import ReactDOM from "react-dom/client";
 
 const PostReq = async (props) => {
   const cookies = new Cookies();
+  const error = ReactDOM.createRoot(document.getElementById("error"));
   const method = props.method ? props.method : "GET";
   const token = cookies.get(env.cookieName);
   const body = props.body;
@@ -22,21 +24,22 @@ const PostReq = async (props) => {
           method: "POST",
           headers: header,
           body: JSON.stringify(body),
-        };
-  return await fetch(env.siteApi + props.url, options)
+        }; 
+  const res= await fetch(env.siteApi + props.url, options)
     .then((res) => res.json())
     .then(
-      (result) => {
+      (result) => { 
         if (result.error) {
-          return <h2>{result.error}</h2>;
+          error.render(<h1>{result.error}</h1>);
         } else {
           return result;
         }
       },
       (error) => {
-        return <h2>hiiiiiii</h2>;
+        return error.render(<h1>{error}</h1>);
       }
     );
+  return(res)
 };
 
 export default PostReq;

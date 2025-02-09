@@ -44,7 +44,18 @@ const PostReq = async (props) => {
         </div>);
         setTimeout(()=>error.render(),3000)
         } else {
-          return result;
+          error.render(<div className="notification-modal">
+            <div className="n-m-box" style={{borderColor:color}}>
+              <p className="top-p" style={{backgroundColor:color}}>
+                    {"status"}</p>
+              <i className={`fa fa-lg fa-${icon}` }
+                style={{color: color}}></i>
+              <p>{result.message}</p>
+              <a href="#" style={{color:color}}>{"Text"}</a>
+            </div>
+        </div>);
+        setTimeout(()=>error.render(),3000)
+        return result;
         }
       },
       (error) => {

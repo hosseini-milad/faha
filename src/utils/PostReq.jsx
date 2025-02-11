@@ -2,7 +2,7 @@ import Cookies from "universal-cookie";
 import env from "../env";
 import ReactDOM from "react-dom/client";
 import { useState } from "react";
-
+import ShowError from "../components/Modal/ShowError";
 const PostReq = async (props) => {
   const cookies = new Cookies();
   const error = ReactDOM.createRoot(document.getElementById("error"));
@@ -14,13 +14,18 @@ const PostReq = async (props) => {
     "x-access-token": token && token.token,
     userid: token && token.userId,
   };
-  var color = props.color ? props.color : "lignBlue";
-  var icon = props.icon ? props.icon : "info-circle";
+
   var options =
     method == "GET"
       ? {
           method: "GET",
           headers: header,
+        }
+      : method == "DELETE"
+      ? {
+          method: "DELETE",
+          headers: header,
+          body: JSON.stringify(body),
         }
       : {
           method: "POST",
@@ -32,41 +37,27 @@ const PostReq = async (props) => {
     .then(
       (result) => {
         if (result.error) {
-          error.render(
-            <div className="notification-modal">
-              <div className="n-m-box" style={{ borderColor: color }}>
-                <p className="top-p" style={{ backgroundColor: color }}>
-                  {"status"}
-                </p>
-                <i
-                  className={`fa fa-lg fa-${icon}`}
-                  style={{ color: color }}
-                ></i>
-                <p>{result.error}</p>
-                <a href="#" style={{ color: color }}>
-                  {"Text"}
-                </a>
-              </div>
-            </div>
-          );
+          error.render(<ShowError text={result.error} color={result.color} />);
           setTimeout(() => error.render(), 3000);
         } else {
-          error.render(<div className="notification-modal">
-            <div className="n-m-box" style={{borderColor:color}}>
-              <p className="top-p" style={{backgroundColor:color}}>
-                    {"status"}</p>
-              <i className={`fa fa-lg fa-${icon}` }
-                style={{color: color}}></i>
-              <p>{result.message}</p>
-              <a href="#" style={{color:color}}>{"Text"}</a>
-            </div>
-        </div>);
-        setTimeout(()=>error.render(),3000)
-        return result;
+          if (result.message) {
+            error.render(
+              <ShowError text={result.message} color={result.color} />
+            );
+            setTimeout(() => error.render(), 3000);
+          }
+
+          return result;
         }
       },
-      (error) => {
-        return error.render(<h1>{error}</h1>);
+      (err) => {
+        if (err.status == "404") {
+          error.render(<ShowError text={"404"} color={err.color} />);
+          setTimeout(() => error.render(), 3000);
+        } else {
+          error.render(<ShowError text={err.message} color={err.color} />);
+          setTimeout(() => error.render(), 3000);
+        }
       }
     );
   return res;

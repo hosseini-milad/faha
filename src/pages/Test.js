@@ -10,7 +10,7 @@ function Test(props) {
     const result = await PostReq({
       method: "Post",
       url: "/auth/login-otp",
-      body: { username: "09214234099", otp: "5000" },
+      body: { username: "09214234099", otp: "3970" },
     });
     setContent(result);
   };
@@ -26,7 +26,7 @@ function Test(props) {
       </div>
       <div className="list-container">
         <button onClick={TestApi}>کلیک کنید</button>
-        
+        {Content&&Content.access}
       </div>
     </div>
   );

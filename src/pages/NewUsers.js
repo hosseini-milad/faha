@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
-import Cookies from "universal-cookie";
 import NUserTable from "../modules/Users/NUserTable";
-import StatusBar from "../modules/Components/StatusBar";
 import Paging from "../modules/Components/Paging";
 import errortrans from "../translate/error";
 import CustomerFilters from "../modules/Customer/CustomerComponent/CustomerFilters";
-import env from "../env";
 import tabletrans from "../translate/tables";
-import SMS from "../components/SMS";
-const cookies = new Cookies();
+import PostReq from "../utils/PostReq";
 
 function NewUsers(props) {
   const direction = props.lang ? props.lang.dir : errortrans.defaultDir;
@@ -16,78 +12,33 @@ function NewUsers(props) {
   const [content, setContent] = useState("");
   const [filters, setFilters] = useState(getFiltersFromUrl());
   const [loading, setLoading] = useState(0);
-  const [showSms, setShowSMS] = useState(0);
-  const [update, setUpdate] = useState(0);
-  const token = cookies.get(env.cookieName);
+
   useEffect(() => {
     setLoading(1);
-    const body = {
-      // offset:filters.offset?filters.offset:"0",
-      offset: filters.offset || "0",
-
-      // pageSize:filters.pageSize?filters.pageSize:"10",
-      pageSize: filters.pageSize || "10",
-
-      customer: filters.customer,
-      orderNo: filters.orderNo,
-      status: filters.status,
-      profile: filters.profile,
-      brand: filters.brand,
-      dateFrom: filters.date && filters.date.dateFrom,
-      dateTo: filters.date && filters.date.dateTo,
-      access: filters.access,
-    };
-    const postOptions = {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": token && token.token,
-        userId: token && token.userId,
-      },
-      body: JSON.stringify(body),
-    };
-    console.log(postOptions);
-    fetch(env.siteApi + "/panel/user/list", postOptions)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setLoading(0);
-          setContent("");
-          setTimeout(() => setContent(result.newUsers), 200);
-        },
-        (error) => {
-          setLoading(0);
-          console.log(error);
-        }
-      );
+    fetchNewCustomer();
   }, [filters]);
-  useEffect(() => {
-    if (update === 0) return;
-    const body = {
-      url: update,
-    };
-    const postOptions = {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": token && token.token,
-        userId: token && token.userId,
+  const fetchNewCustomer = async () => {
+    const result = await PostReq({
+      method: "Post",
+      url: "/panel/user/list-customers",
+      body: {
+        offset: filters.offset || "0",
+        pageSize: filters.pageSize || "10",
+        customer: filters.customer,
+        orderNo: filters.orderNo,
+        status: filters.status,
+        profile: filters.profile,
+        brand: filters.brand,
+        dateFrom: filters.date && filters.date.dateFrom,
+        dateTo: filters.date && filters.date.dateTo,
+        access: filters.access,
+        new: true,
       },
-      body: JSON.stringify(body),
-    };
-    console.log(postOptions);
-    fetch(env.siteApi + "/panel/user/parse-list", postOptions)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          console.log(result);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  }, [update]);
-
+    });
+    setLoading(0);
+    setContent("");
+    setTimeout(() => setContent(result.filter), 200);
+  };
   // Function to get filters from URL
   function getFiltersFromUrl() {
     const searchParams = new URLSearchParams(window.location.search);

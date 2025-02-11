@@ -172,6 +172,7 @@ router.post('/list-customers',jsonParser,async (req,res)=>{
         groupCode:req.body.groupCode,
         offset:req.body.offset,
         brand:req.body.brand,
+        new:req.body.new,
         official:req.body.official
     }
         const reportList = await customer.aggregate([
@@ -183,7 +184,8 @@ router.post('/list-customers',jsonParser,async (req,res)=>{
                 {cName:new RegExp('.*' + data.customer + '.*')},
                 {username:new RegExp('.*' + data.customer + '.*')},
                 {mobile:new RegExp('.*' + data.customer + '.*')}
-            ]}:{}}
+            ]}:{}},
+            { $match:data.new?{$or:[{cCode:{$exists:false}},{cCode:""}]}:{}},
         ])
         const groupList = await customer.aggregate([ 
             {$group:{_id:{group:'$group', groupCode:'$groupCode'}, count:{$sum:1}}}, 

@@ -30,7 +30,7 @@ function Sepidar(props) {
           var lastLog = {
             product: logList && logList.productLog && logList.productLog[0],
             // price: logList.priceLog[0],
-            customer: logList && logList.customerLog && logList.customerLog[0],
+            customers: logList && logList.customerLog && logList.customerLog[0],
           };
           console.log(lastLog);
           setUpdateTime(lastLog);

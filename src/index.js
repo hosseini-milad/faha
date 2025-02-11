@@ -280,8 +280,12 @@ root.render(
           element={<PrintSepidar lang={"fa"} />}
         />
         <Route
-          path="/print/official/:orderId"
+          path="/print/official2/:orderId"
           element={<Printofficial lang={"fa"} />}
+        />
+        <Route
+          path="/print/official/:orderId"
+          element={<FaktorSitePrint lang={"fa"} />}
         />
         <Route
           path="/fishprint/sepidar/:orderId"

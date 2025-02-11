@@ -36509,8 +36509,10 @@ table {
 }
 
 .hesabfaPrice {
-	display: grid;
-	min-width: 200px
+	display: flex;
+	min-width: 200px;
+	width:50%;
+	
 }
 
 .hesabfaPrice h3 {
@@ -36559,7 +36561,8 @@ table {
 .footerRows,
 .officialprint .bank-col .account-wrapper {
 	display: flex;
-	justify-content: space-between
+	justify-content: flex-start;
+	gap:20px;
 }
 
 .footerHesabfa {
@@ -37085,4 +37088,12 @@ table {
 	border: 2px solid gray;
 	margin-bottom: .5rem;
 	padding: 1rem
+}
+@media print {
+  .PrintBtn {
+    visibility: hidden;
+  }
+  .noPrint {
+    visibility: hidden;
+  }
 }

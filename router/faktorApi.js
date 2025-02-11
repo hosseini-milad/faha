@@ -58,6 +58,7 @@ const CalcFaktor = require('../middleware/Calc/CalcFaktor');
 const FindColor = require('../middleware/Calc/FindColor');
 const FindSimilar = require('../middleware/Calc/FindSimilar');
 const FindProduct = require('../middleware/Calc/FindProduct');
+const SendSMS = require('../middleware/Calc/SendSMS')
 const {TaxRate} = process.env
 router.post('/products', async (req,res)=>{
     try{
@@ -537,7 +538,12 @@ router.get('/delete-cart',auth,jsonParser, async (req,res)=>{    const id=req.bo
         res.status(500).json({message: error.message})
     }
 })
-
+router.get('/sendSMS',jsonParser, async (req,res)=>{
+    
+    const result = await SendSMS("09214234099","sabt","سید_میلاد","z123321")
+    res.json(result)
+    return
+})
 router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
     const userId =req.headers['userid']
     try{
@@ -582,6 +588,7 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             cName:userData.username,phone:userData.phone
         }
         await faktor.create(faktorData)
+        userData.phone&&await SendSMS(userData.phone,"sabt",userData.username,faktorNo)
         await cart.deleteMany({userId:userId})
         res.json({faktorNo:faktorNo,message:"سفارش ثبت شد"})
         return

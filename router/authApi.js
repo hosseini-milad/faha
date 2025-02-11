@@ -189,7 +189,7 @@ try {
     return;
   }
   // Validate if user exist in our database
-  const user = await customers.findOne({phone: username });
+  const user = await customers.findOne({phone: username }).lean();
   ////console.log((user , phone)
   if (user && otp===user.otp) {
     // Create token

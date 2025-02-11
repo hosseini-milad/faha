@@ -196,8 +196,8 @@ router.get('/update-log', async (req,res)=>{
             res.status(400).json({error:"error not found"})
             return
         }
-        const productLog = await updateLog.find({updateQuery:"product"}).sort({ "date": -1 }).limit(5)
-        const customerLog = await updateLog.find({updateQuery:"customer"}).sort({ "date": -1 }).limit(5)
+        const productLog = await updateLog.find({updateQuery:"products"}).sort({ "date": -1 }).limit(5)
+        const customerLog = await updateLog.find({updateQuery:"customers"}).sort({ "date": -1 }).limit(5)
 
         const sepidarLog = await updateLog.find({}).sort({ "date": -1 }).limit(20)
 

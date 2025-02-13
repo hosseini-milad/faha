@@ -70,6 +70,22 @@ router.post('/products', async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
+router.post('/list-category', async (req,res)=>{
+    var search = req.body.search
+    try{
+        var catList = await category.aggregate([
+            {$match:search?{$or:[
+                {catCode:{$regex: search, $options : 'i'}},
+                {title:{$regex: search, $options : 'i'}}
+            ]}:{}}]) 
+        res.json({data:catList,
+            size:catList.length
+        })
+    }
+    catch(error){
+        res.status(500).json({error:true,message: error.message})
+    }
+})
 
 router.post('/list-product', async (req,res)=>{
     var pageSize = req.body.pageSize?req.body.pageSize:"10";

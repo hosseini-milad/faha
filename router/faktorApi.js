@@ -58,6 +58,7 @@ const CalcFaktor = require('../middleware/Calc/CalcFaktor');
 const FindColor = require('../middleware/Calc/FindColor');
 const FindSimilar = require('../middleware/Calc/FindSimilar');
 const FindProduct = require('../middleware/Calc/FindProduct');
+const SendSMS = require('../middleware/Calc/SendSMS')
 const {TaxRate} = process.env
 router.post('/products', async (req,res)=>{
     try{
@@ -553,11 +554,19 @@ router.get('/delete-cart',auth,jsonParser, async (req,res)=>{    const id=req.bo
         res.status(500).json({message: error.message})
     }
 })
-
+router.get('/sendSMS',jsonParser, async (req,res)=>{
+    
+    const result = await SendSMS("09214234099","sabt","سید_میلاد","z123321")
+    res.json(result)
+    return
+})
 router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
     const userId =req.headers['userid']
     try{
         const userData = await customers.findOne({_id:userId})
+        if(!userData){
+            res.status(400).json({error:"کاربر پیدا نشد"})
+        }
         const userCode = userData.phone&&userData.phone.substr(userData.phone.length - 4)
         const faktorNo = await NewCode("z"+userCode)
         const cartDetail = await CalcCart(userId,0,req.headers['userid'])
@@ -583,7 +592,6 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
             
         }
-
         const faktorData = {
             faktorNo:faktorNo,
             userId:userId, 
@@ -592,9 +600,11 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             status:"initial",
             isActive:true, isEdit:false,
             totalPrice:NormalNumber(totalPrice),
-            totalCount:NormalNumber(totalCount)
+            totalCount:totalCount,
+            cName:userData.username,phone:userData.phone
         }
         await faktor.create(faktorData)
+        userData.phone&&await SendSMS(userData.phone,"sabt",userData.username,faktorNo)
         await cart.deleteMany({userId:userId})
         res.json({faktorNo:faktorNo,message:"سفارش ثبت شد"})
         return
@@ -810,6 +820,35 @@ router.post('/list-faktor-sale',auth, async (req,res)=>{
             faktorData[i].items = faktorItemData
             faktorData[i].rahId	=faktorNo
             faktorData[i].userDetail=userDetail
+            //itemRefs.push(faktorItem)
+        }
+        res.json({data:faktorData,size:faktorData.length})
+    }
+    catch(error){
+        res.status(500).json({error: error.message})
+    }
+})
+
+router.post('/my-faktor',auth, async (req,res)=>{
+    var pageSize = req.body.pageSize?req.body.pageSize:"10";
+    var offset = req.body.offset?(parseInt(req.body.offset)):0;
+    var userId = req.headers['userid']
+    try{
+        const userData = await customers.findOne({_id:ObjectID(userId)})
+        if(!userData){
+            res.status(400).json({error:"اطلاعات کاربری مجاز نیست"})
+            return 
+        }
+        const faktorData = 
+            await FaktorSchema.find({userId:userId}).sort({initDate:-1}).lean()
+        const faktorList = faktorData.slice(offset,
+            (parseInt(offset)+parseInt(pageSize))) 
+        for(var i=0;i<faktorList.length;i++){
+            var faktorNo = faktorData[i].faktorNo
+            const faktorItemData = await faktorItems.find({faktorNo:faktorNo})
+            faktorData[i].items = faktorItemData
+            faktorData[i].rahId	=faktorNo
+            faktorData[i].userDetail=userData
             //itemRefs.push(faktorItem)
         }
         res.json({data:faktorData,size:faktorData.length})

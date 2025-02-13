@@ -19,6 +19,7 @@ const CalcCart=async(userId,manageId)=>{
     }
     return({cart:cartDetails,
         cartDetail: {
+            "totalCount":totalCount,
             "cartDiscount": 0,
             "cartCount":totalCount,
             "cartPrice": totalPrice

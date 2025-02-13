@@ -8,13 +8,14 @@ const CreateCart=async(cartDetails,sku,userId,count)=>{
         if(!productDetail){
             return({error:"محصول پیدا نشد"})
         }
-        
+        var sellPrice = Number(productDetail.sellPrice)
+        var price = sellPrice*(count?count:1)
         await cart.create({
             sku:sku,
             title:productDetail.title,
             weight:productDetail.weight,
-            price:productDetail.sellPrice,
-            unitPrice:productDetail.sellPrice,
+            price:price,
+            unitPrice:sellPrice,
             count:count?count:1,
             userId:userId
         })

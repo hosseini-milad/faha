@@ -38,8 +38,10 @@ router.post('/fetch-crm',jsonParser,async (req,res)=>{
 router.post('/fetch-tasks',auth,jsonParser,async (req,res)=>{
     const crmId = req.body.crmId
     const userId = req.headers["userid"]
+    const offset = req.body.offset
+    const pageSize = req.body.pageSize
     try{ 
-        const tasksList = await calcTasks(userId)
+        const tasksList = await calcTasks(userId,offset,pageSize)
 
        res.json(tasksList)
     }
@@ -47,7 +49,7 @@ router.post('/fetch-tasks',auth,jsonParser,async (req,res)=>{
         res.status(500).json({message: error.message})
     } 
 })
-const calcTasks=async(userId)=>{
+const calcTasks=async(userId,offsetRaw,pageSizeRaw)=>{
     const userData = await user.findOne({_id:ObjectID(userId)})
     if(!userData){
         return
@@ -60,15 +62,24 @@ const calcTasks=async(userId)=>{
 
     //if(userData&&userData.access!=="manager") limitTask= userData.profile
     const crmData = await crmlist.findOne()
-    const crmId = crmData&&(crmData._id).toString()
-    taskList = await faktors.aggregate([
-        {$match:{}}
-    ])
-    //const taskList = await tasks.find({crmCode:crmData._id})
-    const columnOrder =crmData&&crmData.crmSteps
-    var showColumn =[]
-    var columns={} 
-    for(var i=0;i<columnOrder.length;i++){
+    const tasksData = []
+    const crmSteps = crmData.crmSteps?crmData.crmSteps.map(item=>({title:item.title,code:item.enTitle})):[]
+    const offset = offsetRaw?offsetRaw:new Array(crmSteps.length).fill(0)
+    const pageSize = pageSizeRaw?pageSizeRaw:5
+
+    for(var i=0;i<crmSteps.length;i++){
+        const tempOffset = offset[i]?offset[i]:"0"
+        const colData = await faktors.find({status:crmSteps[i].code})
+        //const offsetData = await offset.find(item=>item.col==crmSteps[i].code)
+        const colList = colData.slice(tempOffset,
+            (parseInt(tempOffset)+parseInt(pageSize))) 
+        tasksData.push(
+            { title:crmSteps[i].title , step:crmSteps[i].code , offset:tempOffset,
+                size:colData.length, data:colList}
+        )
+    }
+    const tasksToShow = tasksData
+    /*for(var i=0;i<columnOrder.length;i++){
         const access =(userAccess.find(item=>item.title ===columnOrder[i].enTitle))
         //console.log(access)
         if(access||admin){
@@ -78,7 +89,6 @@ const calcTasks=async(userId)=>{
         }
         
     }
-    //console.log(columns)
     const priceRaw = await FindPrice()
     const tasksToShow=[]
     for(var c=0;c<taskList.length;c++){
@@ -86,7 +96,6 @@ const calcTasks=async(userId)=>{
         var yesterday = new Date(Date.now() - 86400000); // that is: 24 * 60 * 60 * 1000
         var taskDate = taskList[c].progressDate?taskList[c].progressDate:
             taskList[c].date
-            taskList[c].livePrice=priceRaw
         if(!taskList[c].progressDate){
             yesterday = new Date(Date.now() - 166400000)
         }
@@ -98,9 +107,9 @@ const calcTasks=async(userId)=>{
         }
         catch{}
         //columnOrder.find(item=>item.enTitle===taskStep)
-    } 
-    return({crmData:crmData,tasks:tasksToShow, crm:crmData,
-        columnOrder:showColumn,columns:columns})
+    } */
+    return({crmData:crmData,tasks:tasksToShow, crm:crmData,})
+        //columnOrder:showColumn,columns:columns})
 }
 router.post('/update-faktor-tasks',auth,jsonParser,async (req,res)=>{
     const taskId = req.body.id?req.body.id:""
@@ -432,79 +441,4 @@ router.post('/upload',uploadImg.single('upload'), async(req, res, next)=>{
     }
 })
 
-const SepidarFunc=async(data,faktorNo,user,stock)=>{
-    const notNullCartItem = []
-
-    for(var i=0;i<data.cartItems.length;i++)
-        data.cartItems[i].count?
-        notNullCartItem.push(data.cartItems[i]):''
-    var query ={
-        "GUID": "124ab075-fc79-417f-b8cf-2a"+faktorNo,
-        "CustomerRef": toInt(user.CustomerID),
-        "AddressRef": user.AddressID,
-        "CurrencyRef":1,
-        "SaleTypeRef": data.payValue?toInt(data.payValue):3,
-        "Duty":0.0000,
-        "Description":faktorNo,
-        "DescriptionRef":faktorNo,
-        "Discount": data.discount>100?toInt(data.discount):0.00,
-        "Items": 
-        notNullCartItem.map((item,i)=>{
-            const price = findPayValuePrice(item.price,data.payValue)
-            const discount =item.discount?normalPriceDiscount(price,item.discount,1):0
-            return({
-            "ItemRef": toInt(item.id),
-            "TracingRef": null,
-            "Description":item.description,//item.title+"|"+item.sku,
-            "StockRef":data.cartItems[i].stock?data.cartItems[i].stock:stock,
-            "Quantity": toInt(item.count),
-            "Fee": toInt(price),
-            "Price": normalPriceCount(price,item.count,1),
-            "Discount": discount?normalPriceCount(discount,item.count,1):0,
-            "Tax": normalPriceCount(price-discount,item.count,TaxRate),
-            "Duty": 0.0000,
-            "Addition": 0.0000
-          })})
-        
-      }
-    return(query)
-}
-const toInt=(strNum,count,align)=>{
-    if(!strNum)return(0)
-    
-    return(parseInt(parseInt((align?"-":'')+strNum.toString().replace( /,/g, ''))*
-    (count?parseFloat(count):1)))
-}
-const normalPriceCount=(priceText,count,tax)=>{
-    if(!priceText||priceText === null||priceText === undefined) return("")
-    var rawCount = parseFloat(count.toString())
-    var rawTax = parseFloat(tax.toString())
-    var rawPrice = Math.round(parseInt(priceText.toString().replace( /,/g, '')
-        .replace(/\D/g,''))*rawCount*rawTax/1000)
-    rawPrice = parseInt(rawPrice)*1000
-    return(
-      (rawPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace( /^\D+/g, ''))
-    )
-  }
-const normalPriceDiscount=(priceText,discount,count)=>{
-    if(!priceText||priceText === null||priceText === undefined) return(0)
-    if(!discount) return(0)
-    var rawCount = parseFloat(count.toString())
-    var discount = parseInt(discount.toString())
-    var newDiscount = discount
-    if(discount<100)
-        newDiscount = discount * rawCount * priceText /100
-    rawPrice = parseInt(Math.round(newDiscount/1000))*1000
-    return(rawPrice)
-}
-const findPayValuePrice=(priceArray,payValue)=>{
-    if(!priceArray)return(0)
-    if(!payValue)payValue = 3
-    var price = priceArray
-    if(priceArray.length&&priceArray.constructor === Array)
-        price=priceArray.find(item=>item.saleType==payValue).price
-   
-    return(price)
-
-}
 module.exports = router;

@@ -74,7 +74,7 @@ function Sepidar(props) {
   };
   const content = [
     {
-      title: "محصولات",
+      title: "محصولات و قیمت",
       enTitle: "product",
       description: "بروزرسانی محتوای محصولات",
     },

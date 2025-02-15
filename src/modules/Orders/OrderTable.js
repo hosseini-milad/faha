@@ -1,26 +1,33 @@
-import { useState } from "react"
-import OrderTableRow from "./OrderTableRow"
-import tabletrans from "../../translate/tables"
-import OrderMultiReg from "./OrderComponent/OrderMultiReg"
-import OrderMultiDone from "./OrderComponent/OrderMultiDone"
+import { useState } from "react";
+import OrderTableRow from "./OrderTableRow";
+import tabletrans from "../../translate/tables";
+import OrderMultiReg from "./OrderComponent/OrderMultiReg";
+import OrderMultiDone from "./OrderComponent/OrderMultiDone";
 
-function OrderTable(props){
-  const orders = props.orders
-  const lang=props.lang;
-  const [selectedOrder,setSelectedOrder] = useState()
-  const [detail,showDetail] = useState(-1)
-  const [AllCheck,setAllCheck] = useState(0)
-  console.log(selectedOrder)
-  if(!orders||!orders.length) return <main>waiting</main>
-  else  return(
-        <table>
+function OrderTable(props) {
+  const orders = props.orders;
+  const lang = props.lang;
+  const [selectedOrder, setSelectedOrder] = useState();
+  const [detail, showDetail] = useState(-1);
+  const [AllCheck, setAllCheck] = useState(0);
+
+  if (!orders || !orders.length) return <main>waiting</main>;
+  else
+    return (
+      <table>
         <thead>
-        <tr>
-          <th>ردیف</th>
-          <th className="checkBoxStyle">
-              <input type="checkbox" checked={AllCheck} 
-              onClick={(e)=>{setSelectedOrder(e.target.checked?props.orders:[]);
-              setAllCheck(e.target.checked?1:0)}}/></th>
+          <tr>
+            <th>ردیف</th>
+            <th className="checkBoxStyle">
+              <input
+                type="checkbox"
+                checked={AllCheck}
+                onClick={(e) => {
+                  setSelectedOrder(e.target.checked ? props.orders : []);
+                  setAllCheck(e.target.checked ? 1 : 0);
+                }}
+              />
+            </th>
             <th>
               <p>{tabletrans.orderNumber[lang]}</p>
               <i></i>
@@ -34,7 +41,7 @@ function OrderTable(props){
               <i></i>
             </th>
             <th>
-            <p>{tabletrans.payStatus[lang]}</p>
+              <p>{tabletrans.payStatus[lang]}</p>
               <i></i>
             </th>
             <th>
@@ -51,31 +58,41 @@ function OrderTable(props){
               <i></i>
             </th> */}
             <th>
-            <p>{tabletrans.price[lang]}</p>
+              <p>{tabletrans.price[lang]}</p>
               <i></i>
             </th>
             <th>
-            <p>{tabletrans.transportationStatus[lang]}</p>
+              <p>{tabletrans.transportationStatus[lang]}</p>
               <i></i>
             </th>
-            <th>
-            </th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          {orders?orders.map((order,i)=>(
-            <OrderTableRow detail={detail} showDetail={showDetail} 
-              cart={props.cart} setSelectedOrder={setSelectedOrder}
-              selectedOrder={selectedOrder}
-              order={order} index={i} key={i} lang={lang} allcheck={AllCheck}/>
-          )):''}
-          
+          {orders
+            ? orders.map((order, i) => (
+                <OrderTableRow
+                  detail={detail}
+                  showDetail={showDetail}
+                  cart={props.cart}
+                  setSelectedOrder={setSelectedOrder}
+                  selectedOrder={selectedOrder}
+                  order={order}
+                  index={i}
+                  key={i}
+                  lang={lang}
+                  allcheck={AllCheck}
+                  user={order.userDetail}
+                />
+              ))
+            : ""}
         </tbody>
-        {props.isSale?
-        <OrderMultiReg orders={selectedOrder} token={props.token}/>:
-        <OrderMultiDone orders={selectedOrder} token={props.token}/>}
+        {props.isSale ? (
+          <OrderMultiReg orders={selectedOrder} token={props.token} />
+        ) : (
+          <OrderMultiDone orders={selectedOrder} token={props.token} />
+        )}
       </table>
-
-    )
+    );
 }
-export default OrderTable
+export default OrderTable;

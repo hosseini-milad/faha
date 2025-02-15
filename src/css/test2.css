@@ -38124,3 +38124,11 @@ table {
     visibility: hidden;
   }
 }
+.column-more-btn{
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
+  background-color:white;
+  border:none;
+  outline:none;
+  width:98%;
+  margin-inline:auto;
+}

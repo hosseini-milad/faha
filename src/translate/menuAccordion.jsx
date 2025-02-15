@@ -1,7 +1,7 @@
 const menutrans = {
   title: {
     english: "Faha",
-    persian: "فاها",
+    persian: "فاحا",
     icon: "fa-eercast",
     href: "https://fahascrubs.com/",
   },
@@ -90,14 +90,7 @@ const menutrans = {
       icon: "fa-dashboard",
       href: "#",
       children: [
-        {
-          english: "Sales Parameters",
-          persian: "پارامترهای فروش",
-          index: 0,
-          icon: "fa-percent",
-          href: "/SaleSetting",
-          url: "SaleSetting",
-        },
+        
         {
           english: "News",
           persian: "خبرها",

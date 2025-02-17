@@ -68,13 +68,13 @@ const calcTasks=async(userId,offsetRaw,pageSizeRaw)=>{
     const pageSize = pageSizeRaw?pageSizeRaw:5
 
     for(var i=0;i<crmSteps.length;i++){
-        const tempOffset = offset[i]?offset[i]:"0"
+        const tempOffset = offset[i]?offset[i]:0
         const colData = await faktors.find({status:crmSteps[i].code})
         //const offsetData = await offset.find(item=>item.col==crmSteps[i].code)
         const colList = colData.slice(tempOffset,
             (parseInt(tempOffset)+parseInt(pageSize))) 
         tasksData.push(
-            { title:crmSteps[i].title , step:crmSteps[i].code , offset:tempOffset,
+            { title:crmSteps[i].title , step:crmSteps[i].code , pageSize:tempOffset,
                 size:colData.length, data:colList}
         )
     }

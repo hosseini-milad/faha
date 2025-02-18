@@ -1,17 +1,14 @@
 const customers = require("../models/auth/customers");
-const faktor = require("../models/product/faktor");
 const faktorItems = require("../models/product/faktorItems");
-const faktorItems = require("../models/product/faktorItems");
-const GetHesabFa = require("./GetHesabFa");
 
 var ObjectID = require('mongodb').ObjectID;
 
 const CalcInvoice=async(invoiceData)=>{
-    const faktorItems = await faktorItems.find({faktorNo:invoiceData.faktorNo})
+    const faktorItemData = await faktorItems.find({faktorNo:invoiceData.faktorNo})
     const customerData = await customers.findOne({_id:ObjectID(invoiceData.userId)})
     var items = []
-    for(var i=0;i<faktorItems.length;i++){
-        const fData = faktorItems[i]
+    for(var i=0;i<faktorItemData.length;i++){
+        const fData = faktorItemData[i]
         items.push(
             {
                 rowNumber: 1,

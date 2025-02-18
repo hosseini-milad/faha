@@ -155,11 +155,9 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
             buttons.push({title:"تایید",type:"button",color:"lightgreen",value:1})
         }
         
-        if(faktorItem.status =="needtobuild"){
+        if(faktorItem.status =="inprogress"){
             buttons=[
-                {title:"تولید کننده",parameter:"factory",
-                    type:"text",color:"silver",value:0},
-                {title:"ثبت درخواست",type:"button",color:"#cacaca",value:1}
+                {title:"تایید",type:"button",color:"#cacaca",value:1}
             ]
         }
         if(faktorItem.status =="senttofactory"){
@@ -202,8 +200,6 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
                 {title:"ثبت ته حساب",type:"button",color:"lightgreen",value:1}
             ]
         }
-        const priceRaw = await FindPrice()
-        faktorItem.livePrice = priceRaw
        res.json({taskData:faktorItem,
             buttons,message:"Task Detail"})
     }

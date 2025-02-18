@@ -23,11 +23,12 @@ const CalcInvoice=async(invoiceData)=>{
             }
         )
     }
+    var dateNow = new Date.now()
     const query = {
             invoice:{
                 reference: invoiceData.faktorNo,
-                date: Date.now(),
-                dueDate: Date.now(),
+                date: dateNow.toDateString(),
+                dueDate: dateNow.toDateString(),
                 contactCode: customerData.cCode,
                 contactTitle: customerData.username,
                 note: '',

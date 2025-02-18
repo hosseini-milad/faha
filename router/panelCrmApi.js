@@ -89,7 +89,7 @@ const calcTasks=async(userId,offsetRaw,pageSizeRaw)=>{
             (parseInt(tempOffset)+parseInt(pageSize))) 
         tasksData.push(
             { title:crmSteps[i].title , step:crmSteps[i].code , 
-                pageSize:tempOffset, more:(size>tempOffset)?true:false,
+                pageSize:tempOffset, more:(colData.length>tempOffset)?true:false,
                 size:colData.length, data:colList}
         )
     }

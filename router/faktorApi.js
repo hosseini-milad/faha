@@ -469,7 +469,6 @@ router.post('/add-cart',auth,jsonParser, async (req,res)=>{
             return
         }
         data.sku = FindProductData.sku
-        data.ItemID = FindProductData.ItemID
         const userData = await users.findOne({_id:req.headers['userid']})
         const cartData = await cart.find({userId:userId})
         

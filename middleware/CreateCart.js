@@ -13,6 +13,7 @@ const CreateCart=async(cartDetails,sku,userId,count)=>{
         await cart.create({
             sku:sku,
             title:productDetail.title,
+            ItemID:productDetail.ItemID,
             weight:productDetail.weight,
             price:price,
             unitPrice:sellPrice,

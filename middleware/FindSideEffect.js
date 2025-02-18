@@ -74,7 +74,7 @@ const FindSideEffect=async(data,body)=>{
         }
         const hesabResult = 0&&await GetHesabFa(query,"/invoice/save")
         
-            return({error:query})
+            return({error:{query,data}})
         
     }
     return(1)

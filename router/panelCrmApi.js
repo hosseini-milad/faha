@@ -160,14 +160,14 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
                 {title:"تایید",type:"button",color:"#cacaca",value:1}
             ]
         }
-        if(faktorItem.status =="senttofactory"){
+        if(faktorItem.status =="edit"){
             buttons=[
                 {title:"تایید",type:"button",color:"#cacaca",value:1}
             ]
         }
-        if(faktorItem.status =="built"){
+        if(faktorItem.status =="pay"){
             buttons=[
-                {title:"کد محصول جدید",parameter:"newSku", require:true,
+                {title:"شماره سند",parameter:"newSku", require:true,
                     type:"text",color:"silver",value:0},
                 {title:"ثبت درخواست",type:"button",color:"#cacaca",value:1}
             ]
@@ -183,21 +183,16 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
                 {title:"ارسال مرسوله",type:"button",color:"#cacaca",value:1}
             ]
         }
-        if(faktorItem.status =="built"){
+        if(faktorItem.status =="prepair"){
             buttons=[
                 {title:"کد محصول",parameter:"newSku",
                     type:"text",color:"silver",value:0},
                 {title:"ثبت درخواست",type:"button",color:"lightgreen",value:1}
             ]
         }
-        if(faktorItem.status =="waitnig"){
+        if(faktorItem.status =="done"){
             buttons=[
-                {title:"تایید",type:"button",color:"lightgreen",value:1}
-            ]
-        }
-        if(faktorItem.status =="delivered"){
-            buttons=[
-                {title:"ثبت ته حساب",type:"button",color:"lightgreen",value:1}
+                {title:"ثبت حسابفا",type:"button",color:"lightgreen",value:1}
             ]
         }
        res.json({taskData:faktorItem,

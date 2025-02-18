@@ -24,6 +24,7 @@ const FaktorSchema = new Schema({
     isActive:{ type: Boolean },
     isEdit:{ type: Boolean },
     query:{ type: Object },
+    result:{ type: Object },
     waitPay:{type:Boolean},
 })
 module.exports = mongoose.model('faktor',FaktorSchema);

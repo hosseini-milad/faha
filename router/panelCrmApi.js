@@ -88,7 +88,8 @@ const calcTasks=async(userId,offsetRaw,pageSizeRaw)=>{
         const colList = colData.slice(tempOffset,
             (parseInt(tempOffset)+parseInt(pageSize))) 
         tasksData.push(
-            { title:crmSteps[i].title , step:crmSteps[i].code , pageSize:tempOffset,
+            { title:crmSteps[i].title , step:crmSteps[i].code , 
+                pageSize:tempOffset, more:(size>tempOffset)?true:false,
                 size:colData.length, data:colList}
         )
     }

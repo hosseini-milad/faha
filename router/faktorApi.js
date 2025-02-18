@@ -457,6 +457,7 @@ router.post('/add-cart',auth,jsonParser, async (req,res)=>{
     const data={
         userId:userId,
         sku:req.body.sku,
+        ItemID:req.body.ItemID,
         filters:req.body.filters,
         count:req.body.count,
         date:req.body.date?req.body.date:Date.now(),

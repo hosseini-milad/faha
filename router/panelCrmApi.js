@@ -49,6 +49,20 @@ router.post('/fetch-tasks',auth,jsonParser,async (req,res)=>{
         res.status(500).json({message: error.message})
     } 
 })
+router.post('/fetch-tasks-column',auth,jsonParser,async (req,res)=>{
+    const crmId = req.body.crmId
+    const userId = req.headers["userid"]
+    const offset = req.body.offset
+    const pageSize = req.body.pageSize
+    try{ 
+        const tasksList = await calcTasks(userId,offset,pageSize)
+
+       res.json(tasksList)
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
 const calcTasks=async(userId,offsetRaw,pageSizeRaw)=>{
     const userData = await user.findOne({_id:ObjectID(userId)})
     if(!userData){

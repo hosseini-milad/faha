@@ -23,7 +23,7 @@ const CalcInvoice=async(invoiceData)=>{
             }
         )
     }
-    var dateNow = new Date.now()
+    var dateNow = new Date()
     const query = {
             invoice:{
                 reference: invoiceData.faktorNo,

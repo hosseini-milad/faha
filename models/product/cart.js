@@ -9,6 +9,7 @@ const CartSchema = new Schema({
     description:{type:String},
     discount:{type:String},
     sku:{type:String},
+    ItemID:{type:String},
     title:{type:String},
     weight:{type:String},
     count:{type:Number},

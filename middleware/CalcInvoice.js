@@ -13,13 +13,13 @@ const CalcInvoice=async(invoiceData)=>{
             {
                 rowNumber: 1,
                 description: fData.title,
-                itemCode: fData.sku,
+                itemCode: fData.ItemID,
                 unit: 'عدد',
                 quantity: fData.count,
                 unitPrice: fData.unitPrice,
                 discount: 0,
                 tax: 0,
-                serialNumbers: [fData.sku]
+                serialNumbers: [fData.sku,fData.ItemID]
             }
         )
     }

@@ -19,6 +19,7 @@ const FaktorItems = new Schema({
     enTitle:{ type: String },
     progressDate: { type: Date },
     sku:{ type: String },
+    ItemID:{ type: String },
     
     discount:{ type: String }, 
     price:{ type: String }, 

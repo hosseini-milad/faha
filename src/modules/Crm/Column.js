@@ -94,7 +94,7 @@ function Column(props) {
                 }))
               }
             >
-              click
+              بیشتر...
             </button>
           </>
         )}

@@ -5,6 +5,7 @@ import QuickCartHolder from "../../Order/QuickCart/QuickCartHolder";
 import ShowError from "../../components/Modal/ShowError";
 import TaskAction from "./Tasks/TaskAction";
 import QuickRow from "../../Order/QuickCart/QuickRow";
+import TaskBtns from "./Tasks/TaskBtns";
 
 function OrderPopUp(props) {
   const data = props.data;
@@ -62,7 +63,10 @@ function OrderPopUp(props) {
               </p>
             </div>
             <i className="fa fa-remove closeModal" onClick={props.close}></i>
-            <div className="new-sharif sharif sharif-popup" style={{ padding: "70px 10px 10px" }}>
+            <div
+              className="new-sharif sharif sharif-popup"
+              style={{ padding: "70px 10px 10px" }}
+            >
               <main className="sharif-order-main">
                 <section className="admin-table-sec ">
                   <table>
@@ -106,12 +110,21 @@ function OrderPopUp(props) {
                 </section>
               </main>
             </div>
-            {/* {props.access&&props.access==="edit"?
-            <div className="crmAction">
-                <TaskAction content={content} token={token}
-                data={props.data} setBoard={(e)=>props.setBoardArray(e)}
-                close={props.close}/>
-            </div>:<></>} */}
+            {props.access && props.access === "edit" ? (
+              <div className="crmAction">
+                <TaskBtns
+                  content={content}
+                  token={token}
+                  setError={setError}
+                  data={props.data}
+                  setBoard={(e) => props.setBoardArray(e)}
+                  close={props.close}
+                  setLoading={props.setLoading}
+                />
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
         {error && error.message ? (

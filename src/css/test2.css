@@ -28727,7 +28727,9 @@ li.board-task {
   overflow-y: scroll;
   overflow-x: hidden;
 }
-
+.task-popup .new-sharif {
+  height: unset;
+}
 .fullPopUp .task-popup {
   max-height: calc(100% - 100px);
 }
@@ -37406,7 +37408,7 @@ table {
 .crmAction {
   color: #fff;
   background-color: var(--dark-blue-main);
-  padding: 0 10px 50px;
+  padding: 10px;
 }
 
 .taskAction {
@@ -38124,11 +38126,12 @@ table {
     visibility: hidden;
   }
 }
-.column-more-btn{
+.column-more-btn {
   box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
-  background-color:white;
-  border:none;
-  outline:none;
-  width:98%;
-  margin-inline:auto;
+  background-color: white;
+  border: none;
+  outline: none;
+  width: 98%;
+  margin-inline: auto;
+  border-radius: 0.5rem;
 }

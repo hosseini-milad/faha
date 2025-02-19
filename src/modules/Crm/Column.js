@@ -85,17 +85,19 @@ function Column(props) {
               ))}
               {provided.placeholder}
             </ul>
-            <button
-              className="column-more-btn"
-              onClick={() =>
-                props.setPerPage((prevState) => ({
-                  ...prevState,
-                  [column.step]: column.perPage && column.perPage + 5,
-                }))
-              }
-            >
-              بیشتر...
-            </button>
+            {column.more && (
+              <button
+                className="column-more-btn"
+                onClick={() =>
+                  props.setPerPage((prevState) => ({
+                    ...prevState,
+                    [column.step]: column.perPage && column.perPage + 5,
+                  }))
+                }
+              >
+                بیشتر...
+              </button>
+            )}
           </>
         )}
       </Droppable>

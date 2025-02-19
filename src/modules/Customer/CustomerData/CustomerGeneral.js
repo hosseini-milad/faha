@@ -15,7 +15,7 @@ function CustomerGeneral(props) {
   const [formData, setFormData] = useState({ active: "false" }); // Initialize active as a string
   const [error, setError] = useState({ errorText: "", errorColor: "brown" });
   const [formalShow, setFormal] = useState(0);
-  console.log(props.groupList)
+  console.log(props.groupList);
   useEffect(() => {
     // Initialize formData.active with userData.active when userData changes
     if (userData && userData.active) {
@@ -156,8 +156,8 @@ function CustomerGeneral(props) {
             setError({ errorText: result.message, errorColor: "green" });
             setTimeout(() => window.location.reload(), 3000);
           }
-          if(result.error){
-            setError({errorText:result.message ,errorColor: "red"})
+          if (result.error) {
+            setError({ errorText: result.message, errorColor: "red" });
             setTimeout(() => setError(0), 3000);
           }
         },
@@ -187,15 +187,27 @@ function CustomerGeneral(props) {
         {/* <CustomerAvatar /> */}
         <div className="info-box">
           <div className="info-wrapper">
-             <StyleInput
+            <StyleInput
               title={formtrans.name[props.lang]}
               direction={props.direction}
-              defaultValue={userData.username}
+              defaultValue={userData.sName}
               class={"formInput"}
               action={(e) =>
                 setFormData((prevState) => ({
                   ...prevState,
-                  username: e,
+                  sName: e,
+                }))
+              }
+            />
+            <StyleInput
+              title={formtrans.fname[props.lang]}
+              direction={props.direction}
+              defaultValue={userData.cName}
+              class={"formInput"}
+              action={(e) =>
+                setFormData((prevState) => ({
+                  ...prevState,
+                  cName: e,
                 }))
               }
             />
@@ -261,24 +273,23 @@ function CustomerGeneral(props) {
               }
             />
             <DatePickerSingle
-            title={formtrans.birthDay[props.lang]}
-            
-            defaultValue={userData.birthDay}
-            direction={props.lang.dir}
-            local={props.lang.dir === "ltr" ? "en" : "fa"}
-            action={(e) =>
-              setFormData((prevState) => ({
-                ...prevState,
-                birthDay: e,
-              }))
-            }
+              title={formtrans.birthDay[props.lang]}
+              defaultValue={userData.birthDay}
+              direction={props.lang.dir}
+              local={props.lang.dir === "ltr" ? "en" : "fa"}
+              action={(e) =>
+                setFormData((prevState) => ({
+                  ...prevState,
+                  birthDay: e,
+                }))
+              }
             />
             <StyleSelect
               title={formtrans.state[props.lang]}
               direction={props.direction}
               defaultValue={userData.state || ""}
               // defaultValue={userData.state}
-              class={"formInput"}
+              class={"formInput custome-input"}
               options={states.map((state) => ({
                 label: state.stateName,
                 value: state.stateId,
@@ -291,7 +302,7 @@ function CustomerGeneral(props) {
               title={formtrans.city[props.lang]}
               direction={props.direction}
               defaultValue={userData.city || ""}
-              class="formInput"
+              class={"formInput custome-input"}
               options={cities.map((city) => ({
                 label: city.cityName,
                 value: city.cityId,
@@ -300,8 +311,24 @@ function CustomerGeneral(props) {
               action={handleCityChange}
               disabled={!formData.stateId} // Disable if no state is selected
             />
+
             <span style={{ whiteSpace: "pre-wrap" }}></span>
 
+            <StyleSelect
+              title={"گروه بندی"}
+              direction={props.direction}
+              defaultValue={userData.group}
+              class={"formInput custome-input"}
+              label="group"
+              options={notNull(props.groupList, "group")}
+              action={(e) =>
+                setFormData((prevState) => ({
+                  ...prevState,
+                  groupCode: e.groupCode,
+                  group: e.group,
+                }))
+              }
+            />
             <div className="dense-btn">
               <label htmlFor="view">
                 {/* Text indicating the radio button */}
@@ -319,24 +346,8 @@ function CustomerGeneral(props) {
                 className={true ? "switch-label" : "switch-label disable-label"}
               ></label>
             </div>
+
             <span style={{ whiteSpace: "pre-wrap" }}></span>
-
-            <StyleSelect
-              title={"گروه بندی"}
-              direction={props.direction}
-              defaultValue={userData.group}
-              class={"formInput"}
-              label="group"
-              options={notNull(props.groupList,"group")}
-              action={(e) =>
-                setFormData((prevState) => ({
-                  ...prevState,
-                  groupCode: e.groupCode,
-                  group:e.group
-                }))
-              }
-            />
-
             <div className="info-input">
               <label htmlFor="address">{formtrans.address[props.lang]}</label>
               <textarea
@@ -369,7 +380,6 @@ function CustomerGeneral(props) {
               </textarea>
             </div>
           </div>
-          
 
           <ErrorShow message={error.errorText} color={error.errorColor} />
           {formalShow ? (

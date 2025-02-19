@@ -68,6 +68,7 @@ function Task(props) {
               setBoardArray={props.setBoardArray}
               data={taskData}
               close={() => setOrderPop(0)}
+              setLoading={props.setLoading}
             />
           ) : (
             <></>

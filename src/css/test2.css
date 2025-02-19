@@ -33544,6 +33544,7 @@ input:checked + .switch-label:after {
   width: 100%;
   justify-content: center;
   gap: 20px;
+  min-height: 500px;
 }
 
 .avatar-box {
@@ -33684,6 +33685,7 @@ input:checked + .switch-label:after {
   text-align: center;
   height: fit-content;
   padding: 1rem;
+  min-height:500px;
   position: relative;
 }
 
@@ -38134,4 +38136,32 @@ table {
   width: 98%;
   margin-inline: auto;
   border-radius: 0.5rem;
+}
+.MuiInputBase-root {
+  min-height: 40px;
+  padding: 0 !important;
+}
+.formInput {
+  margin: 15px !important;
+}
+.custome-input {
+  min-width: 225px !important;
+}
+.info-input {
+  margin-block: 10px;
+  padding: 0.5rem;
+  position: relative;
+  width: 50%;
+}
+.DatePicker {
+  height: 40px;
+  margin: 15px !important;
+  min-width: 225px !important;
+
+  input{
+    width:100%;
+  }
+  .DatePicker__calendarcontainer{
+    z-index: 100;
+  }
 }

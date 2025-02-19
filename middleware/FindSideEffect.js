@@ -33,10 +33,18 @@ const FindSideEffect=async(data,body)=>{
     if(body.status=="archive"){
         const query = await CalcInvoice(data)
         const hesabResult = await GetHesabFa(query,"/invoice/save")
-        const faktorResult = await faktor.updateOne({faktorNo:data.faktorNo},
-            {$set:{query,result:hesabResult}})
-            return({error:{query,data,faktorResult}})
-        
+        var faktorResult=''
+        if(hesabResult.Success){
+            faktorResult = await faktor.updateOne({faktorNo:data.faktorNo},
+            {$set:{query,result:hesabResult.Result,
+                InvoiceID:hesabResult.Id,InvoiceNumber:hesabResult.Number}})
+        }   
+        else{
+            faktorResult = await faktor.updateOne({faktorNo:data.faktorNo},
+                {$set:{query,result:hesabResult.ErrorMessage}})
+            return({error:{query,message:hesabResult.ErrorMessage}})
+        }
+
     }
     return(1)
 }

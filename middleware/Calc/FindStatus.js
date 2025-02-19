@@ -1,5 +1,4 @@
 const crmlist = require("../../models/crm/crmlist")
-const Colors = require("../../models/product/Colors")
 
 const FindStatus=async(enStep)=>{
     const crmData = await crmlist.findOne()

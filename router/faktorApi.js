@@ -601,7 +601,8 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             isActive:true, isEdit:false,
             totalPrice:NormalNumber(totalPrice),
             totalCount:totalCount,
-            cName:userData.username,phone:userData.phone
+            cName:userData.cName?(userData.cName + " "+ userData.sName):userData.username,
+            phone:userData.phone
         }
         await faktor.create(faktorData)
         userData.phone&&await SendSMS(userData.phone,"sabt",userData.username,faktorNo)

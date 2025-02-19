@@ -50,12 +50,12 @@ router.post('/fetch-tasks',auth,jsonParser,async (req,res)=>{
     } 
 })
 router.post('/fetch-tasks-column',auth,jsonParser,async (req,res)=>{
-    const crmId = req.body.crmId
+    const colId = req.body.colId
     const userId = req.headers["userid"]
     const offset = req.body.offset
     const pageSize = req.body.pageSize
     try{ 
-        const tasksList = await calcTasks(userId,offset,pageSize)
+        const tasksList = await calcTasks(userId,offset,pageSize,colId)
 
        res.json(tasksList)
     }
@@ -63,7 +63,7 @@ router.post('/fetch-tasks-column',auth,jsonParser,async (req,res)=>{
         res.status(500).json({message: error.message})
     } 
 })
-const calcTasks=async(userId,offsetRaw,pageSizeRaw)=>{
+const calcTasks=async(userId,offsetRaw,pageSizeRaw,colId)=>{
     const userData = await user.findOne({_id:ObjectID(userId)})
     if(!userData){
         return
@@ -75,7 +75,7 @@ const calcTasks=async(userId,offsetRaw,pageSizeRaw)=>{
     if(!allow&&!admin)return
 
     //if(userData&&userData.access!=="manager") limitTask= userData.profile
-    const crmData = await crmlist.findOne()
+    const crmData = colId?{crmSteps:[{code:colId}]}:await crmlist.findOne()
     const tasksData = []
     const crmSteps = crmData.crmSteps?crmData.crmSteps.map(item=>({title:item.title,code:item.enTitle})):[]
     const offset = offsetRaw?offsetRaw:new Array(crmSteps.length).fill(0)
@@ -182,27 +182,27 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
         }
         if(faktorItem.status =="pay"){
             buttons=[
-                {title:"شماره سند",parameter:"newSku", require:true,
-                    type:"text",color:"silver",value:0},
-                {title:"ثبت درخواست",type:"button",color:"#cacaca",value:1}
+                /*{title:"شماره سند",parameter:"newSku", require:true,
+                    type:"text",color:"silver",value:0},*/
+                {title:"تایید",type:"button",color:"#cacaca",value:1}
             ]
         }
         if(faktorItem.status =="send"){
             buttons=[
-                {title:"بارکد مرسوله",parameter:"transportCode",
+                /*{title:"بارکد مرسوله",parameter:"transportCode",
                     type:"text",color:"silver",value:0},
                 {title:"نام پیک",parameter:"peykName",
                     type:"text",color:"silver",value:0},
                 {title:"شماره تماس پیک",parameter:"peykPhone",
-                    type:"text",color:"silver",value:0},
-                {title:"ارسال مرسوله",type:"button",color:"#cacaca",value:1}
+                    type:"text",color:"silver",value:0},*/
+                {title:"تایید",type:"button",color:"#cacaca",value:1}
             ]
         }
         if(faktorItem.status =="prepair"){
             buttons=[
-                {title:"کد محصول",parameter:"newSku",
-                    type:"text",color:"silver",value:0},
-                {title:"ثبت درخواست",type:"button",color:"lightgreen",value:1}
+                /*{title:"کد محصول",parameter:"newSku",
+                    type:"text",color:"silver",value:0},*/
+                {title:"تایید",type:"button",color:"lightgreen",value:1}
             ]
         }
         if(faktorItem.status =="done"){

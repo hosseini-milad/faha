@@ -137,7 +137,7 @@ function Customers(props) {
           </label> */}
           <label
             className="edit-btn"
-            onClick={() => (window.location.href = "#")}
+            onClick={() => (window.location.href = "/Discount")}
           >
             <i className="fa-solid fa-percent"></i>
             {tabletrans.discount[lang]}

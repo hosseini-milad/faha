@@ -58,7 +58,8 @@ const CalcFaktor = require('../middleware/Calc/CalcFaktor');
 const FindColor = require('../middleware/Calc/FindColor');
 const FindSimilar = require('../middleware/Calc/FindSimilar');
 const FindProduct = require('../middleware/Calc/FindProduct');
-const SendSMS = require('../middleware/Calc/SendSMS')
+const SendSMS = require('../middleware/Calc/SendSMS');
+const FindStatus = require('../middleware/Calc/FindStatus');
 const {TaxRate} = process.env
 router.post('/products', async (req,res)=>{
     try{
@@ -845,6 +846,7 @@ router.post('/my-faktor',auth, async (req,res)=>{
         for(var i=0;i<faktorList.length;i++){
             var faktorNo = faktorData[i].faktorNo
             const faktorItemData = await faktorItems.find({faktorNo:faktorNo})
+            faktorData[i].faStatus = await FindStatus(faktorData[i].status)
             faktorData[i].items = faktorItemData
             faktorData[i].rahId	=faktorNo
             faktorData[i].userDetail=userData

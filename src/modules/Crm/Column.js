@@ -6,6 +6,7 @@ import env from "../../env";
 function Column(props) {
   const column = props.column;
   const token = props.token;
+  console.log(column)
   const [taskPop, setTaskPop] = useState(0);
   const action = (data) => {
     const postOptions = {
@@ -91,7 +92,7 @@ function Column(props) {
                 onClick={() =>
                   props.setPerPage((prevState) => ({
                     ...prevState,
-                    [column.step]: column.perPage && column.perPage + 5,
+                    [column.step]: column.size && column.size + 5,
                   }))
                 }
               >

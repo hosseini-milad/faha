@@ -2,9 +2,7 @@ import StyleInput from "../../components/Button/Input";
 import tabletrans from "../../translate/tables";
 import StyleSelect from "../../components/Button/AutoComplete";
 
-
 function DUserFilters(props) {
-
   const handleFilterChange = (property, value) => {
     const newValue = value ? (value._id ? value._id : value) : "";
     props.setFilters((prevState) => ({
@@ -12,7 +10,10 @@ function DUserFilters(props) {
       [property]: newValue,
     }));
     // Update URL here
-    props.updateUrlWithFilters({ ...props.currentFilters, [property]: newValue });
+    props.updateUrlWithFilters({
+      ...props.currentFilters,
+      [property]: newValue,
+    });
   };
 
   return (
@@ -22,22 +23,21 @@ function DUserFilters(props) {
           title={tabletrans.customer[props.lang.lang]}
           direction={props.lang.dir}
           action={(e) => handleFilterChange("customer", e)}
-
         />
         <StyleSelect
-          title={"عملیات"}
+          title={"دسته بندی"}
           class="filterComponent"
           direction={props.lang.dir}
           label="title"
-          options={[{title:"کوچیکتر",value:"-1"},{title:"برابر",value:"0"},{title:"بزرگتر",value:"1"}]}
-          action={(e) => handleFilterChange("type", e.value)}
+          options={props.CategoryList}
+          action={(e) => handleFilterChange("category", e._id)}
         />
-        <StyleInput
+        {/* <StyleInput
           title={tabletrans.discount[props.lang.lang]}
           direction={props.lang.dir}
           action={(e) => handleFilterChange("discount", e)}
 
-        />
+        /> */}
         {/* <i className="tableIcon fas fa-ellipsis-v"></i> */}
       </div>
     </div>

@@ -22,6 +22,8 @@ const crmlist = require('../models/crm/crmlist');
 const sepidarPOST = require('../middleware/SepidarPost');
 const customers = require('../models/auth/customers');
 const GetHesabFa = require('../middleware/GetHesabFa');
+const discount = require('../models/orders/discount');
+const discountLog = require('../models/orders/discountLog');
 
 
 router.post('/fetch-user',jsonParser,async (req,res)=>{
@@ -815,5 +817,94 @@ const SepidarUser=(data)=>{
     return(query)
 }
 
+router.post('/list-discount',jsonParser,auth,async (req,res)=>{
+    var manageId =req.headers['userid']
+    const data=req.body
+    
+    const userOld = await user.findOne({_id: ObjectID(manageId)})
+    if(!userOld){
+        res.status(400).json({
+            error:"کاربر پیدا نشد"
+        })
+        return
+    }
+    try{
+        const discountData = await discount.aggregate([
+            {$match:data.userId?{userId:data.userId}:{}},
+            {$match:data.category?{category:data.category}:{}}
+        ])
+       res.json({data:discountData,message:"لیست تخفیفات"})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+router.post('/update-discount',jsonParser,auth,async (req,res)=>{
+    var manageId =req.headers['userid']
+    
+    const userOld = await user.findOne({_id: ObjectID(manageId)})
+    if(!userOld){
+        res.status(400).json({
+            error:"کاربر پیدا نشد"
+        })
+        return
+    }
+    var disId = req.body.id
+    if(disId=="new") disId = ''
+    const data=req.body
+    data.manageId = manageId
+    try{
+        var result=''
+        if(!disId){
+            var searchDiscount = await discount.findOne({userId:data.userId,
+                category:data.category,
+            })
+            if(searchDiscount){
+                result = await discount.updateOne({_id:searchDiscount._id},{$set:data})
+                data.status = "updateSearch"
+            }
+            else{
+                result = await discount.create(data)
+                data.status = "create"
+            }
+            await discountLog.create(data)
+        }
+        else{
+            result = await discount.updateOne({_id:ObjectID(disId)},{$set:data})
+            data.status = "update"
+            await discountLog.create(data)
+        }
+       res.json({data:result,message:"لیست تخفیفات"})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+router.post('/delete-discount',jsonParser,auth,async (req,res)=>{
+    var manageId =req.headers['userid']
+    
+    const userOld = await user.findOne({_id: ObjectID(manageId)})
+    if(!userOld){
+        res.status(400).json({
+            error:"کاربر پیدا نشد"
+        })
+        return
+    }
+    var disId = req.body.id
+    try{
+        var result=''
+        if(!disId){
+            res.status(400).json({error:true,message:"تخفیف پیدا نشد"})
+            return
+        }
+        else{
+            result = await discount.deleteOne({_id:ObjectID(disId)})
+        }
+       res.json({result,message:"تخفیف حذف شد"})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
 
 module.exports = router;

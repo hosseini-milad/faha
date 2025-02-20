@@ -1,3 +1,5 @@
+const FindColor = require("./FindColor")
+
 const FindQuery=async(queryData)=>{
     var result ={}
     for (var prop in queryData) {

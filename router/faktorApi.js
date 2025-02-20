@@ -187,7 +187,7 @@ router.post('/fetch-product', async (req,res)=>{
         }
         var filters = new Object()
         const myDiscount = await FindDiscount(productData,userId)
-        var filterQuery = FindQuery(filterBody)
+        var filterQuery = await FindQuery(filterBody)
         var productList = await productSchema.find({masterSku:sku})
         .find(filterQuery?filterQuery:{}).lean()
         for(var f=0;f<productList.length;f++){

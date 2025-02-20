@@ -6,7 +6,8 @@ const FindQuery=async(queryData)=>{
         try{
             
             var finalFilter = await FindColor(queryData[prop])
-            result["filters."+prop] = finalFilter
+            var value = finalFilter&&finalFilter.title
+            result["filters."+prop] = value
         } catch{}
     }
     var finalResult = ''

@@ -60,6 +60,8 @@ const FindSimilar = require('../middleware/Calc/FindSimilar');
 const FindProduct = require('../middleware/Calc/FindProduct');
 const SendSMS = require('../middleware/Calc/SendSMS');
 const FindStatus = require('../middleware/Calc/FindStatus');
+const FindDiscount = require('../middleware/Calc/FindDiscount');
+const FindQuery = require('../middleware/Calc/FindQuery');
 const {TaxRate} = process.env
 router.post('/products', async (req,res)=>{
     try{
@@ -175,13 +177,20 @@ router.post('/list-product-sale', async (req,res)=>{
 })
 router.post('/fetch-product', async (req,res)=>{
     const sku = req.body.sku
+    const userId = req.headers['userid']
+    const filterBody = req.body.filters
     try{
-        var productData = await productSchema.findOne({sku:sku})
-        if(!productData.isMaster){
+        var productData = await productSchema.findOne({sku:sku}).lean()
+        if(!productData||!productData.isMaster){
             res.status(400).json({error:"محصول اصلی نیست"})
+            return
         }
         var filters = new Object()
-        var productList = await productSchema.find({masterSku:sku}).lean()
+        const myDiscount = await FindDiscount(productData,userId)
+        var filterQuery = FindQuery(filterBody)
+        console.log(filterQuery)
+        var productList = await productSchema.find({masterSku:sku})
+        .lean()
         for(var f=0;f<productList.length;f++){
             if(productList[f].filters){
                 var filterData = productList[f].filters
@@ -194,7 +203,7 @@ router.post('/fetch-product', async (req,res)=>{
                 }
             }
         }
-        res.json({mainProduct:productData,productList,filters})
+        res.json({mainProduct:productData,productList,filters,myDiscount})
 
     } 
     catch(error){

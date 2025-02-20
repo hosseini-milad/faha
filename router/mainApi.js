@@ -67,10 +67,10 @@ router.use('/panel/crm',CRMPanelApi)
 
  schedule.scheduleJob('*/2 * * * *', async() => { 
     try{
-    var response = await fetch(process.env.ONLINE_PRICE,{method: 'GET'})
+    /*var response = await fetch(process.env.ONLINE_PRICE,{method: 'GET'})
     const result = await response.json();
     var priceValue = result&&result.geram18
-    priceValue&&await price.create({price:priceValue.value,date:Date.now()});
+    priceValue&&await price.create({price:priceValue.value,date:Date.now()});*/
     }
     catch(error){
         console.log(error)

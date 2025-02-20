@@ -1,10 +1,18 @@
 const FindQuery=(queryData)=>{
-    console.log(queryData)
-    var result =[]
-    for(var i=0;i<queryData.length;i++){
-        result.push(queryData[i])
+    var result ={}
+    for (var prop in queryData) {
+        try{
+            
+            var finalFilter = queryData[prop]
+            result["filters."+prop] = finalFilter
+        } catch{}
     }
-    return(result)
+    var finalResult = ''
+    if(result == {}){}
+    else
+        finalResult = result
+    
+    return(finalResult)
 }
 
 module.exports =FindQuery

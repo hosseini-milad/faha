@@ -188,9 +188,8 @@ router.post('/fetch-product', async (req,res)=>{
         var filters = new Object()
         const myDiscount = await FindDiscount(productData,userId)
         var filterQuery = FindQuery(filterBody)
-        console.log(filterQuery)
         var productList = await productSchema.find({masterSku:sku})
-        .lean()
+        .find(filterQuery?filterQuery:{}).lean()
         for(var f=0;f<productList.length;f++){
             if(productList[f].filters){
                 var filterData = productList[f].filters
@@ -203,7 +202,8 @@ router.post('/fetch-product', async (req,res)=>{
                 }
             }
         }
-        res.json({mainProduct:productData,productList,filters,myDiscount})
+        res.json({mainProduct:productData,productData:productList&&productList[0],
+            filters,myDiscount})
 
     } 
     catch(error){

@@ -22,6 +22,7 @@ const FaktorItems = new Schema({
     ItemID:{ type: String },
     
     discount:{ type: String }, 
+    totalDiscount:{ type: String }, 
     price:{ type: String }, 
     unitPrice:{ type: String },
     priceDetail:{ type: Object },

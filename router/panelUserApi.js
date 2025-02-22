@@ -24,6 +24,7 @@ const customers = require('../models/auth/customers');
 const GetHesabFa = require('../middleware/GetHesabFa');
 const discount = require('../models/orders/discount');
 const discountLog = require('../models/orders/discountLog');
+const users = require('../models/auth/users');
 
 
 router.post('/fetch-user',jsonParser,async (req,res)=>{
@@ -360,6 +361,25 @@ router.post('/update-profile',jsonParser,async (req,res)=>{
            profileData = await ProfileAccess.updateOne({_id: ObjectID(profileId)},{$set:data})
         else
             profileData = await ProfileAccess.create(data)
+        
+       res.json({data:profileData,success:"تغییرات اعمال شدند"})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+router.post('/delete-profile',jsonParser,async (req,res)=>{
+    var profileId = req.body.profileId
+    try{
+        //const profile = await ProfileAccess.find({_id: ObjectID(profileId)})
+        var profileData = ''
+        var profileUser = await users.findOne({profile:profileId})
+        if(profileUser){
+            res.status(400).json({error:true,message:"کاربر به پروفایل متصل است"})
+            return
+        }
+
+        profileData = await ProfileAccess.deleteOne({_id: ObjectID(profileId)})
         
        res.json({data:profileData,success:"تغییرات اعمال شدند"})
     }

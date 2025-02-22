@@ -813,7 +813,7 @@ router.post('/update-faktor-item',auth, async (req,res)=>{
     }
     try{
         const FaktorItems = await faktorItems.findOne( {_id:ObjectID(faktorItemNo)})
-        0&&await faktorItems.updateOne(
+        await faktorItems.updateOne(
             {_id:ObjectID(faktorItemNo)},
         {$set:data}).lean()
         const result = await CalcFaktorData(FaktorItems.faktorNo)

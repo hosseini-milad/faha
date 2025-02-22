@@ -141,8 +141,8 @@ const menutrans = {
       persian: "مدیریت کاربران",
       index: 0,
       icon: "fa-user",
-      href: "/users",
-      url: "users",
+      href: "/profiles",
+      url: "profiles",
     },
     {
       english: "Documents",

@@ -5,6 +5,7 @@ import TaskPopUp from "./TaskPopUp";
 import OrderPopUp from "./orderPopUp";
 import ProductPopUp from "./ProductPopUp";
 import TaskData from "./TaskData";
+import OrderPopUp2 from "./orderPopUp2";
 function Task(props) {
   const [taskPop, setTaskPop] = useState(0);
   const [orderPop, setOrderPop] = useState(0);
@@ -55,7 +56,7 @@ function Task(props) {
             <></>
           )}
           {orderPop ? (
-            <OrderPopUp
+            <OrderPopUp2
               title={"ویرایش سفارش"}
               btnText={"بروزرسانی"}
               action={props.action}

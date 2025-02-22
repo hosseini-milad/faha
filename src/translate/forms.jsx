@@ -107,6 +107,10 @@ const formtrans ={
         english: "Customer Code",
         persian: "کد مشتری"
     },
+    usercode:{
+        english: "user Code",
+        persian: "کد مشتری"
+    },
     postalCode:{
         english: "Postal Code",
         persian: "کد پستی"

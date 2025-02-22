@@ -66,6 +66,7 @@ import SalesSetting from "./pages/SalesSetting";
 import Message from "./pages/message";
 import NewUsers from "./pages/NewUsers";
 import Sepidar from "./pages/Sepidar";
+import Profiles from "./pages/Profiles";
 import Test from "./pages/Test";
 const cookies = new Cookies();
 const style = document.getElementById("style-direction");
@@ -420,6 +421,14 @@ root.render(
           element={
             <Layout>
               <Users lang={lang} />
+            </Layout>
+          }
+        />
+        <Route
+          path="profiles"
+          element={
+            <Layout>
+              <Profiles lang={lang} />
             </Layout>
           }
         />

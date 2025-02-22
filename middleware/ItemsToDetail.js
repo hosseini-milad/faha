@@ -1,4 +1,4 @@
-const ItemToDetail=async(items)=>{
+const ItemToDetail=(items)=>{
     var result = {
         totalCount:0,
         totalPrice:0,

@@ -56,7 +56,7 @@ function Task(props) {
             <></>
           )}
           {orderPop ? (
-            <OrderPopUp2
+            <OrderPopUp
               title={"ویرایش سفارش"}
               btnText={"بروزرسانی"}
               action={props.action}

@@ -17,6 +17,10 @@ const FaktorSchema = new Schema({
     status:{ type: String },
 
     totalPrice:{ type: String },
+
+    transportCode:{ type: String },
+    peykName:{ type: String },
+    peykPhone:{ type: String },
     unitPrice:{ type: String },
     priceDetail:{ type: Object },
     InvoiceID:{ type: String },

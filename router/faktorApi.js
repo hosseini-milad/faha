@@ -629,8 +629,8 @@ router.post('/cart-to-faktor-from',auth,jsonParser, async (req,res)=>{
     const manageId =req.headers['userid']
     const userId = req.body.userFrom
     try{
-        const manageData = await customers.findOne({_id:userId})
-        const userData = manageId&&await customers.findOne({_id:manageId})
+        const manageData = await customers.findOne({_id:manageId})
+        const userData = userId&&await customers.findOne({_id:userId})
         
         if(!userData||!manageData){
             res.status(400).json({error:"کاربر پیدا نشد"})

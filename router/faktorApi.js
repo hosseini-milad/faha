@@ -62,6 +62,7 @@ const SendSMS = require('../middleware/Calc/SendSMS');
 const FindStatus = require('../middleware/Calc/FindStatus');
 const FindDiscount = require('../middleware/Calc/FindDiscount');
 const FindQuery = require('../middleware/Calc/FindQuery');
+const CalcFaktorData = require('../middleware/CalcFaktorData');
 const {TaxRate} = process.env
 router.post('/products', async (req,res)=>{
     try{
@@ -799,6 +800,25 @@ router.post('/fetch-faktor-item',auth, async (req,res)=>{
         const userDetail = await customers.findOne({phone:FaktorItems.phone})
         
         res.json({data:FaktorItems,userDetail:userDetail,nowPrice:priceRaw})
+    }
+    catch(error){
+        res.status(500).json({error: error.message})
+    }
+})
+router.post('/update-faktor-item',auth, async (req,res)=>{
+    const faktorItemNo =req.body.faktorItemNo;
+    const data = {
+        count: req.body.count,
+        discount: req.body.discount
+    }
+    try{
+        const FaktorItems = await faktorItems.findOne( {_id:ObjectID(faktorItemNo)})
+        0&&await faktorItems.updateOne(
+            {_id:ObjectID(faktorItemNo)},
+        {$set:data}).lean()
+        const result = CalcFaktorData(FaktorItems)
+
+        res.json({data:result})
     }
     catch(error){
         res.status(500).json({error: error.message})

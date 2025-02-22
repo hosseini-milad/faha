@@ -746,20 +746,15 @@ router.post('/fetch-faktor',auth, async (req,res)=>{
                 purchaseItems.push(FaktorItems[i])
         }
             
-        const saleDetail={tax:2342345,weight:53,price:2560000}
-        const purchaseDetail={tax:0,weight:37.93,price:12260000}
         
         faktorData.items = FaktorItems
         const userDetail = await customers.findOne({_id:ObjectID(faktorData.userId)})
-        const goldInfo = await FindPrice()
+        
         const transactions = await transaction.find({orderNo:faktorNo})
-        const userDebit = userDetail&&await GetTahHesab(
-            {"getmandehesabbycode":[userDetail.cCode]})
-        const calcFaktor = CalcFaktor(saleItems,purchaseItems,transactions,userDebit)
-        res.json({data:faktorData,userDebit,calcFaktor,
-            saleItems:{saleDetail,data:saleItems},
-            purchaseItems:{purchaseDetail,data:purchaseItems},
-            userDetail:userDetail,goldInfo,transactions})
+        var canEdit = 0
+        if(faktorData.status=="edit") canEdit = 1
+        res.json({data:faktorData,canEdit,
+            userDetail:userDetail,transactions})
     }
     catch(error){
         res.status(500).json({error: error.message})

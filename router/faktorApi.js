@@ -110,7 +110,8 @@ router.post('/list-product', async (req,res)=>{
                 {catCode:categoryFilter.toString()}}}:{}},
             /*{$match:{imageUrl:{$exists:true}}},
             {$match:isMojood?{isMojood:true}:{}}*/
-            {$match:isMaster?{isMaster:true}:{}}
+            {$match:isMaster?{isMaster:true}:{}},
+            {$sort:{title:1}}
         ])
         const priceRaw = await FindPrice()
         const productList = products.slice(offset,

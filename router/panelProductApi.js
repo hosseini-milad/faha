@@ -207,7 +207,8 @@ router.post('/list-product',jsonParser,async (req,res)=>{
             { $match:data.active?{isMojood:true}:{}},
             { $match:data.isMaster?{isMaster:true}:{}},
             { $match:data.exists?data.exists=="1"?{isMojood:true}:
-                {isMojood:false}:{}}
+                {isMojood:false}:{}},
+            {$sort:{title:1}}
             ])
         
             const productList = products.slice(offset,

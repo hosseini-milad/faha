@@ -832,6 +832,26 @@ router.post('/update-faktor-item',auth, async (req,res)=>{
         res.status(500).json({error: error.message})
     }
 })
+router.post('/remove-faktor-item',auth, async (req,res)=>{
+    const faktorItemNo =req.body.faktorItemNo;
+    const data = {
+        count: req.body.count,
+        discount: req.body.discount
+    }
+    try{
+        const FaktorItems = await faktorItems.findOne( {_id:ObjectID(faktorItemNo)})
+        
+        await faktorItems.deleteOne(
+            {_id:ObjectID(faktorItemNo)},
+        {$set:data}).lean()
+        const result = await CalcFaktorData(FaktorItems.faktorNo)
+
+        res.json({data:result})
+    }
+    catch(error){
+        res.status(500).json({error: error.message})
+    }
+})
 router.post('/list-faktor',auth, async (req,res)=>{
     var pageSize = req.body.pageSize?req.body.pageSize:"10";
     var offset = req.body.offset?(parseInt(req.body.offset)):0;

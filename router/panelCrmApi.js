@@ -189,12 +189,12 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
         }
         if(faktorItem.status =="send"){
             buttons=[
-                /*{title:"بارکد مرسوله",parameter:"transportCode",
+                {title:"بارکد مرسوله",parameter:"transportCode",
                     type:"text",color:"silver",value:0},
                 {title:"نام پیک",parameter:"peykName",
                     type:"text",color:"silver",value:0},
                 {title:"شماره تماس پیک",parameter:"peykPhone",
-                    type:"text",color:"silver",value:0},*/
+                    type:"text",color:"silver",value:0},
                 {title:"تایید",type:"button",color:"#cacaca",value:1}
             ]
         }

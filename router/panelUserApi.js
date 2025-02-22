@@ -59,7 +59,7 @@ router.post('/list',jsonParser,async (req,res)=>{
         const orderList = filter1Report.slice(offset,
             (parseInt(offset)+parseInt(pageSize)))  
         const storeList=StoreList()
-        const accessUnique = [...new Set(filter1Report.map((item) => item.access))];
+        const accessUnique = ["manager","admin","client"];
        res.json({filter:orderList,size:filter1Report.length,
         access:accessUnique,storeList})
     }

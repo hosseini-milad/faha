@@ -642,7 +642,7 @@ router.post('/cart-to-faktor-from',auth,jsonParser, async (req,res)=>{
         }
         const userCode = userData.phone&&userData.phone.substr(userData.phone.length - 4)
         const faktorNo = await NewCode("m"+userCode)
-        const cartDetail = await CalcCart(userId,0,req.headers['userid'])
+        const cartDetail = await CalcCart(manageId,0,req.headers['userid'])
         
         var totalPrice = 0
         var totalCount = 0

@@ -826,7 +826,7 @@ router.post('/update-faktor-item',auth, async (req,res)=>{
         {$set:data}).lean()
         const result = await CalcFaktorData(FaktorItems.faktorNo)
 
-        res.json({data:result,FaktorItems})
+        res.json({data:result})
     }
     catch(error){
         res.status(500).json({error: error.message})

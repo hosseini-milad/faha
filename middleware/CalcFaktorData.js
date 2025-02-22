@@ -6,10 +6,18 @@ const NormalNumber = require("./NormalNumber");
 var ObjectID = require('mongodb').ObjectID;
 
 const CalcFaktorData=async(faktorNo)=>{
-    const faktorDetails = await faktor.findOne({faktorNo:faktorNo})
+    
     const faktorItemDetail = await faktorItems.find({faktorNo:faktorNo})
     var totalData = ItemToDetail(faktorItemDetail)
-    return({totalData,faktorItemDetail,faktorNo})
+    await faktor.updateOne({faktorNo:faktorNo},{$set:{
+        totalPrice:totalData&&totalData.finalPrice,
+        totalDiscount:totalData&&totalData.totalDiscount,
+        totalCount:totalData&&totalData.totalCount
+    }})
+    const faktorResult = await faktor.findOne({faktorNo:faktorNo}).lean()
+    const faktorItemResult = await faktorItems.find({faktorNo:faktorNo})
+    faktorResult.items = faktorItemResult
+    return(faktorResult)
     
 }
 

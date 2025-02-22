@@ -9,7 +9,7 @@ const CalcFaktorData=async(faktorNo)=>{
     const faktorDetails = await faktor.findOne({faktorNo:faktorNo})
     const faktorItemDetail = await faktorItems.find({faktorNo:faktorNo})
     var totalData = ItemToDetail(faktorItemDetail)
-    return({totalData,faktorItemDetail})
+    return({totalData,faktorItemDetail,faktorNo})
     
 }
 

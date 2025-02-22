@@ -42,7 +42,7 @@ const FindSideEffect=async(data,body)=>{
         else{
             faktorResult = await faktor.updateOne({faktorNo:data.faktorNo},
                 {$set:{query,result:hesabResult.ErrorMessage}})
-            return({error:{query,message:hesabResult.ErrorMessage}})
+            return({error:query,message:hesabResult.ErrorMessage})
         }
 
     }

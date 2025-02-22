@@ -577,7 +577,7 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             res.status(400).json({error:"کاربر پیدا نشد"})
         }
         const userCode = userData.phone&&userData.phone.substr(userData.phone.length - 4)
-        const faktorNo = await NewCode("z"+userCode)
+        const faktorNo = await NewCode("f"+userCode)
         const cartDetail = await CalcCart(userId,0,req.headers['userid'])
         
         var totalPrice = 0
@@ -611,6 +611,72 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             totalPrice:NormalNumber(totalPrice),
             totalCount:totalCount,
             cName:userData.cName?(userData.cName + " "+ userData.sName):userData.username,
+            phone:userData.phone
+        }
+        await faktor.create(faktorData)
+        userData.phone&&await SendSMS(userData.phone,"sabt",userData.username,faktorNo)
+        await cart.deleteMany({userId:userId})
+        res.json({faktorNo:faktorNo,message:"سفارش ثبت شد"})
+        return
+        //const cartDetails = await findCartFunction(userId,req.headers['userid'])
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+router.post('/cart-to-faktor-from',auth,jsonParser, async (req,res)=>{
+    const manageId =req.headers['userid']
+    const userId = req.body.userFrom
+    try{
+        const manageData = await customers.findOne({_id:userId})
+        const userData = manageId&&await customers.findOne({_id:manageId})
+        
+        if(!userData||!manageData){
+            res.status(400).json({error:"کاربر پیدا نشد"})
+            return
+        }
+        if(manageData.access=="customer"){
+            res.status(400).json({error:"دسترسی ندارید"})
+            return
+        }
+        const userCode = userData.phone&&userData.phone.substr(userData.phone.length - 4)
+        const faktorNo = await NewCode("m"+userCode)
+        const cartDetail = await CalcCart(userId,0,req.headers['userid'])
+        
+        var totalPrice = 0
+        var totalCount = 0
+        if(!cartDetail.cart||!cartDetail.cart.length){
+            res.status(400).json({error:"سبد خرید خالی است"})
+            return
+        }
+        const cartData = cartDetail.cartDetail
+        totalPrice=cartData.cartPrice
+        totalCount = cartData.cartCount
+        for(var i=0;i<(cartDetail.cart&&cartDetail.cart.length);i++){
+            var cartItem = cartDetail.cart[i]
+            const productDetail = await products.findOne({sku:cartItem.sku})
+            
+            const { _id: _, ...newObj } = cartItem;
+            var status = "inprogress"
+            await faktorItems.create({...newObj,faktorNo:faktorNo,
+                status:status,cartDetail,
+                cName:userData.username,phone:userData.phone})
+            await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
+            
+        }
+        const faktorData = {
+            faktorNo:faktorNo,
+            userId:userId, 
+            manageId:manageId,
+            initDate:Date.now(),
+            progressDate:Date.now(),
+            status:"inprogress",
+            isActive:true, isEdit:false,
+            totalPrice:NormalNumber(totalPrice),
+            totalCount:totalCount,
+            cName:userData.cName?(userData.cName + " "+ userData.sName):userData.username,
+            mName:manageData.cName?(manageData.cName + " "+ manageData.sName):manageData.username,
             phone:userData.phone
         }
         await faktor.create(faktorData)

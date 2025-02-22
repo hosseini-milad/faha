@@ -154,7 +154,7 @@ router.post('/customer-otp',jsonParser,async(req,res)=>{
         { username:phone,
           phone:phone,
           otp:otpValue,
-          email:phone+"@zargold.com",
+          email:phone+"@fahascrub.com",
           date:Date.now()});
       //res.status(200).json({"error":"user not found"});
       const newUserLog = await loginLogSchema.create({

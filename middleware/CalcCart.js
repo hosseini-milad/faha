@@ -12,18 +12,21 @@ const CalcCart=async(userId,manageId)=>{
     var totalPrice = 0
     var totalCount = 0
     const cartDetails = await cart.find({userId:userId}).lean()
+    const customerDetails = await customers.findOne({_id:ObjectID(userId)})
     for(var c=0;c<cartDetails.length;c++){
         unitPrice = cartDetails[c].unitPrice
         totalCount += cartDetails[c].count
         totalPrice += parseFloat(cartDetails[c].price)*cartDetails[c].count
     }
+    var accessFrom = (customerDetails&&customerDetails.access!=="customer")?true:false
     return({cart:cartDetails,
         cartDetail: {
             "totalCount":totalCount,
             "cartDiscount": 0,
             "cartCount":totalCount,
             "cartPrice": totalPrice
-        }
+        },
+        from:accessFrom
     })
 }
 

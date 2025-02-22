@@ -8,7 +8,8 @@ const ItemToDetail=(items)=>{
     if(!items||!items.length) return(result)
     for(var i=0;i<items.length;i++){
         result.totalCount += items[i].count
-        var totalD = totalPriceCalc(items[i].unitPrice,items[i].discount)
+        var discPer = Number(items[i].discount)
+        var totalD = totalPriceCalc(items[i].unitPrice,discPer/100)
         result.totalDiscount += totalD
         var totalC = totalPriceCalc(items[i].unitPrice,items[i].count)
         result.totalPrice += totalC

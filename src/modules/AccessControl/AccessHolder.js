@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import env from "../../env";
 import errortrans from "../../translate/error";
-
+import PostReq from "../../utils/PostReq";
 function AccessHolder(props) {
   const direction = props.lang ? props.lang.dir : errortrans.defaultDir;
   const lang = props.lang ? props.lang.lang : errortrans.defaultLang;
@@ -27,6 +27,14 @@ function AccessHolder(props) {
         }
       );
   }, []);
+  const RemoveAccess = async (id) => {
+    const result = await PostReq({
+      method: "Post",
+      url: "/panel/user/delete-profile",
+      body: { profileId: id },
+    });
+    window.location.reload();
+  };
   console.log(content);
   return (
     <div className="profiles" style={{ direction: direction }}>
@@ -90,6 +98,7 @@ function AccessHolder(props) {
                       <i
                         className="fa-solid fa-trash fa-sm"
                         style={{ color: "#c0c0c0" }}
+                        onClick={() => RemoveAccess(profile._id)}
                       ></i>
                     </div>
                   </td>

@@ -109,6 +109,8 @@ router.use('/panel/crm',CRMPanelApi)
                 postalCode:result[i].PostalCode,
                 meliCode:result[i].NationalCode,
                 Credits:result[i].Credits,
+                email:result[i].Email?result[i].Email:
+                    (result[i].Mobile+"@fahascrubs.com"),
                 Liability:result[i].Liability}
                 
             var updateResult = await customers.updateOne({phone:result[i].Mobile},

@@ -3,11 +3,33 @@ import ErrorAction from "../../components/Modal/ErrorAction";
 import env, { normalPriceCount, payValue, normalPriceRound } from "../../env";
 import DataModal from "../../components/Modal/dataModal";
 import QuickOff from "./QuickOff";
+import PostReq from "../../utils/PostReq";
 import QuickCounter from "./QuickCounter";
-
 function QuickRow(props) {
   const data = props.data;
-  console.log(data);
+  const isEdit = props.isEdit;
+  const [Edit, setEdit] = useState(false);
+  const [ShowModal, setShowModal] = useState(false);
+  const [Count, setCount] = useState();
+  const [Discount, setDiscount] = useState();
+  const DeleteItem = async () => {
+    const result = await PostReq({
+      method: "Post",
+      url: "/panel/faktor/remove-faktor-item",
+      body: { faktorItemNo: data._id },
+    });
+    props.setContent(result);
+  };
+  const UpdateItem = async () => {
+    const result = await PostReq({
+      method: "Post",
+      url: "/panel/faktor/update-faktor-item",
+      body: { faktorItemNo: data._id, count: Count, discount: Discount },
+    });
+    props.setContent(result);
+    setEdit(false);
+  };
+  console.log(Count);
   return (
     <>
       <tr className="product-tr">
@@ -25,13 +47,76 @@ function QuickRow(props) {
           </div>
         </td>
         <td data-cell="تعداد">
-          <p>{data.count}</p>
+          {Edit ? (
+            <QuickCounter setCount={setCount} count={Count} unit={10} />
+          ) : (
+            <p>{data.count}</p>
+          )}
+        </td>
+        <td data-cell="تخفیف">
+          {Edit ? (
+            <QuickOff
+              change={(e) => setDiscount(e)}
+              discount={Discount ? Discount : 0}
+            />
+          ) : (
+            <p>{data.discount ? data.discount + "%" : "0%"}</p>
+          )}
         </td>
 
         <td data-cell="قیمت نهایی(ریال)">
           <p>{normalPriceCount(data.price)}</p>
         </td>
+        <td className="icon-styles">
+          {!isEdit ? (
+            Edit ? (
+              <>
+                <i
+                  class="fa fa-check"
+                  aria-hidden="true"
+                  style={{ color: "green" }}
+                  onClick={UpdateItem}
+                ></i>
+                <i
+                  className="fa-solid fa-remove"
+                  onClick={() => setEdit(false)}
+                ></i>
+              </>
+            ) : (
+              <i
+                class="fa fa-pencil-square-o"
+                aria-hidden="true"
+                onClick={() => setEdit(true)}
+              ></i>
+            )
+          ) : (
+            <></>
+          )}
+          {isEdit ? (
+            <i
+              class="fa fa-trash"
+              aria-hidden="true"
+              onClick={() => setShowModal(true)}
+              style={{ color: "red" }}
+            ></i>
+          ) : (
+            <></>
+          )}
+        </td>
       </tr>
+      {ShowModal && (
+        <ErrorAction
+          status={"DELETE"}
+          title={"حذف آیتم"}
+          text={"آیتم انتخاب شده حذف خواهد شد. آیا مطمئن هستید؟"}
+          linkText={""}
+          style={{ direction: "rtl" }}
+          buttonText="حذف"
+          close={() => setShowModal(false)}
+          action={DeleteItem}
+          color={"red"}
+        />
+      )}
     </>
   );
 }

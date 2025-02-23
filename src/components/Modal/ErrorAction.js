@@ -18,7 +18,7 @@ function ErrorAction(props){
 
               </div>
               <div className="btn-wrappper">
-                <div className="del-btn" style={{backgroundColor:color}}
+                <div className="del-btn red-btn" style={{backgroundColor:color}}
                 onClick={()=>(props.action(),props.close())}>
                   {props.buttonText}</div>
                 <div className="cancel-btn" onClick={()=>props.close()}>انصراف</div>

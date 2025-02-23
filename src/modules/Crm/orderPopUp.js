@@ -81,9 +81,13 @@ function OrderPopUp(props) {
                         <th data-cell="تعداد">
                           <p>تعداد</p>
                         </th>
+                        <th data-cell="تخفیف">
+                          <p>تخفیف</p>
+                        </th>
                         <th data-cell="مبلغ(ریال)">
                           <p>ریال</p>
                         </th>
+                        <th></th>
                       </tr>
                       {content ? (
                         content.data &&
@@ -100,6 +104,8 @@ function OrderPopUp(props) {
                             setCart={props.setCart}
                             cartNo={props.cartNo}
                             canEdit={props.canEdit}
+                            isEdit={content.canEdit}
+                            setContent={setContent}
                           />
                         ))
                       ) : (

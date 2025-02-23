@@ -6,7 +6,7 @@ import env from "../../env";
 function Column(props) {
   const column = props.column;
   const token = props.token;
-  console.log(column)
+  console.log(column);
   const [taskPop, setTaskPop] = useState(0);
   const action = (data) => {
     const postOptions = {
@@ -39,7 +39,7 @@ function Column(props) {
       <h2 className="board-title">
         {props.column.title}
 
-        <span className="count-lead">({props.tasks.length})</span>
+        <span className="count-lead">({props.column.size})</span>
         {props.column.index == "1" ? (
           <i className="fa fa-plus addTask" onClick={() => setTaskPop(1)}></i>
         ) : (
@@ -92,7 +92,7 @@ function Column(props) {
                 onClick={() =>
                   props.setPerPage((prevState) => ({
                     ...prevState,
-                    [column.step]: column.size && column.size + 5,
+                    [column.step]: column.pageSize && column.pageSize + 5,
                   }))
                 }
               >

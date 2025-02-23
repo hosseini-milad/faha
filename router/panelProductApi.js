@@ -83,7 +83,7 @@ router.post('/update-service',jsonParser,async(req,res)=>{
             title:  req.body.title,
             category: req.body.category,
             type:req.body.type,
-            value:req.body.value,
+            hesabfa:req.body.hesabfa,
             enTitle: req.body.enTitle,
             price: req.body.price, 
             unit: req.body.unit,

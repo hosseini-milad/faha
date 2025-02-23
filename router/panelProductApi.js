@@ -41,14 +41,14 @@ router.post('/fetch-service',jsonParser,async (req,res)=>{
             return
         }
         const serviceData = await ServiceSchema.findOne({_id: ObjectID(serviceId)})
-        const brandsData = await BrandSchema.find()
-       res.json({filter:serviceData,brandsData:brandsData})
+        
+       res.json({filter:serviceData})
     } 
     catch(error){
         res.status(500).json({message: error.message})
     } 
 })
-router.post('/list',jsonParser,async (req,res)=>{
+router.post('/list-services',jsonParser,async (req,res)=>{
     var pageSize = req.body.pageSize?req.body.pageSize:"10";
     var offset = req.body.offset?(parseInt(req.body.offset)):0;
     try{const data={
@@ -74,54 +74,8 @@ router.post('/list',jsonParser,async (req,res)=>{
         res.status(500).json({message: error.message})
     } 
 })
-router.post('/list-seprate',jsonParser,async (req,res)=>{
-     try{
-        const manData = await manufacture.findOne({sku:req.body.lenzDetail})
-        const enColor=checkColor(manData)
-        const serviceList = await ServiceSchema.find()
-            var coating=[]
-            var color=[]
-            var mirror=[]
-            var extra=[]
-            for(var i=0;i<serviceList.length;i++){
-                if(serviceList[i].category==="Coating"){
-                    var price={}
-                    try{price =JSON.parse(serviceList[i].servicePrice)}catch{}
-                    
-                    if(price[req.body.brand])
-                        coating.push(serviceList[i])
-                }
-                if(serviceList[i].category==="Color"){
-                    color.push(serviceList[i])
-                }
-                if(serviceList[i].category==="Mirror"){
-                    mirror.push(serviceList[i])
-                }
-                if(serviceList[i].category==="Extra"){
-                    extra.push(serviceList[i])
-                }
-            }
-           res.json({color:color,mirror:mirror,
-            coating:coating,extra:extra,enColor:enColor,
-            manData:manData})
-    }
-    catch(error){
-        res.status(500).json({message: error.message})
-    } 
-})
-const checkColor=(lenzData)=>{
-    if(lenzData.lenzIndex==="1.56"||
-    lenzData.lenzIndex==="1.74"||
-    lenzData.lenzIndex==="1.59"||
-    lenzData.material.includes('Trans')||
-    lenzData.material.includes('Polariz')||
-    lenzData.material.includes('Photochrom'))
-        return(0)
-    else
-        return(1)
-}
 
-router.post('/editService',jsonParser,async(req,res)=>{
+router.post('/update-service',jsonParser,async(req,res)=>{
     var serviceId= req.body.serviceId?req.body.serviceId:''
     if(serviceId === "new")serviceId=''
     try{ 
@@ -130,16 +84,13 @@ router.post('/editService',jsonParser,async(req,res)=>{
             category: req.body.category,
             type:req.body.type,
             value:req.body.value,
-            serviceCode: req.body.serviceCode,
-            factoryCode:JSON.stringify(req.body.factoryCode),
-            hexCode: req.body.hexCode,
-            servicePrice: JSON.stringify(req.body.servicePrice), 
-            serviceUnit: req.body.serviceUnit,
-            servicePurchase: JSON.stringify(req.body.servicePurchase),
-            options: req.body.options,
+            enTitle: req.body.enTitle,
+            price: req.body.price, 
+            unit: req.body.unit,
             description:req.body.description,
             sort: req.body.sort,
-            imageUrl:  req.body.imageUrl
+            imageUrl:  req.body.imageUrl,
+            thumbUrl:  req.body.thumbUrl
         }
         var serviceResult = ''
         if(serviceId) serviceResult=await ServiceSchema.updateOne({_id:serviceId},

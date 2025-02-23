@@ -2,18 +2,14 @@ const mongoose = require('mongoose');
 
 const ServiceSchema = new mongoose.Schema({
     title:  String,
+    enTitle: String,
     category:String,
     type:String,
-    value:String,
-    serviceCode:String,
-    hexCode:String,
-    servicePrice:String,
-    serviceUnit:String,
-    servicePurchase:String,
-    factoryCode:String,
-    options:String,
-    sort:String,
+    price:String,
+    unit:String,
+    
     description:String,
-    imageUrl: String
+    imageUrl: String,
+    thumbUrl: String
 })
 module.exports = mongoose.model('services',ServiceSchema);

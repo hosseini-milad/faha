@@ -207,7 +207,7 @@ router.post('/fetch-product', async (req,res)=>{
         }
         var sortFilters = SortFilter(filters)
         res.json({mainProduct:productData,productData:productList&&productList[0],
-            filters:sortFilters,myDiscount})
+            filters,sortFilters,myDiscount})
 
     } 
     catch(error){

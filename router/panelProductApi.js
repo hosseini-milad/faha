@@ -32,6 +32,7 @@ const products = require('../models/product/products');
 const UpdateMarket = require('../middleware/UpdateMarket');
 const crmlist = require('../models/crm/crmlist');
 const multer = require('multer');
+const Colors = require('../models/product/Colors');
 
 router.post('/fetch-service',jsonParser,async (req,res)=>{
     var serviceId = req.body.serviceId?req.body.serviceId:''
@@ -572,6 +573,78 @@ router.get('/list-status',jsonParser,async(req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
+
+/*Colors*/
+router.post('/fetch-color',jsonParser,async (req,res)=>{
+    var colorId = req.body.colorId?req.body.colorId:''
+    try{
+        if(!colorId){
+            res.json({filter:{}})
+            return
+        }
+        const colorData = await Colors.findOne({_id: ObjectID(colorId)})
+       res.json({filter:colorData})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+router.post('/list-color',jsonParser,async (req,res)=>{
+    var pageSize = req.body.pageSize?req.body.pageSize:"10";
+    var offset = req.body.offset?(parseInt(req.body.offset)):0;
+    try{const data={
+        title:req.body.title,
+        offset:req.body.offset,
+        pageSize:pageSize
+    }
+        const colorList = await Colors.aggregate([
+            { $match:data.title?{title:new RegExp('.*' + data.title + '.*')}:{}}
+            
+            ])
+            const colors = colorList.slice(offset,
+                (parseInt(offset)+parseInt(pageSize))) 
+            
+           res.json({filter:colors,size:colorList.length})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+router.post('/update-color',jsonParser,auth,async(req,res)=>{
+    var colorId= req.body.colorId?req.body.colorId:''
+    if(colorId === "new")colorId=''
+    try{ 
+        const data = {
+            title:  req.body.title,
+            enTitle: req.body.enTitle, 
+            colorCode:req.body.colorCode
+        }
+        var colorResult = ''
+        if(colorId) colorResult=await Colors.updateOne({_id:ObjectID(colorId)},
+            {$set:data})
+        else
+        colorResult= await Colors.create(data)
+        
+        res.json({result:colorResult,success:colorId?"Updated":"Created"})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+router.post('/delete-color',jsonParser,auth,async(req,res)=>{
+    var colorId= req.body.colorId?req.body.colorId:''
+    try{ 
+        
+        var colorResult = ''
+        if(colorId) colorResult=await Colors.deleteOne({_id:ObjectID(colorId)})
+        
+        res.json({result:colorResult,success:colorId?"deleted":""})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+
 
 
 router.post('/update-to-master',jsonParser,auth,async(req,res)=>{

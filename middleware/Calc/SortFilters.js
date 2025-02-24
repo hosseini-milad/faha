@@ -4,8 +4,8 @@ const SortFilter=(FilterData)=>{
     for (var prop in FilterData) {
         var tempArray = FilterData[prop]
         tempArray.sort(function(a, b) {
-            var keyA = new Date(a.title),
-              keyB = new Date(b.title);
+            var keyA = (a.title),
+              keyB = (b.title);
             // Compare the 2 dates
             if (keyA < keyB) return -1;
             if (keyA > keyB) return 1;

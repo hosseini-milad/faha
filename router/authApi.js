@@ -261,7 +261,7 @@ router.post('/change-password',auth,jsonParser, async (req,res)=>{
           await customers.updateOne({_id:ObjectID(userId)},
           {$set:{password:encryptedNew}})
 
-          res.status(200).json({user:passCompare,message:"پسورد تغییر یافت"})
+          res.status(200).json({user:encryptedNew,message:"پسورد تغییر یافت"})
         }
         else{
           res.status(400).json({error:"Wrong Password",message:"پسورد اشتباه است"});

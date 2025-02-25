@@ -166,35 +166,41 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
             res.status(400).json({error:"شماره فاکتور موجود نیست"})
             return
         }
-        if(faktorItem.status =="accept"){
-            buttons.push({title:"تایید",type:"button",color:"lightgreen",value:1})
+        if(faktorItem.status =="quote"){
+            buttons.push({title:"تایید",type:"button",color:"lightgreen",value:1}),
+            {title:"لغو",type:"button",color:"#ff0000",value:-1}
         }
         
         if(faktorItem.status =="inprogress"){
             buttons=[
-                {title:"تایید",type:"button",color:"#cacaca",value:1}
+                {title:"تایید",type:"button",color:"#cacaca",value:1},
+                {title:"ویرایش",type:"button",color:"#orange",value:2},
+                {title:"لغو",type:"button",color:"#ff0000",value:-1}
             ]
         }
         if(faktorItem.status =="edit"){
             buttons=[
-                {title:"تایید",type:"button",color:"#cacaca",value:1}
+                {title:"تایید",type:"button",color:"#cacaca",value:1},
+                {title:"لغو",type:"button",color:"#ff0000",value:-1}
             ]
         }
         if(faktorItem.status =="pay"){
             buttons=[
-                /*{title:"شماره سند",parameter:"newSku", require:true,
-                    type:"text",color:"silver",value:0},*/
-                {title:"تایید",type:"button",color:"#cacaca",value:1}
+                {title:"ثبت حسابفا",type:"button",color:"lightgreen",value:1},
+                {title:"ویرایش",type:"button",color:"orange",value:2}
             ]
         }
         if(faktorItem.status =="send"){
             buttons=[
-                {title:"بارکد مرسوله",parameter:"transportCode",
+                {title:"روش ارسال",parameter:"transportWay",
+                    options:["پست","اتوبوس","پیک"],
+                    type:"checkbox",color:"silver",value:0},
+                {title:"بارکد مرسوله",parameter:"transportBarCode",
                     type:"text",color:"silver",value:0},
-                {title:"نام پیک",parameter:"peykName",
+                {title:"شماره تماس ",parameter:"transportPhone",
                     type:"text",color:"silver",value:0},
-                {title:"شماره تماس پیک",parameter:"peykPhone",
-                    type:"text",color:"silver",value:0},
+                {title:"تصویر ",parameter:"transportImage",
+                    type:"file",color:"silver",value:0},
                 {title:"تایید",type:"button",color:"#cacaca",value:1}
             ]
         }

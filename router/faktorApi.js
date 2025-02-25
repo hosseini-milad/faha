@@ -64,6 +64,7 @@ const FindDiscount = require('../middleware/Calc/FindDiscount');
 const FindQuery = require('../middleware/Calc/FindQuery');
 const CalcFaktorData = require('../middleware/CalcFaktorData');
 const Services = require('../models/product/Services');
+const SortFilter = require('../middleware/Calc/SortFilters');
 const {TaxRate} = process.env
 router.post('/products', async (req,res)=>{
     try{
@@ -205,8 +206,9 @@ router.post('/fetch-product', async (req,res)=>{
                 }
             }
         }
+        var sortFilters = SortFilter(filters)
         res.json({mainProduct:productData,productData:productList&&productList[0],
-            filters,myDiscount})
+            filters,sortFilters,myDiscount})
 
     } 
     catch(error){

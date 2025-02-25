@@ -39,7 +39,7 @@ router.post('/fetch-tasks',auth,jsonParser,async (req,res)=>{
     const crmId = req.body.crmId
     const userId = req.headers["userid"]
     const offset = req.body.offset
-    const pageSize = req.body.pageSize
+    const pageSize = req.body.perPage
     try{ 
         const tasksList = await calcTasks(userId,offset,pageSize)
 

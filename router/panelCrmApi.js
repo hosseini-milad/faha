@@ -455,8 +455,9 @@ router.post('/order-integrity',auth,jsonParser,async (req,res)=>{
     }
     try{
         const orderList = await faktors.find({status:status})
-
-        res.json({data:orderList,message:"لیست سفارشات"})
+        const orderFaktorNoList = orderList.map(item=>item.faktorNo)
+        const orderItems = await faktorItems.find({faktorNo:{$in:orderFaktorNoList}})
+        res.json({data:orderItems,message:"لیست سفارشات"})
     }
     catch(error){
         res.send({"status":"failed",error});

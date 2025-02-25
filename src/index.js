@@ -68,6 +68,8 @@ import NewUsers from "./pages/NewUsers";
 import Sepidar from "./pages/Sepidar";
 import Profiles from "./pages/Profiles";
 import Test from "./pages/Test";
+import Colors from "./pages/Colors";
+import ColorsDetailHolder from "./modules/ColorsComponents/ColorsDetailHolder";
 const cookies = new Cookies();
 const style = document.getElementById("style-direction");
 var lang = JSON.parse(localStorage.getItem(env.cookieLang));
@@ -355,6 +357,22 @@ root.render(
           element={
             <Layout>
               <BrandDetailHolder lang={lang} />
+            </Layout>
+          }
+        />
+        <Route
+          path="/colors"
+          element={
+            <Layout>
+              <Colors lang={lang} />
+            </Layout>
+          }
+        />
+        <Route
+          path="/colors/detail/:orderId"
+          element={
+            <Layout>
+              <ColorsDetailHolder lang={lang} />
             </Layout>
           }
         />

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ctrl/tinycolor": "^4.1.0",
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
@@ -16,6 +17,7 @@
     "dayjs": "^1.11.8",
     "install": "^0.13.0",
     "material-ui-flat-pagination": "^4.1.2",
+    "mui-color-input": "^1.0.1",
     "npm": "^10.2.3",
     "num2persian": "^3.2.2",
     "react": "^18.2.0",

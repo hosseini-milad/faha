@@ -1,17 +1,23 @@
 import React from "react";
-
-const ProfilesCard = ({data,setSetting}) => {
+import env from "../../env";
+import Cookies from "universal-cookie";
+const ProfilesCard = ({ data, setSetting }) => {
+  const cookies = new Cookies();
+  const token = cookies.get(env.cookieName);
+  const CurrentUser = token.userId;
+  console.log(CurrentUser);
   return (
-    <div className="ProfilesCard-wrapper" onClick={()=>setSetting(data._id)}>
+    <div className="ProfilesCard-wrapper" onClick={() => setSetting(data._id)}>
       <div className="ProfilesCard">
         <div className="main-part">
+          {data.access && <div className="access">{data.access}</div>}
           <div className="profile-avatar">
             <img src="/def-profile.png" alt="avatar" />
             <span></span>
           </div>
           <div className="username">
             <p>{data.username}</p>
-            <div className="access">{data.access}</div>
+            
           </div>
         </div>
         <div className="footer-part">

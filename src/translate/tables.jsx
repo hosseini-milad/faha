@@ -374,6 +374,26 @@ const tabletrans ={
         english:"Add/Edit Brand",
         persian:"افزدون یا ویرایش برند"
     },
+    colors:{
+        english:"Colors",
+        persian:"رنگ ها"
+    },
+    addColor:{
+        english:"Add Color",
+        persian:"افزدون رنگ"
+    },
+    colorcode:{
+        english:"Color Code",
+        persian:"کد رنگ"
+    },
+    colorname:{
+        english:"Color Name",
+        persian:"نام رنگ"
+    },
+    editColor:{
+        english:"Edit Color",
+        persian:"ویرایش رنگ"
+    },
     addCategory:{
         english:"Add/Edit Category",
         persian:"افزدون یا ویرایش دسته بندی"

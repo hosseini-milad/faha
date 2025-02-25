@@ -68,7 +68,7 @@ function QuickRow(props) {
           <p>{normalPriceCount(data.price)}</p>
         </td>
         <td className="icon-styles">
-          {!isEdit ? (
+          {isEdit ? (
             Edit ? (
               <>
                 <i
@@ -83,11 +83,13 @@ function QuickRow(props) {
                 ></i>
               </>
             ) : (
-              <i
-                class="fa fa-pencil-square-o"
-                aria-hidden="true"
-                onClick={() => setEdit(true)}
-              ></i>
+              <>
+                <i
+                  class="fa fa-pencil-square-o"
+                  aria-hidden="true"
+                  onClick={() => setEdit(true)}
+                ></i>
+              </>
             )
           ) : (
             <></>

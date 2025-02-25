@@ -167,8 +167,10 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
             return
         }
         if(faktorItem.status =="quote"){
-            buttons.push({title:"تایید",type:"button",color:"lightgreen",value:1}),
-            {title:"لغو",type:"button",color:"#ff0000",value:-1}
+            buttons=[
+                {title:"تایید",type:"button",color:"lightgreen",value:1},
+                {title:"لغو",type:"button",color:"#ff0000",value:-1}
+            ]
         }
         
         if(faktorItem.status =="inprogress"){

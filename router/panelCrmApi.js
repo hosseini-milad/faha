@@ -447,4 +447,20 @@ router.post('/upload',uploadImg.single('upload'), async(req, res, next)=>{
     }
 })
 
+router.post('/order-integrity',auth,jsonParser,async (req,res)=>{
+    const status = req.body.status
+    if(!status){
+        res.status(400).json({error:true,message:"وضعیت وارد نشده است"})
+        return
+    }
+    try{
+        const orderList = await faktors.find({status:status})
+
+        res.json({data:orderList,message:"لیست سفارشات"})
+    }
+    catch(error){
+        res.send({"status":"failed",error});
+    }
+})
+
 module.exports = router;

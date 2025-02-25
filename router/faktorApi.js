@@ -775,8 +775,10 @@ const FetchFaktorFunc=async(faktorNo)=>{
     
     const transactions = await transaction.find({orderNo:faktorNo})
     var canEdit = 0
+    var canRecieve = 0
     if(faktorData.status=="edit") canEdit = 1
-    return({data:faktorData,canEdit,
+    if(faktorData.status=="send") canRecieve = 1
+    return({data:faktorData,canEdit,canRecieve,
         userDetail:userDetail,transactions})
 }
 router.post('/fetch-faktor-item',auth, async (req,res)=>{

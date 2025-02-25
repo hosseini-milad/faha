@@ -64,10 +64,8 @@ router.post('/list-services',jsonParser,async (req,res)=>{
             
             ])
             const orderList = serviceList.slice(offset,
-                (parseInt(offset)+parseInt(pageSize)))  
-            const typeUnique = [...new Set(serviceList.map((item) => item.category))];
-            
-           res.json({filter:orderList,type:typeUnique,
+                (parseInt(offset)+parseInt(pageSize)))
+           res.json({filter:orderList,
             size:serviceList.length})
     }
     catch(error){

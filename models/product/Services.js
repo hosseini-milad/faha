@@ -4,6 +4,7 @@ const ServiceSchema = new mongoose.Schema({
     title:  String,
     enTitle: String,
     category:String,
+    sku:String,
     hesabfa:String,
     type:String,
     price:String,

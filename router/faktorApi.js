@@ -63,6 +63,7 @@ const FindStatus = require('../middleware/Calc/FindStatus');
 const FindDiscount = require('../middleware/Calc/FindDiscount');
 const FindQuery = require('../middleware/Calc/FindQuery');
 const CalcFaktorData = require('../middleware/CalcFaktorData');
+const Services = require('../models/product/Services');
 const {TaxRate} = process.env
 router.post('/products', async (req,res)=>{
     try{
@@ -573,6 +574,7 @@ router.get('/sendSMS',jsonParser, async (req,res)=>{
 })
 router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
     const userId =req.headers['userid']
+    //const serviceList = req.body.serviceList
     try{
         const userData = await customers.findOne({_id:userId})
         if(!userData){
@@ -603,6 +605,17 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
             
         }
+        /*for(var i=0;i<serviceList.length;i++){
+           const serviceData = serviceList[i]&&await Services.findOne({_id:ObjectID(serviceList[i])}) 
+           if(!serviceData) continue
+           var status = "inprogress"
+           await faktorItems.create({
+            
+            faktorNo:faktorNo,
+            status:status,cartDetail,
+            cName:userData.username,phone:userData.phone})
+            await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
+        }*/
         const faktorData = {
             faktorNo:faktorNo,
             userId:userId, 

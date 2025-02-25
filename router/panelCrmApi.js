@@ -79,10 +79,10 @@ const calcTasks=async(userId,offsetRaw,pageSizeRaw,colId)=>{
     const tasksData = []
     const crmSteps = crmData.crmSteps?crmData.crmSteps.map(item=>({title:item.title,code:item.enTitle})):[]
     const offset = offsetRaw?offsetRaw:0
-    const pageSize = pageSizeRaw?pageSizeRaw:new Array(crmSteps.length).fill(5)
+    const pageSize = pageSizeRaw
 
     for(var i=0;i<crmSteps.length;i++){
-        const tempPageSize = pageSize[i]?pageSize[i]:5
+        const tempPageSize = pageSize&&pageSize[crmSteps[i].step]
         const colData = await faktors.find({status:crmSteps[i].code})
         //const offsetData = await offset.find(item=>item.col==crmSteps[i].code)
         const colList = colData.slice(offset,

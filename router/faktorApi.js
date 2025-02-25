@@ -746,35 +746,39 @@ router.post('/faktor', async (req,res)=>{
 router.post('/fetch-faktor',auth, async (req,res)=>{
     const faktorNo =req.body.faktorNo;
     try{
-        const faktorData = await FaktorSchema.findOne({faktorNo:faktorNo}).lean()
-        if(!faktorData){
-            res.status(400).json({error:"سفارش پیدا نشد"})
-            return
-        }
-        const FaktorItems = await faktorItems.find({faktorNo:faktorNo}).sort({purchase:-1})
-        const saleItems = []
-        const purchaseItems = []
-        for(var i=0;i<FaktorItems.length;i++){
-            if(FaktorItems[i].purchase!== true)
-                saleItems.push(FaktorItems[i])
-            else
-                purchaseItems.push(FaktorItems[i])
-        }
-            
-        
-        faktorData.items = FaktorItems
-        const userDetail = await customers.findOne({_id:ObjectID(faktorData.userId)})
-        
-        const transactions = await transaction.find({orderNo:faktorNo})
-        var canEdit = 0
-        if(faktorData.status=="edit") canEdit = 1
-        res.json({data:faktorData,canEdit,
-            userDetail:userDetail,transactions})
+        const faktorData = await FetchFaktorFunc(faktorNo)
+        res.json({...faktorData})
     }
     catch(error){
         res.status(500).json({error: error.message})
     }
 })
+const FetchFaktorFunc=async(faktorNo)=>{
+    const faktorData = await FaktorSchema.findOne({faktorNo:faktorNo}).lean()
+    if(!faktorData){
+        res.status(400).json({error:"سفارش پیدا نشد"})
+        return
+    }
+    const FaktorItems = await faktorItems.find({faktorNo:faktorNo}).sort({purchase:-1})
+    const saleItems = []
+    const purchaseItems = []
+    for(var i=0;i<FaktorItems.length;i++){
+        if(FaktorItems[i].purchase!== true)
+            saleItems.push(FaktorItems[i])
+        else
+            purchaseItems.push(FaktorItems[i])
+    }
+        
+    
+    faktorData.items = FaktorItems
+    const userDetail = await customers.findOne({_id:ObjectID(faktorData.userId)})
+    
+    const transactions = await transaction.find({orderNo:faktorNo})
+    var canEdit = 0
+    if(faktorData.status=="edit") canEdit = 1
+    return({data:faktorData,canEdit,
+        userDetail:userDetail,transactions})
+}
 router.post('/fetch-faktor-item',auth, async (req,res)=>{
     const faktorItemNo =req.body.faktorItemNo;
     try{
@@ -862,6 +866,27 @@ router.post('/remove-faktor-item',auth, async (req,res)=>{
         res.status(500).json({error: error.message})
     }
 })
+
+router.post('/recieve-faktor-item',auth, async (req,res)=>{
+    const rSku = req.body.sku
+    const rFaktorNo = req.body.faktorNo
+    const faktorData = await faktorItems.findOne(
+        {faktorNo:rFaktorNo,sku:rSku})
+    if(!faktorData){
+        res.status(400).json({error:true,message:"آیتم پیدا نشد"})
+        return
+    }
+    if(faktorData.isRecieved){
+        res.status(400).json({error:true,message:"آیتم قبلا رسید شده است"})
+        return
+    }
+    await faktorItems.updateOne(
+        {faktorNo:rFaktorNo,sku:rSku},
+    {$set:{isRecieved:true,recieveDate:Date.now()}})
+    const faktorResult = await FetchFaktorFunc(rFaktorNo)
+    res.json({...faktorResult})
+})
+
 router.post('/list-faktor',auth, async (req,res)=>{
     var pageSize = req.body.pageSize?req.body.pageSize:"10";
     var offset = req.body.offset?(parseInt(req.body.offset)):0;

@@ -176,7 +176,7 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
         if(faktorItem.status =="inprogress"){
             buttons=[
                 {title:"تایید",type:"button",color:"#cacaca",value:1},
-                {title:"ویرایش",type:"button",color:"#orange",value:2},
+                {title:"ویرایش",type:"button",color:"orange",value:2},
                 {title:"لغو",type:"button",color:"#ff0000",value:-1}
             ]
         }

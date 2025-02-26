@@ -675,7 +675,7 @@ router.post('/cart-to-faktor-from',auth,jsonParser, async (req,res)=>{
             const productDetail = await products.findOne({sku:cartItem.sku})
             
             const { _id: _, ...newObj } = cartItem;
-            var status = "inprogress"
+            var status = "pay"
             await faktorItems.create({...newObj,faktorNo:faktorNo,
                 status:status,cartDetail,
                 cName:userData.username,phone:userData.phone})

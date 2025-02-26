@@ -33685,7 +33685,7 @@ input:checked + .switch-label:after {
   text-align: center;
   height: fit-content;
   padding: 1rem;
-  min-height:500px;
+  min-height: 500px;
   position: relative;
 }
 
@@ -38158,10 +38158,10 @@ table {
   margin: 15px !important;
   min-width: 225px !important;
 
-  input{
-    width:100%;
+  input {
+    width: 100%;
   }
-  .DatePicker__calendarcontainer{
+  .DatePicker__calendarcontainer {
     z-index: 100;
   }
 }
@@ -38209,7 +38209,7 @@ table {
     cursor: pointer;
   }
 }
-.edit-input.edit-input{
+.edit-input.edit-input {
   background-color: white !important;
   border: 1px solid lightgrey !important;
   outline: #0077b5 !important;
@@ -38218,7 +38218,7 @@ table {
   padding: 0.2rem;
   text-align: center;
 }
-.icon-styles i{
+.icon-styles i {
   font-size: 1.2rem;
   width: 30px;
   height: 30px;
@@ -38226,7 +38226,7 @@ table {
   border-radius: 50%;
   padding-block: 0.2rem;
 }
-.icon-styles i:hover{
+.icon-styles i:hover {
   background-color: lightblue;
 }
 .sharif-order-main .admin-table-sec .amount-input-wrapper {
@@ -38289,7 +38289,7 @@ table {
     margin: 0.2rem 0 0 1.2rem;
   }
 }
-.sharif-order-main .admin-table-sec  .off-input-wrapper {
+.sharif-order-main .admin-table-sec .off-input-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -38301,14 +38301,14 @@ table {
   overflow: hidden;
   background-color: white;
 }
-.sharif-order-main .admin-table-sec  .off-input-wrapper input {
+.sharif-order-main .admin-table-sec .off-input-wrapper input {
   width: 85px;
   direction: ltr;
   padding-block: 0.3rem;
   padding-left: 31px;
   text-align: center;
 }
-.sharif-order-main .admin-table-sec  .off-input-wrapper i {
+.sharif-order-main .admin-table-sec .off-input-wrapper i {
   height: 100%;
   width: 35px;
   background-color: var(--light-blue-sec);
@@ -38321,7 +38321,30 @@ table {
   align-items: center;
   justify-content: center;
 }
-.sharif-order-main .admin-table-sec  .off-input-wrapper .off-unit {
+.sharif-order-main .admin-table-sec .off-input-wrapper .off-unit {
   z-index: 5;
 }
 
+.taskAction .imageTask {
+  width: 100px;
+}
+.taskAction .image-wrapper {
+  margin-bottom: 0px;
+  background-color: silver;
+  padding:4px 6px;
+  display: flex;
+  align-items: center;
+  border-radius: 0.5rem;
+  .fa-upload {
+    color:black !important;
+    margin:0px;
+    height:20px;
+  }
+
+  label{
+    font-size:0.7rem;
+    color:black;
+    margin-bottom:0px;
+    background-color: white;
+  }
+}

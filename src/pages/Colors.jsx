@@ -28,7 +28,10 @@ function Colors(props) {
     const result = await PostReq({
       method: "Post",
       url: "/panel/product/list-color",
-      body: {},
+      body: {
+        offset: filters.offset || "0",
+        pageSize: filters.pageSize || "10",
+      },
     });
     setTimeout(() => setLoading(0), 1000);
     setContent(result);

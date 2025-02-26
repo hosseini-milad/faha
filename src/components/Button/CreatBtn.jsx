@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import env from "../../env";
+import TaskUpload from "../../modules/Crm/Tasks/TaskUpload";
 import PostReq from "../../utils/PostReq";
 const CreatBtn = (props) => {
   const Param = props.Param;
   const setParam = props.setParam;
   const content = props.content;
-  const token = props.token;
+
   const handleParam = (property, value) => {
     setParam((prevState) => ({
       ...prevState,
@@ -20,8 +20,9 @@ const CreatBtn = (props) => {
     });
     setTimeout(() => props.setLoading(Math.random()), 2000);
   };
+  console.log(Param);
   return (
-    <>
+    <div>
       {content.type == "text" ? (
         <input
           className="create-text"
@@ -39,10 +40,26 @@ const CreatBtn = (props) => {
         >
           {content.title}
         </button>
+      ) : content.type == "list" ? (
+        <select
+          className="create-text"
+          style={{ backgroundColor: content.color }}
+          type={content.type}
+          placeholder={content.title}
+          onChange={(e) => handleParam(content.parameter, e.target.value)}
+        >
+          {content.options.map((option, p) => (
+            <option key={p}>{option}</option>
+          ))}
+        </select>
+      ) : content.type == "file" ? (
+        <TaskUpload
+          action={(e) => handleParam(content.parameter, e)}
+        />
       ) : (
         <></>
       )}
-    </>
+    </div>
   );
 };
 

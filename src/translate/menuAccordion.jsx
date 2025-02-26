@@ -81,14 +81,6 @@ const menutrans = {
           href: "/category",
           url: "category",
         },
-        {
-          english: "Colors",
-          persian: "رنگ ها",
-          index: 0,
-          icon: "fa-paint-brush",
-          href: "/colors",
-          url: "colors",
-        },
       ],
     },
     {

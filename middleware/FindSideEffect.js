@@ -30,7 +30,7 @@ const FindSideEffect=async(data,body)=>{
             return({error:"اطلاعات ارسال وارد نشده است"})
         }
     }
-    if(body.status=="archive"){
+    if(body.status=="prepair"){
         const query = await CalcInvoice(data)
         const hesabResult = await GetHesabFa(query,"/invoice/save")
         var faktorResult=''

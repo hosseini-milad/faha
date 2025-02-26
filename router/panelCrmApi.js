@@ -196,7 +196,7 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
             buttons=[
                 {title:"روش ارسال",parameter:"transportWay",
                     options:["پست","اتوبوس","پیک"],
-                    type:"checkbox",color:"silver",value:0},
+                    type:"list",color:"silver",value:0},
                 {title:"بارکد مرسوله",parameter:"transportBarCode",
                     type:"text",color:"silver",value:0},
                 {title:"شماره تماس ",parameter:"transportPhone",

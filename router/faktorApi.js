@@ -825,14 +825,16 @@ router.post('/update-faktor-item',auth, async (req,res)=>{
     const faktorItemNo =req.body.faktorItemNo;
     const data = {
         count: req.body.count,
-        discount: req.body.discount
+        discount: req.body.discount,
+        unitPrice: req.body.unitPrice
     }
     try{
         const FaktorItems = await faktorItems.findOne( {_id:ObjectID(faktorItemNo)})
         var countCalc = data.count?data.count:FaktorItems.count
         var discountPer = data.discount?data.discount:(
             FaktorItems.discount?FaktorItems.discount:0)
-        const totalPrice = Number(countCalc)*Number(FaktorItems.unitPrice)
+        var unitPrice = data.unitPrice?data.unitPrice:FaktorItems.unitPrice
+        const totalPrice = Number(countCalc)*Number(unitPrice)
         const discountCalc = Number(discountPer)*totalPrice/100
         const finalPrice = totalPrice - discountCalc
         data.price = finalPrice

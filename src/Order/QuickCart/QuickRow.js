@@ -12,6 +12,7 @@ function QuickRow(props) {
   const [ShowModal, setShowModal] = useState(false);
   const [Count, setCount] = useState();
   const [Discount, setDiscount] = useState();
+  const [Price, setPrice] = useState();
   const DeleteItem = async () => {
     const result = await PostReq({
       method: "Post",
@@ -24,7 +25,12 @@ function QuickRow(props) {
     const result = await PostReq({
       method: "Post",
       url: "/panel/faktor/update-faktor-item",
-      body: { faktorItemNo: data._id, count: Count, discount: Discount },
+      body: {
+        faktorItemNo: data._id,
+        count: Count,
+        discount: Discount,
+        unitPrice: Price,
+      },
     });
     props.setContent(result);
     setEdit(false);
@@ -65,7 +71,17 @@ function QuickRow(props) {
         </td>
 
         <td data-cell="قیمت نهایی(ریال)">
-          <p>{normalPriceCount(data.price)}</p>
+          {Edit ? (
+            <input
+              type="text"
+              defaultValue={data.price}
+              placeholder="قیمت نهایی"
+              className="price-input"
+              onChange={(e) => setPrice(e.target.value)}
+            />
+          ) : (
+            <p>{normalPriceCount(data.price)}</p>
+          )}
         </td>
         <td className="icon-styles">
           {isEdit ? (

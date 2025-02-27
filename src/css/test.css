@@ -34691,7 +34691,8 @@ table {
   padding: .5rem;
   border-radius: .5rem;
   border: 0;
-  outline: 0
+  outline: 0;
+  min-width: 75px !important;
 }
 
 .btn-crm {

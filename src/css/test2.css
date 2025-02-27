@@ -38348,3 +38348,11 @@ table {
     background-color: white;
   }
 }
+.price-input.price-input{
+  background-color: white !important;
+  width:130px;
+  height: 35px;
+  border-radius: 0.5rem;
+  border: 1px solid var(--dark-blue-sec) !important;
+  text-align:center;
+}

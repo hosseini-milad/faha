@@ -34,7 +34,7 @@ const CreatBtn = (props) => {
       ) : content.type == "button" ? (
         <button
           className="create-button"
-          style={{ backgroundColor: content.color }}
+          style={{ backgroundColor: content.color,minWidth:"75px" }}
           type={content.type}
           onClick={() => updateTask(content.value)}
         >

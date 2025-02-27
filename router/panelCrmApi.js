@@ -169,21 +169,21 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
         if(faktorItem.status =="quote"){
             buttons=[
                 {title:"تایید",type:"button",color:"lightgreen",value:1},
-                {title:"لغو",type:"button",color:"#ff0000",value:-1}
+                {title:"لغو",type:"button",color:"brown",value:-1}
             ]
         }
         
         if(faktorItem.status =="inprogress"){
             buttons=[
-                {title:"تایید",type:"button",color:"#cacaca",value:1},
+                {title:"تایید",type:"button",color:"lightgreen",value:1},
                 {title:"ویرایش",type:"button",color:"orange",value:2},
-                {title:"لغو",type:"button",color:"#ff0000",value:-1}
+                {title:"لغو",type:"button",color:"brown",value:-1}
             ]
         }
         if(faktorItem.status =="edit"){
             buttons=[
-                {title:"تایید",type:"button",color:"#cacaca",value:1},
-                {title:"لغو",type:"button",color:"#ff0000",value:-1}
+                {title:"تایید",type:"button",color:"lightgreen",value:1},
+                {title:"لغو",type:"button",color:"brown",value:-1}
             ]
         }
         if(faktorItem.status =="pay"){
@@ -203,7 +203,7 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
                     type:"text",color:"silver",value:0},
                 {title:"تصویر ",parameter:"transportImage",
                     type:"file",color:"silver",value:0},
-                {title:"تایید",type:"button",color:"#cacaca",value:1}
+                {title:"تایید",type:"button",color:"lightgreen",value:1}
             ]
         }
         if(faktorItem.status =="prepair"){

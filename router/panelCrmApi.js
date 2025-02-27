@@ -169,7 +169,7 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
         if(faktorItem.status =="quote"){
             buttons=[
                 {title:"تایید",type:"button",color:"lightgreen",value:1},
-                {title:"لغو",type:"button",color:"brown",value:-1}
+                {title:"لغو",type:"button",color:"rgb(248,68,68)",value:-1}
             ]
         }
         
@@ -177,13 +177,13 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
             buttons=[
                 {title:"تایید",type:"button",color:"lightgreen",value:1},
                 {title:"ویرایش",type:"button",color:"orange",value:2},
-                {title:"لغو",type:"button",color:"brown",value:-1}
+                {title:"لغو",type:"button",color:"rgb(248,68,68)",value:-1}
             ]
         }
         if(faktorItem.status =="edit"){
             buttons=[
                 {title:"تایید",type:"button",color:"lightgreen",value:1},
-                {title:"لغو",type:"button",color:"brown",value:-1}
+                {title:"لغو",type:"button",color:"rgb(248,68,68)",value:-1}
             ]
         }
         if(faktorItem.status =="pay"){

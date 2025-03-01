@@ -10,8 +10,8 @@ function QuickRow(props) {
   const isEdit = props.isEdit;
   const [Edit, setEdit] = useState(false);
   const [ShowModal, setShowModal] = useState(false);
-  const [Count, setCount] = useState();
-  const [Discount, setDiscount] = useState();
+  const [Count, setCount] = useState(data.count);
+  const [Discount, setDiscount] = useState(data.discount);
   const [Price, setPrice] = useState();
   const DeleteItem = async () => {
     const result = await PostReq({
@@ -34,6 +34,7 @@ function QuickRow(props) {
     });
     props.setContent(result);
     setEdit(false);
+    setCount(data.count);
   };
   console.log(Count);
   return (
@@ -59,6 +60,19 @@ function QuickRow(props) {
             <p>{data.count}</p>
           )}
         </td>
+        <td data-cell="قیمت واحد(ریال)">
+          {Edit ? (
+            <input
+              type="text"
+              defaultValue={data.price}
+              placeholder="قیمت واحد"
+              className="price-input"
+              onChange={(e) => setPrice(e.target.value)}
+            />
+          ) : (
+            <p>{normalPriceCount(data.unitPrice)}</p>
+          )}
+        </td>
         <td data-cell="تخفیف">
           {Edit ? (
             <QuickOff
@@ -69,19 +83,8 @@ function QuickRow(props) {
             <p>{data.discount ? data.discount + "%" : "0%"}</p>
           )}
         </td>
-
         <td data-cell="قیمت نهایی(ریال)">
-          {Edit ? (
-            <input
-              type="text"
-              defaultValue={data.price}
-              placeholder="قیمت نهایی"
-              className="price-input"
-              onChange={(e) => setPrice(e.target.value)}
-            />
-          ) : (
-            <p>{normalPriceCount(data.price)}</p>
-          )}
+          <p>{normalPriceCount(data.price)}</p>
         </td>
         <td className="icon-styles">
           {isEdit ? (

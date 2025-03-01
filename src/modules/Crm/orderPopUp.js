@@ -81,6 +81,9 @@ function OrderPopUp(props) {
                         <th data-cell="تعداد">
                           <p>تعداد</p>
                         </th>
+                        <th data-cell="مبلغ واحد">
+                          <p>مبلغ واحد</p>
+                        </th>
                         <th data-cell="تخفیف">
                           <p>تخفیف</p>
                         </th>

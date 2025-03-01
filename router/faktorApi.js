@@ -845,7 +845,7 @@ router.post('/update-faktor-item',auth, async (req,res)=>{
         const result = await CalcFaktorData(FaktorItems.faktorNo)
 
         var canEdit = 0
-        if(faktorResult.status=="edit") canEdit=1
+        if(result.status=="edit") canEdit=1
         res.json({data:result,canEdit})
     }
     catch(error){

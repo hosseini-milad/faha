@@ -841,7 +841,7 @@ router.post('/update-faktor-item',auth, async (req,res)=>{
         data.totalDiscount = discountCalc
         await faktorItems.updateOne(
             {_id:ObjectID(faktorItemNo)},
-        {$set:data}).lean() 
+        {$set:data}).lean()
         const result = await CalcFaktorData(FaktorItems.faktorNo)
 
         res.json({data:result})

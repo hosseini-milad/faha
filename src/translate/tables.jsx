@@ -303,9 +303,17 @@ const tabletrans ={
         english:"Product Name",
         persian:"نام محصول"
     },
+    colorName:{
+        english:"COlor Name",
+        persian:"نام رنگ"
+    },
     productenName:{
         english:"Product English",
         persian:"نام انگلیسی محصول"
+    },
+    colorenName:{
+        english:"Color English",
+        persian:"نام انگلیسی رنگ"
     },
     productUrl:{
         english:"Product Url",

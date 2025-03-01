@@ -2,17 +2,10 @@ import React, { useState } from "react";
 import env from "../../env";
 import Status from "../Components/Status";
 import tabletrans from "../../translate/tables";
+import PostReq from "../../utils/PostReq";
 const ColorsTableRow = (props) => {
   const [checkState, setCheckState] = useState(false);
   const brand = props.brand;
-  const changeStatus = () => {
-    var current = "true";
-    if (brand.active == true) {
-      current = "false";
-    } else {
-      current = "true";
-    }
-  };
 
   const getContrastingColor = (hex) => {
     // Remove the hash at the start if it's there
@@ -29,7 +22,14 @@ const ColorsTableRow = (props) => {
     // Return black or white depending on the brightness
     return brightness > 155 ? "#000000" : "#FFFFFF";
   };
-
+  const DeleteColor = async () => {
+    const result = await PostReq({
+      method: "Post",
+      url: "/panel/product/delete-color",
+      body: { colorId: brand._id },
+    });
+    setTimeout(() => window.location.reload(), 1000);
+  };
   return (
     <tr>
       <td className="checkBoxStyle">
@@ -63,6 +63,12 @@ const ColorsTableRow = (props) => {
             onClick={() =>
               (window.location.href = "/colors/detail/" + brand._id)
             }
+          ></i>
+          <i
+            class="fa fa-trash"
+            aria-hidden="true"
+            style={{ color: "red" }}
+            onClick={DeleteColor}
           ></i>
         </div>
       </td>

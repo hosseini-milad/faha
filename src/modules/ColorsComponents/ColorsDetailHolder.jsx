@@ -52,7 +52,7 @@ function ColorsDetailHolder(props) {
           <div className="pages-wrapper">
             <div className="item-box color-details-holder">
               <StyleInput
-                title={tabletrans.productName[lang]}
+                title={tabletrans.colorName[lang]}
                 direction={direction}
                 defaultValue={content ? content.title : ""}
                 action={(e) =>
@@ -63,7 +63,7 @@ function ColorsDetailHolder(props) {
                 }
               />
               <StyleInput
-                title={tabletrans.productName[lang]}
+                title={tabletrans.colorenName[lang]}
                 direction={direction}
                 defaultValue={content ? content.enTitle : ""}
                 action={(e) =>

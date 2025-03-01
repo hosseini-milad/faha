@@ -12,7 +12,7 @@ function QuickRow(props) {
   const [ShowModal, setShowModal] = useState(false);
   const [Count, setCount] = useState(data.count);
   const [Discount, setDiscount] = useState(data.discount);
-  const [Price, setPrice] = useState();
+  const [Price, setPrice] = useState(data.unitPrice);
   const DeleteItem = async () => {
     const result = await PostReq({
       method: "Post",
@@ -34,7 +34,6 @@ function QuickRow(props) {
     });
     props.setContent(result);
     setEdit(false);
-    setCount(data.count);
   };
   console.log(Count);
   return (
@@ -64,7 +63,7 @@ function QuickRow(props) {
           {Edit ? (
             <input
               type="text"
-              defaultValue={data.price}
+              defaultValue={data.unitPrice}
               placeholder="قیمت واحد"
               className="price-input"
               onChange={(e) => setPrice(e.target.value)}

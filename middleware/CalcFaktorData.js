@@ -17,9 +17,8 @@ const CalcFaktorData=async(faktorNo)=>{
     const faktorResult = await faktor.findOne({faktorNo:faktorNo}).lean()
     const faktorItemResult = await faktorItems.find({faktorNo:faktorNo})
     faktorResult.items = faktorItemResult
-    var canEdit = 0
-    if(faktorResult.status=="edit") canEdit=true
-    return({...faktorResult,canEdit})
+    if(faktorResult.status=="edit") faktorResult.canEdit=true
+    return(faktorResult)
     
 }
 

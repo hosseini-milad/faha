@@ -17,7 +17,7 @@ const CalcInvoice=async(invoiceData)=>{
                 unit: 'عدد',
                 quantity: fData.count,
                 unitPrice: fData.unitPrice,
-                discount: 0,
+                discount: fData.totalDiscount,
                 tax: 0,
                 serialNumbers: [fData.sku,fData.ItemID]
             }

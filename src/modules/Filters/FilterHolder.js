@@ -63,16 +63,13 @@ function FilterHolder(props) {
                     <div className="profiles-title">
                       <i
                         className="fa-solid fa-certificate fa-sm"
-                        style={{ color: "#00c6c6",margin:"0px" }}
+                        style={{ color: "#00c6c6", margin: "0px" }}
                       ></i>
                       <div
                         className="p-wrapper"
                         onClick={() =>
-                          filter.enTitle == "color"
-                            ? (window.location.href =
-                                "/colors")
-                            : (window.location.href =
-                                "/filter/detail/" + filter._id)
+                          (window.location.href =
+                            "/filter/detail/" + filter._id)
                         }
                       >
                         <p>

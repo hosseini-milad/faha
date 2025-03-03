@@ -144,6 +144,14 @@ const menutrans = {
       url: "profiles",
     },
     {
+      english: "Colors Management",
+      persian: "مدیریت رنگ ها",
+      index: 0,
+      icon: "fa-user",
+      href: "/colors",
+      url: "colors",
+    },
+    {
       english: "Documents",
       persian: "مستندات",
       index: 1,

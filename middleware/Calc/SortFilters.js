@@ -3,6 +3,7 @@ const SortFilter=(FilterData)=>{
     var result ={}
     for (var prop in FilterData) {
         var tempArray = FilterData[prop]
+        if(!tempArray)continue
         tempArray.sort(function(a, b) {
             var keyA = (a.title),
               keyB = (b.title);

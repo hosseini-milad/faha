@@ -3,12 +3,21 @@ const Colors = require("../../models/product/Colors")
 const FindColor=async(search)=>{
     const colorData = await Colors.findOne({$or:
         [{title:search},{enTitle:search}]},{_id:0})
-    if(colorData)
+    
+    if(colorData){
+        if(colorData&&!colorData.title){
+            return({
+                title:search,
+                value:search,
+                colorCode:''
+            })
+        }
         return({
             title:colorData.title,
             value:colorData.enTitle,
             colorCode:colorData.colorCode
         })
+    }
     else
         return({
             title:search,

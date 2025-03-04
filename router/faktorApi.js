@@ -473,18 +473,18 @@ router.post('/add-cart',auth,jsonParser, async (req,res)=>{
     const data={
         userId:userId,
         sku:req.body.sku,
-        filters:req.body.filters,
+        //filters:req.body.filters,
         count:req.body.count,
         date:req.body.date?req.body.date:Date.now(),
         progressDate:Date.now()
     }
     try{
-        var FindProductData = await FindProduct(data)
+        var FindProductData = await products.findOne({sku:data.sku})//await FindProduct(data)
         if(!FindProductData){
             res.status(400).json({error:"کد با فیلترها مطابقت ندارد"})
             return
         }
-        data.sku = FindProductData.sku
+        //data.sku = FindProductData.sku
         const userData = await users.findOne({_id:req.headers['userid']})
         const cartData = await cart.find({userId:userId})
         

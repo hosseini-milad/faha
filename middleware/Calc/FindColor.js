@@ -5,13 +5,6 @@ const FindColor=async(search)=>{
         [{title:search},{enTitle:search}]},{_id:0})
     
     if(colorData){
-        if(colorData&&colorData.title!=="undefined"){
-            return({
-                title:search,
-                value:search,
-                colorCode:''
-            })
-        }
         return({
             title:colorData.title,
             value:colorData.enTitle,

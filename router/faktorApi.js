@@ -198,6 +198,7 @@ router.post('/fetch-product', async (req,res)=>{
             if(productList[f].filters){
                 var filterData = productList[f].filters
                 for (var prop in filterData) {
+                    if(prop == "undefined")continue
                     if(!filters[prop])
                         filters[prop]=[]
                     var outData = await FindColor(filterData[prop])

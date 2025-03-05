@@ -22,6 +22,8 @@ const CreateFaktorLog = require('../middleware/CreateFaktorLog');
 const FindNextStatus = require('../middleware/FindNextStatus');
 const FindSideEffect = require('../middleware/FindSideEffect');
 const FindPrice = require('../middleware/FindPrice');
+const MergeOrders = require('../middleware/Calc/MergeOrders');
+const ClassifyOrders = require('../middleware/Calc/ClassifyOrders');
 
 router.post('/fetch-crm',jsonParser,async (req,res)=>{
     const userId=req.body.userId?req.body.userId:req.headers['userid']
@@ -461,96 +463,16 @@ router.post('/order-integrity',auth,jsonParser,async (req,res)=>{
         res.status(400).json({error:true,message:"وضعیت وارد نشده است"})
         return
     }
-    try{
+    
         const orderList = await faktors.find({status:status})
         const orderFaktorNoList = orderList.map(item=>item.faktorNo)
-        const orderItems = await faktorItems.find({faktorNo:{$in:orderFaktorNoList}})
-        var result = [];
-        var classOrder = [];
-    /*
-        orderData.sort((a, b) => localCompare(a.customerName, b.customerName));
-    
-        const customersName = orderData.map(x => `${x.customerName ?? ""} ${x.customerLastName ?? ""}`);
-    
-        for (var i = 0; i < orderData.length; i++) {
-            var orderItems = orderData[i].cartItems;
-    
-            for (var j = 0; j < orderItems.length; j++) {
-                classOrder = await ClassifyOrder(classOrder, orderItems[j]);
-            }
-        }
-    
-        classOrder.sort((a, b) => localCompare(a.catData?.title, b.catData?.title));
-    
-        classOrder.forEach(category => {
-            if (category.data && category.data.length) {
-                category.data.sort((a, b) => localCompare(a.brandData?.title, b.brandData?.title));
-    
-                category.data.forEach(brand => {
-                    if (brand.data && brand.data.length) {
-                        brand.data.sort((a, b) => {
-                            const [alphaA, numA] = splitSku(a.sku);
-                            const [alphaB, numB] = splitSku(b.sku);
-    
-                            const alphaCompare = localCompare(alphaA, alphaB);
-                            if (alphaCompare !== 0) return alphaCompare;
-    
-                            return numA - numB;
-                        });
-                    }
-                });
-            }
-        });
-    
-        let totalCount = 0;
-        let totalBox = 0;
-        let totalUnitCount = 0;
-        let unitIDCounts = {};
-    
-        classOrder.forEach(category => {
-            category.data?.forEach(brand => {
-                brand.data?.forEach(item => {
-                    const count = item.count ?? 0;
-                    let box = item.box;
-                    if (box === null || box === undefined || box === '') {
-                        box = 0;
-                    }
-                    box = Number(box);
-                    const unitID = item.unitID ?? null;
-    
-                    totalCount += count;
-                    totalBox += box;
-                    const unitCount = box * count;
-                    totalUnitCount += unitCount;
-    
-                    item.unitCount = unitCount;
-    
-                    if (unitID !== null) {
-                        if (!unitIDCounts[unitID]) {
-                            unitIDCounts[unitID] = box;
-                        } else {
-                            unitIDCounts[unitID] += box;
-                        }
-                    }
-                });
-            });
-        });
-    
-        const unitIDCountArray = Object.keys(unitIDCounts).map(unitID => {
-            return { unitId: unitID, count: unitIDCounts[unitID] };
-        });
-    
-        const total = {
-            count: totalCount,
-            box: totalBox || null,
-            unitCount: totalUnitCount || null,
-            unitID: unitIDCountArray.length ? unitIDCountArray : null
-        };
-    
-        res.json({ customersName, data: classOrder, total, message: "اطلاعات تجمعی" });
-*/
+        const orderItems = await faktorItems.find({faktorNo:{$in:orderFaktorNoList}}).lean()
+        const skuList = await MergeOrders(orderItems)
+        var classifyData = await ClassifyOrders(skuList)
+    try{    var result = [];
+        var classOrder = []; 
 
-        res.json({data:orderItems,message:"لیست سفارشات"})
+        res.json({data:skuList,classifyData,message:"لیست سفارشات"})
     }
     catch(error){
         res.send({"status":"failed",error});

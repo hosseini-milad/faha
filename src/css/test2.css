@@ -38331,28 +38331,74 @@ table {
 .taskAction .image-wrapper {
   margin-bottom: 0px;
   background-color: silver;
-  padding:4px 6px;
+  padding: 4px 6px;
   display: flex;
   align-items: center;
   border-radius: 0.5rem;
   .fa-upload {
-    color:black !important;
-    margin:0px;
-    height:20px;
+    color: black !important;
+    margin: 0px;
+    height: 20px;
   }
 
-  label{
-    font-size:0.7rem;
-    color:black;
-    margin-bottom:0px;
+  label {
+    font-size: 0.7rem;
+    color: black;
+    margin-bottom: 0px;
     background-color: white;
   }
 }
-.price-input.price-input{
+.price-input.price-input {
   background-color: white !important;
-  width:130px;
+  width: 130px;
   height: 35px;
   border-radius: 0.5rem;
   border: 1px solid var(--dark-blue-sec) !important;
-  text-align:center;
+  text-align: center;
+}
+.Print-store .hesabfaMainTable {
+  width: 95%;
+  th,
+  td {
+    color: black;
+    height: 32px;
+
+    overflow: hidden;
+    min-width: 0;
+  }
+  th {
+    white-space: nowrap;
+    background-color: #c9c9c9;
+  }
+  .x-small-td {
+    width: 3%;
+  }
+  .small-td {
+    width: 8%;
+  }
+  .meduim-td {
+    width: 10%;
+  }
+  .larg-td {
+    width: 50%;
+  }
+  .count-td {
+    width: 6%;
+  }
+}
+.Print-store .tables-container {
+  width: 95%;
+}
+.Print-store .caption {
+  width: 95%;
+  margin-right: 2rem;
+  margin-bottom: 0;
+}
+.Print-store .PrintBtn {
+  padding: 0.2rem 0.5rem;
+  border: 1px solid lightgray;
+  outline: none;
+  background-color: white;
+  margin-top: 20px;
+  border-radius: 1rem;
 }

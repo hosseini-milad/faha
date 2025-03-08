@@ -185,7 +185,7 @@ root.render(
             </Layout>
           }
         />
-        <Route path="/PrintStore" element={<PrintStore lang={lang} />} />
+        <Route path="/PrintStore/:stepId" element={<PrintStore lang={lang} />} />
         <Route
           path="/crmlist"
           element={

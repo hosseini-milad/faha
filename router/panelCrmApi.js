@@ -91,6 +91,7 @@ const calcTasks=async(userId,offsetRaw,pageSizeRaw,colId)=>{
             (parseInt(offset)+parseInt(tempPageSize))) 
         tasksData.push(
             { title:crmSteps[i].title , step:crmSteps[i].code , 
+                isStore:(crmSteps[i].code == "prepair")?1:0,
                 pageSize:tempPageSize, more:(colData.length>tempPageSize)?true:false,
                 size:colData.length, data:colList}
         )

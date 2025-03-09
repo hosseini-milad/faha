@@ -28568,6 +28568,15 @@ h3 {
   padding: 15px;
   border-radius: 8px;
   position: relative;
+
+  .store-btn{
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size:0.8rem;
+    height:100%;
+  }
+  
 }
 
 .board-item:first-child .board-title {

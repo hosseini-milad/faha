@@ -45,10 +45,12 @@ function Column(props) {
         ) : (
           <></>
         )}
-        {props.column.enTitle == "prepare" ? (
+        {props.column.isStore ? (
           <button
-            className="print-btn"
-            onClick={() => (window.location.href = "/PrintStore")}
+            className="print-btn store-btn"
+            onClick={() =>
+              (window.location.href = "/PrintStore/" + props.column.step)
+            }
           >
             تجمع سفارشات
           </button>

@@ -84,6 +84,7 @@ function Column(props) {
                   action={action}
                   setLoading={props.setLoading}
                   index={i}
+                  columnData={props.column}
                 />
               ))}
               {provided.placeholder}

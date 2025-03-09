@@ -37,7 +37,12 @@ const PostReq = async (props) => {
     .then(
       (result) => {
         if (result.error) {
-          error.render(<ShowError text={result.error.message} color={"red"} />);
+          error.render(
+            <ShowError
+              text={result.message ? result.message : result.error.message}
+              color={"red"}
+            />
+          );
           setTimeout(() => error.render(), 3000);
         } else {
           if (result.message) {

@@ -6,6 +6,7 @@ import ShowError from "../../components/Modal/ShowError";
 import TaskAction from "./Tasks/TaskAction";
 import QuickRow from "../../Order/QuickCart/QuickRow";
 import TaskBtns from "./Tasks/TaskBtns";
+import TaskBarcode from "./Tasks/TaskBarcode";
 
 function OrderPopUp(props) {
   const data = props.data;
@@ -130,6 +131,14 @@ function OrderPopUp(props) {
                   close={props.close}
                   setLoading={props.setLoading}
                 />
+                {props.columnData.isStore ? (
+                  <TaskBarcode
+                    faktorNum={data.faktorNo}
+                    setContent={setContent}
+                  />
+                ) : (
+                  <></>
+                )}
               </div>
             ) : (
               <></>

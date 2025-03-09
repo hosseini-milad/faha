@@ -70,6 +70,7 @@ function Task(props) {
               data={taskData}
               close={() => setOrderPop(0)}
               setLoading={props.setLoading}
+              columnData={props.columnData}
             />
           ) : (
             <></>

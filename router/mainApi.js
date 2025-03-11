@@ -94,7 +94,7 @@ router.use('/panel/crm',CRMPanelApi)
         var outPut = []
         var updateCustomer = 0
         var newCustomer = 0
-        for(var i=1;i<result.length;i++){
+        for(var i=0;i<result.length;i++){
             
             if(result[i]){
             outPut.push(result[i])
@@ -149,7 +149,7 @@ router.get('/get-product',auth, async (req,res)=>{
         var outPut = []
         var updateProduct = 0
         var newProduct = 0
-        for(var i=1;i<result.length;i++){
+        for(var i=0;i<result.length;i++){
             if(result[i].Code == "000002")
                 console.log(result[i])
             if(result[i]){ 

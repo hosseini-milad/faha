@@ -632,8 +632,9 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             phone:userData.phone
         }
         await faktor.create(faktorData)
-        userData.phone&&await SendSMS(userData.phone,"sabt",userData.username,faktorNo)
         await cart.deleteMany({userId:userId})
+        
+        userData.phone&&await SendSMS(userData.phone,"sabt",userData.username,faktorNo)
         res.json({faktorNo:faktorNo,message:"سفارش ثبت شد"})
         return
         //const cartDetails = await findCartFunction(userId,req.headers['userid'])
@@ -698,8 +699,8 @@ router.post('/cart-to-faktor-from',auth,jsonParser, async (req,res)=>{
             phone:userData.phone
         }
         await faktor.create(faktorData)
-        userData.phone&&await SendSMS(userData.phone,"sabt",userData.username,faktorNo)
         await cart.deleteMany({userId:userId})
+        userData.phone&&await SendSMS(userData.phone,"sabt",userData.username,faktorNo)
         res.json({faktorNo:faktorNo,message:"سفارش ثبت شد"})
         return
         //const cartDetails = await findCartFunction(userId,req.headers['userid'])

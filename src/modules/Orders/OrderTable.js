@@ -36,10 +36,10 @@ function OrderTable(props) {
               <p>{tabletrans.customerInfo[lang]}</p>
               <i></i>
             </th>
-            <th>
+            {/* <th>
               <p>{tabletrans.phoneNumber[lang]}</p>
               <i></i>
-            </th>
+            </th> */}
             <th>
               <p>{tabletrans.payStatus[lang]}</p>
               <i></i>

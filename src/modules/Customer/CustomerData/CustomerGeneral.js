@@ -314,7 +314,7 @@ function CustomerGeneral(props) {
 
             <span style={{ whiteSpace: "pre-wrap" }}></span>
 
-            <StyleSelect
+            {/* <StyleSelect
               title={"گروه بندی"}
               direction={props.direction}
               defaultValue={userData.group}
@@ -328,7 +328,7 @@ function CustomerGeneral(props) {
                   group: e.group,
                 }))
               }
-            />
+            /> */}
             <div className="dense-btn">
               <label htmlFor="view">
                 {/* Text indicating the radio button */}

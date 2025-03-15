@@ -86,10 +86,6 @@ function Category(props) {
             <i className="fa-solid fa-plus"></i>
             <p>{tabletrans.addNew[lang]}</p>
           </div>
-          <div className="edit-btn">
-            <i className="fa-solid fa-pen"></i>
-            <p>{tabletrans.edit[lang]}</p>
-          </div>
         </div>
       </div>
       <div className="list-container">

@@ -42,7 +42,7 @@ function OrderTableRow(props) {
     }
     console.log(props.selectedOrder);
   };
-  console.log(user)
+  console.log(user);
   return (
     <React.Fragment>
       <tr className={activeAcc ? "activeAccordion" : "accordion"}>
@@ -86,7 +86,7 @@ function OrderTableRow(props) {
             )}
           </div>
         </td>
-        <td>
+        {/* <td>
           <div className="order-num">
             <p className="email">
               {order.userInfo && order.userInfo[0]
@@ -94,7 +94,7 @@ function OrderTableRow(props) {
                 : tabletrans.notEntered[lang]}
             </p>
           </div>
-        </td>
+        </td> */}
         <td>
           <PayStatus
             payStatus={order.payStatus}
@@ -122,9 +122,7 @@ function OrderTableRow(props) {
 
         <td>
           <div className="order-price">
-            <p>
-              {normalPriceRound(order && order.totalPrice)}
-            </p>
+            <p>{normalPriceRound(order && order.totalPrice)}</p>
           </div>
         </td>
         <td>

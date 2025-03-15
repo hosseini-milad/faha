@@ -51,8 +51,6 @@ function FilterHolder(props) {
             <tr>
               <th>{errortrans.filterName[lang]}</th>
               <th>{errortrans.createdBy[lang]}</th>
-              <th>{errortrans.createdOn[lang]}</th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -81,7 +79,7 @@ function FilterHolder(props) {
                     </div>
                   </td>
                   <td>مدیریت</td>
-                  <td>{new Date(filter.date).toLocaleDateString("fa")}</td>
+                  {/* <td>{new Date(filter.date).toLocaleDateString("fa")}</td>
                   <td>
                     <div className="profiles-icons">
                       <i
@@ -93,7 +91,7 @@ function FilterHolder(props) {
                         style={{ color: "#c0c0c0" }}
                       ></i>
                     </div>
-                  </td>
+                  </td> */}
                 </tr>
               ))}
           </tbody>

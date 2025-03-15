@@ -24,7 +24,7 @@ function ProductTableRow(props) {
   return (
     <React.Fragment>
       <tr className={activeAcc ? "activeAccordion" : "accordion"}>
-        <td>{props.index+1}</td>
+        <td>{props.index + 1}</td>
         <td className="checkBoxStyle">
           {product.isMaster ? (
             <></>
@@ -88,12 +88,6 @@ function ProductTableRow(props) {
 
         <td>
           <div className="more-btn">
-            <i
-              className={`tableIcon fas ${
-                activeAcc ? "fa-chevron-up" : "fa-chevron-down"
-              }`}
-              onClick={() => props.showDetail(activeAcc ? "-1" : props.index)}
-            ></i>
             <i
               className="tableIcon fas fa-edit"
               onClick={() =>

@@ -133,7 +133,15 @@ body {
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
 }
+main{
+  min-height: 100vh;
 
+  .footer{
+    margin-top:auto;
+    position: absolute;
+    bottom: 0;
+  }
+}
 hr {
   margin: 1rem 0;
   color: inherit;
@@ -38413,4 +38421,28 @@ table {
   background-color: white;
   margin-top: 20px;
   border-radius: 1rem;
+}
+.ps-section .filters-wrapper .optionsSelect{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  
+}
+.ps-section .filters-wrapper .optionsSelect ul{
+  width: 100%;
+  display: flex;
+  flex-wrap:wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.2rem;
+}.ps-section .filters-wrapper .optionsSelect ul .optionItem{
+  padding:0.2rem 0.6rem;
+  border:1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left:0.2rem;
+  min-width:200px;
 }

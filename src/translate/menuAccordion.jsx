@@ -151,14 +151,14 @@ const menutrans = {
       href: "/colors",
       url: "colors",
     },
-    {
-      english: "Documents",
-      persian: "مستندات",
-      index: 1,
-      icon: "fa-learn",
-      href: "/documents/list",
-      url: "documents",
-    },
+    // {
+    //   english: "Documents",
+    //   persian: "مستندات",
+    //   index: 1,
+    //   icon: "fa-learn",
+    //   href: "/documents/list",
+    //   url: "documents",
+    // },
   ],
 };
 export default menutrans;

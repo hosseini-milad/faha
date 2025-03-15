@@ -17,15 +17,15 @@ function CustomerFilters(props) {
   };
   return (
     <div className="user-filter">
-      <StyleSelect
+      {/* <StyleSelect
         title={"نقش"}
         class="filterComponent"
         direction={props.lang.dir}
         options={props.options}
         action={(e) => handleFilterChange("access", e)}
 
-      />
-      <StyleSelect
+      /> */}
+      {/* <StyleSelect
         title={"گروه"}
         class="filterComponent"
         label="group"
@@ -33,30 +33,14 @@ function CustomerFilters(props) {
         options={notNull(props.groupList,"group")}
         action={(e) => handleFilterChange("groupCode", e?e.groupCode:'')}
 
-      />
+      /> */}
 
       <div className="serach-input">
         <StyleInput
           title={"مشتری"}
           direction={props.lang.dir}
           action={(e) => handleFilterChange("customer", e)}
-
         />
-        <i className="tableIcon fas fa-ellipsis-v"></i>
-      </div>
-      <div className="option-sub">
-        <div className="option">
-          <i className="fa-solid fa-print fa-sm"></i>
-          <p>Print</p>
-        </div>
-        <div className="option">
-          <i className="fa-solid fa-file-import fa-sm"></i>
-          <p>Import</p>
-        </div>
-        <div className="option">
-          <i className="fa-solid fa-file-export fa-sm"></i>
-          <p>Export</p>
-        </div>
       </div>
     </div>
   );

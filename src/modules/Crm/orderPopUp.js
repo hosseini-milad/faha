@@ -69,7 +69,14 @@ function OrderPopUp(props) {
               style={{ padding: "70px 10px 10px" }}
             >
               <main className="sharif-order-main">
-                <section className="admin-table-sec ">
+                <section
+                  className="admin-table-sec "
+                  style={{
+                    maxHeight: "70%",
+                    overflow: "auto",
+                    display: "block",
+                  }}
+                >
                   <table>
                     <tbody>
                       <tr>

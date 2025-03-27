@@ -6,7 +6,7 @@ const CheckAllRecieve=async(faktorNo)=>{
     
     for(var i=0;i<faktorItemsList.length;i++){
         if(!faktorItemsList.isRecieve){
-            return(0)
+            return(0) 
         }
         
     }

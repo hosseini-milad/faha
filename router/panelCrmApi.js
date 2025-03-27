@@ -210,11 +210,12 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
             ]
         }
         if(faktorItem.status =="prepair"){
-            buttons=[
+            const allCheck = CheckAllRecieve(faktorItem&&faktorItem.faktorNo)
+            buttons=allCheck?[
                 /*{title:"کد محصول",parameter:"newSku",
                     type:"text",color:"silver",value:0},*/
                 {title:"تایید",type:"button",color:"lightgreen",value:1}
-            ]
+            ]:[]
         }
         if(faktorItem.status =="done"){
             buttons=[

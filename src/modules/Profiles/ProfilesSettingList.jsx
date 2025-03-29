@@ -13,6 +13,7 @@ const ProfilesSettingList = (props) => {
     direction,
     lang,
     Loader,
+    Setting,
     setSetting,
     UpdateProfile,
   } = props;
@@ -132,7 +133,7 @@ const ProfilesSettingList = (props) => {
         <button
           type="button"
           className="add-btn"
-          onClick={() => UpdateProfile(data._id)}
+          onClick={() => UpdateProfile(Setting == "new" ? "" : data._id)}
         >
           {formtrans.saveChanges[lang]}
         </button>

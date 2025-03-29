@@ -36,7 +36,7 @@ const ProfilesSetting = (props) => {
       url: "/panel/user/update-user",
       body: { _id: userId, ...Changes },
     });
-    setTimeout(() => (window.location.reload(), 3000));
+    // setTimeout(() => (window.location.reload(), 3000));
   };
 
   return (
@@ -61,6 +61,7 @@ const ProfilesSetting = (props) => {
                   lang={lang}
                   Loader={Loader}
                   setSetting={setSetting}
+                  Setting={Setting}
                   UpdateProfile={UpdateProfile}
                 />
               ) : (

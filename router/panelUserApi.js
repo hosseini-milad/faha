@@ -39,7 +39,7 @@ router.post('/fetch-user',jsonParser,async (req,res)=>{
             const profileData = await ProfileAccess.findOne({_id:ObjectID(profileIds[i])})
             profileData&&profileDetail.push(profileData)
         }
-        userData.profileName = profileDetail
+        userData.profileData = profileDetail
        res.json({data:userData})
     }
     catch(error){

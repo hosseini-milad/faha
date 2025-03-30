@@ -31,7 +31,15 @@ router.post('/fetch-user',jsonParser,async (req,res)=>{
     var pageSize = req.body.pageSize?req.body.pageSize:"10";
     var userId = req.body.userId
     try{ 
-        const userData = await user.findOne({_id: ObjectID(userId)})
+        const userData = await user.findOne({_id: ObjectID(userId)}).lean()
+
+        const profileIds = userData.profile
+        var profileDetail = []
+        for(var i = 0;i<profileIds.length;i++){
+            const profileData = await ProfileAccess.findOne({_id:ObjectID(profileIds[i]._id)})
+            profileDetail.push(profileData.profileName)
+        }
+        userData.profileName = profileDetail
        res.json({data:userData})
     }
     catch(error){

@@ -21,10 +21,14 @@ function ProductFilters(props) {
   };
 
   const createConditionalAction = (property, minLength) => {
+    let typingTimeout;
     return (e) => {
-      if (e.length > minLength || e.length === 0) {
-        handleFilterChange(property, e);
-      }
+      clearTimeout(typingTimeout);
+      typingTimeout = setTimeout(() => {
+        if (e.length > minLength || e.length === 0) {
+          handleFilterChange(property, e);
+        }
+      }, 3000); // 3 seconds delay
     };
   };
 

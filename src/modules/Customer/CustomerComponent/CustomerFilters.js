@@ -15,6 +15,17 @@ function CustomerFilters(props) {
       [property]: newValue,
     });
   };
+  const createConditionalAction = (property, minLength) => {
+    let typingTimeout;
+    return (e) => {
+      clearTimeout(typingTimeout);
+      typingTimeout = setTimeout(() => {
+        if (e.length > minLength || e.length === 0) {
+          handleFilterChange(property, e);
+        }
+      }, 3000); // 3 seconds delay
+    };
+  };
   return (
     <div className="user-filter">
       {/* <StyleSelect
@@ -39,7 +50,7 @@ function CustomerFilters(props) {
         <StyleInput
           title={"مشتری"}
           direction={props.lang.dir}
-          action={(e) => handleFilterChange("customer", e)}
+          action={createConditionalAction("customer", 2)}
         />
       </div>
     </div>

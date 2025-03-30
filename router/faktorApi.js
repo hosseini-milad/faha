@@ -900,6 +900,27 @@ router.post('/list-faktor',auth, async (req,res)=>{
     var offset = req.body.offset?(parseInt(req.body.offset)):0;
     var managerId = req.headers['userid']
     var userId = req.body.userId
+    var dateFrom=
+            req.body.dateFrom?req.body.dateFrom[0]+"/"+
+            req.body.dateFrom[1]+"/"+req.body.dateFrom[2]+" "+"00:00":
+            new Date().toISOString().slice(0, 10)+" 00:00"
+    var dateTo=
+            req.body.dateTo?req.body.dateTo[0]+"/"+
+            req.body.dateTo[1]+"/"+req.body.dateTo[2]+" 23:59":
+            new Date().toISOString().slice(0, 10)+" 23:59"
+    const nowIso=nowDate.toISOString();
+        ////console.log(nowIso)
+    const nowParse = Date.parse(nowIso);
+    const now = new Date(nowParse)
+    var now2 = new Date();
+    var now3 = new Date();
+
+    const dateFromEn = new Date(now2.setDate(now.getDate()-(dateFrom?dateFrom:1)));
+    
+    dateFromEn.setHours(0, 0, 0, 0)
+    const dateToEn = new Date(now3.setDate(now.getDate()-(dateTo?dateTo:0)));
+    dateToEn.setHours(23, 59, 0, 0)
+
     try{
         const userData = managerId&&await users.findOne({_id:ObjectID(managerId)})
         if(!userData){
@@ -911,9 +932,13 @@ router.post('/list-faktor',auth, async (req,res)=>{
             res.status(400).json({error:"دسترسی ندارید"})
             return 
         }
-        const faktorData = access>6?
-            await FaktorSchema.find({}).sort({initDate:-1}).lean():
-            await FaktorSchema.find({manageId:managerId}).sort({initDate:-1}).lean()
+        const faktorData = 
+            await FaktorSchema.aggregate([
+                { $match: access>6?{manageId:managerId}:{}},
+                { $match:!data.orderNo?{date:{$gte:new Date(data.dateFrom)}}:{}},
+                { $match:!data.orderNo?{date:{$lte:new Date(data.dateTo)}}:{}},
+                { $sort:{initDate:-1}}
+            ])
         const faktorList = faktorData.slice(offset,
             (parseInt(offset)+parseInt(pageSize))) 
         for(var i=0;i<faktorList.length;i++){

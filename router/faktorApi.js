@@ -899,6 +899,7 @@ router.post('/list-faktor',auth, async (req,res)=>{
     var pageSize = req.body.pageSize?req.body.pageSize:"10";
     var offset = req.body.offset?(parseInt(req.body.offset)):0;
     var managerId = req.headers['userid']
+    var orderNo = req.body.orderNo
     var userId = req.body.userId
     var dateFrom=
             req.body.dateFrom?req.body.dateFrom[0]+"/"+
@@ -936,8 +937,9 @@ router.post('/list-faktor',auth, async (req,res)=>{
         const faktorData = 
             await FaktorSchema.aggregate([
                 { $match: access>6?{manageId:managerId}:{}},
-                { $match:!data.orderNo?{date:{$gte:new Date(data.dateFrom)}}:{}},
-                { $match:!data.orderNo?{date:{$lte:new Date(data.dateTo)}}:{}},
+                { $match: orderNo?{orderNo:new RegExp('.*' + orderNo + '.*')}:{}},
+                { $match:!orderNo?{date:{$gte:new Date(dateFrom)}}:{}},
+                { $match:!orderNo?{date:{$lte:new Date(dateTo)}}:{}},
                 { $sort:{initDate:-1}}
             ])
         const faktorList = faktorData.slice(offset,

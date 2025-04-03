@@ -938,8 +938,8 @@ router.post('/list-faktor',auth, async (req,res)=>{
             await FaktorSchema.aggregate([
                 { $match: access>6?{manageId:managerId}:{}},
                 { $match: orderNo?{orderNo:new RegExp('.*' + orderNo + '.*')}:{}},
-                { $match:!orderNo?{date:{$gte:new Date(dateFrom)}}:{}},
-                { $match:!orderNo?{date:{$lte:new Date(dateTo)}}:{}},
+                { $match:!orderNo?{initDate:{$gte:new Date(dateFrom)}}:{}},
+                { $match:!orderNo?{initDate:{$lte:new Date(dateTo)}}:{}},
                 { $sort:{initDate:-1}}
             ])
         const faktorList = faktorData.slice(offset,

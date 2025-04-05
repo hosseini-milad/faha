@@ -56,9 +56,9 @@ router.post('/fetch-tasks-column',auth,jsonParser,async (req,res)=>{
     const userId = req.headers["userid"]
     const offset = req.body.offset
     const pageSize = req.body.pageSize
-    try{ 
+     
         const tasksList = await calcTasks(userId,offset,pageSize,colId)
-
+try{
        res.json(tasksList)
     }
     catch(error){

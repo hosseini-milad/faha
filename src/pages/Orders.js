@@ -22,6 +22,7 @@ function Orders(props) {
   const direction = props.lang ? props.lang.dir : errortrans.defaultDir;
   const lang = props.lang ? props.lang.lang : errortrans.defaultLang;
   const [content, setContent] = useState("");
+  const [ContentSize, setContentSize] = useState("");
   const [filters, setFilters] = useState(getFiltersFromUrl());
   const [loading, setLoading] = useState(0);
   const [StatusList, setStatusList] = useState("");
@@ -69,6 +70,7 @@ function Orders(props) {
             setLoading(0);
             setContent("");
             setContent(result.data);
+            setContentSize(result.size);
             setError("");
           }
         },
@@ -130,7 +132,6 @@ function Orders(props) {
           ) : (
             <OrderTable
               orders={content ? content : {}}
-              
               lang={lang}
               isSale={content && content.isSale}
               token={token}
@@ -140,7 +141,7 @@ function Orders(props) {
 
         <Paging
           content={content}
-          size={tab ? content.cartSize : content.size}
+          size={ContentSize}
           filters={filters}
           lang={props.lang}
           setFilters={handleFilterChange}

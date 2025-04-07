@@ -916,7 +916,7 @@ router.post('/list-faktor',auth, async (req,res)=>{
     var offset = req.body.offset?(parseInt(req.body.offset)):0;
     var managerId = req.headers['userid']
     var orderNo = req.body.orderNo
-    var userId = req.body.userId
+    var status = req.body.status
     var dateFrom=
             req.body.dateFrom?req.body.dateFrom[0]+"/"+
             req.body.dateFrom[1]+"/"+req.body.dateFrom[2]+" "+"00:00":
@@ -954,6 +954,7 @@ router.post('/list-faktor',auth, async (req,res)=>{
             await FaktorSchema.aggregate([
                 { $match: access>6?{}:{manageId:managerId}},
                 { $match: orderNo?{faktorNo:new RegExp('.*' + orderNo + '.*')}:{}},
+                { $match: status?{status:status}:{}},
                 { $match:!orderNo?{initDate:{$gte:new Date(dateFrom)}}:{}},
                 { $match:!orderNo?{initDate:{$lte:new Date(dateTo)}}:{}},
                 { $sort:{initDate:-1}}

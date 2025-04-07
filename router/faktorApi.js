@@ -67,6 +67,7 @@ const Services = require('../models/product/Services');
 const SortFilter = require('../middleware/Calc/SortFilters');
 const FindCount = require('../middleware/Calc/FindCount');
 const CreateNotif = require('../middleware/CreateNotif');
+const crmlist = require('../models/crm/crmlist');
 const {TaxRate} = process.env
 router.post('/products', async (req,res)=>{
     try{
@@ -968,7 +969,8 @@ router.post('/list-faktor',auth, async (req,res)=>{
             faktorData[i].userDetail=userDetail
             //itemRefs.push(faktorItem)
         }
-        res.json({data:faktorList,size:faktorData.length})
+        var status = await crmlist.findOne()
+        res.json({data:faktorList,size:faktorData.length,status:status?status.crmSteps:[]})
     }
     catch(error){
         res.status(500).json({error: error.message})

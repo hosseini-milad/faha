@@ -151,7 +151,6 @@ router.get('/get-product',auth, async (req,res)=>{
         var newProduct = 0
         for(var i=0;i<result.length;i++){
             if(result[i].Code == "000002")
-                console.log(result[i])
             if(result[i]){ 
             outPut.push(result[i])
             var query = {title:result[i].SalesTitle,

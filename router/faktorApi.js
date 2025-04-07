@@ -65,6 +65,7 @@ const FindQuery = require('../middleware/Calc/FindQuery');
 const CalcFaktorData = require('../middleware/CalcFaktorData');
 const Services = require('../models/product/Services');
 const SortFilter = require('../middleware/Calc/SortFilters');
+const FindCount = require('../middleware/Calc/FindCount');
 const {TaxRate} = process.env
 router.post('/products', async (req,res)=>{
     try{
@@ -596,16 +597,21 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
         const cartData = cartDetail.cartDetail
         totalPrice=cartData.cartPrice
         totalCount = cartData.cartCount
+        var status = "inprogress"
         for(var i=0;i<(cartDetail.cart&&cartDetail.cart.length);i++){
             var cartItem = cartDetail.cart[i]
-            const productDetail = await products.findOne({sku:cartItem.sku})
-            
+            var statusItem = "inprogress"
+            const productDetail = 0&&await products.findOne({sku:cartItem.sku})
+            const stock = await FindCount(cartItem.sku,cartItem.count)
+            if(stock<0) {
+                status = "quote"
+                statusItem= "quote"
+            }
             const { _id: _, ...newObj } = cartItem;
-            var status = "inprogress"
             await faktorItems.create({...newObj,faktorNo:faktorNo,
                 status:status,cartDetail,
                 cName:userData.username,phone:userData.phone})
-            await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
+            await CreateFaktorLog(userId,faktorNo,"regOrder",statusItem,"","",newObj)
             
         }
         /*for(var i=0;i<serviceList.length;i++){
@@ -624,7 +630,7 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             userId:userId, 
             initDate:Date.now(),
             progressDate:Date.now(),
-            status:"inprogress",
+            status:status,
             isActive:true, isEdit:false,
             totalPrice:NormalNumber(totalPrice),
             totalCount:totalCount,
@@ -672,16 +678,21 @@ router.post('/cart-to-faktor-from',auth,jsonParser, async (req,res)=>{
         const cartData = cartDetail.cartDetail
         totalPrice=cartData.cartPrice
         totalCount = cartData.cartCount
+        var status = "inprogress"
         for(var i=0;i<(cartDetail.cart&&cartDetail.cart.length);i++){
             var cartItem = cartDetail.cart[i]
-            const productDetail = await products.findOne({sku:cartItem.sku})
-            
+            var statusItem = "pay"
+            const productDetail = 0&&await products.findOne({sku:cartItem.sku})
+            const stock = await FindCount(cartItem.sku,cartItem.count)
+            if(stock<0) {
+                status = "quote"
+                statusItem= "quote"
+            }
             const { _id: _, ...newObj } = cartItem;
-            var status = "pay"
             await faktorItems.create({...newObj,faktorNo:faktorNo,
                 status:status,cartDetail,
                 cName:userData.username,phone:userData.phone})
-            await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
+            await CreateFaktorLog(userId,faktorNo,"regOrder",statusItem,"","",newObj)
             
         }
         const faktorData = {
@@ -690,7 +701,7 @@ router.post('/cart-to-faktor-from',auth,jsonParser, async (req,res)=>{
             manageId:manageId,
             initDate:Date.now(),
             progressDate:Date.now(),
-            status:"inprogress",
+            status:status,
             isActive:true, isEdit:false,
             totalPrice:NormalNumber(totalPrice),
             totalCount:totalCount,

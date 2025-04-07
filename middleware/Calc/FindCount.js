@@ -4,7 +4,7 @@ const FindCount=async(sku,count)=>{
     const productData = await products.findOne({sku:sku})
     var existCode = productData.stock
     var remain = existCode-count
-    retun(remain)
+    return(remain)
 }
 
 module.exports =FindCount

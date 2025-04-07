@@ -83,6 +83,7 @@ router.post('/list-category', async (req,res)=>{
     var search = req.body.search
     try{
         var catList = await category.aggregate([
+            {$match:{active:true}},
             {$match:search?{$or:[
                 {catCode:{$regex: search, $options : 'i'}},
                 {title:{$regex: search, $options : 'i'}}

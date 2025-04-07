@@ -66,6 +66,7 @@ const CalcFaktorData = require('../middleware/CalcFaktorData');
 const Services = require('../models/product/Services');
 const SortFilter = require('../middleware/Calc/SortFilters');
 const FindCount = require('../middleware/Calc/FindCount');
+const CreateNotif = require('../middleware/CreateNotif');
 const {TaxRate} = process.env
 router.post('/products', async (req,res)=>{
     try{
@@ -612,7 +613,9 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
                 status:status,cartDetail,
                 cName:userData.username,phone:userData.phone})
             await CreateFaktorLog(userId,faktorNo,"regOrder",statusItem,"","",newObj)
-            
+            await CreateNotif("ثبت سفارش",userData._id,"order",
+                "print/"+faktorNo,"order","",faktorNo
+            )
         }
         /*for(var i=0;i<serviceList.length;i++){
            const serviceData = serviceList[i]&&await Services.findOne({_id:ObjectID(serviceList[i])}) 

@@ -1,15 +1,15 @@
 const notif = require("../models/param/notif")
 
 
-const CreateNotif = async(data,user,type,linkRaw,kind,thumb)=>{
+const CreateNotif = async(data,user,type,linkRaw,kind,thumb,content)=>{
     var link = linkRaw?linkRaw:"#"
     await notif.create({
-        title:type+data,
+        title:data,
         kind:kind,
         orderNo:data,
         userId:user,
         status:1,
-        content: "",
+        content: content,
         link:link,
         imageUrl: thumb,
     })

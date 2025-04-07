@@ -200,6 +200,7 @@ router.post('/list-customers',jsonParser,async (req,res)=>{
         ])
         const groupList = await customer.aggregate([ 
             {$group:{_id:{group:'$group', groupCode:'$groupCode'}, count:{$sum:1}}}, 
+            { $match:data.official?{cCode:{$exists:true}}:{}},
             {$sort:{groupCode:-1}},
             {$group:{_id:'$_id.groupCode', group:{$first:'$_id.group'}, 
                 groupCode:{$first:'$_id.groupCode'},

@@ -128,13 +128,13 @@ function Customers(props) {
             <i className="fa-solid fa-bell"></i>
             {tabletrans.sendPop[lang]}
           </label> */}
-          {/* <label
+          <label
             className="edit-btn"
             onClick={() => (window.location.href = "/newusers")}
           >
             <i className="fa-solid fa-user"></i>
             {tabletrans.newCu[lang]}
-          </label> */}
+          </label>
           <label
             className="edit-btn"
             onClick={() => (window.location.href = "/Discount")}

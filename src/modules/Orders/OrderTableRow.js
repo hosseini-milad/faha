@@ -95,13 +95,13 @@ function OrderTableRow(props) {
             </p>
           </div>
         </td> */}
-        <td>
+        {/* <td>
           <PayStatus
             payStatus={order.payStatus}
             class={"order-status"}
             lang={props.lang}
           />
-        </td>
+        </td> */}
         <td>
           <div className="order-num">
             <p>{order.transport}</p>
@@ -126,11 +126,7 @@ function OrderTableRow(props) {
           </div>
         </td>
         <td>
-          {order.taskInfo &&
-          order.taskInfo[0] &&
-          order.taskInfo[0].taskStep == "archive"
-            ? "آماده"
-            : ""}
+          {/* {order.status && order.status == "archive" ? "آماده" : ""} */}
           <Status
             status={order.status}
             class={"order-status"}

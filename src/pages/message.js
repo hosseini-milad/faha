@@ -1,6 +1,8 @@
 import Cookies from "universal-cookie";
 import Paging from "../modules/Components/Paging";
 import errortrans from "../translate/error";
+import ErrorAction from "../components/Modal/ErrorAction";
+
 import { useEffect } from "react";
 import { useState } from "react";
 import env from "../env";
@@ -10,15 +12,18 @@ import {
   defaultFilterValues,
   handleFilterChange,
 } from "../utils/filterUtils"; // Import the utility functions
-
+import PostReq from "../utils/PostReq";
 const cookies = new Cookies();
 
 function Message(props) {
   const direction = props.lang ? props.lang.dir : errortrans.defaultDir;
   const lang = props.lang ? props.lang.lang : errortrans.defaultLang;
   const [content, setContent] = useState("");
+  const [UnreadContent, setUnreadContent] = useState("");
   const [filters, setFilters] = useState(getFiltersFromUrl());
   const [loading, setLoading] = useState(0);
+  const [formalShow, setFormal] = useState(0);
+  const [Loader, setLoader] = useState("");
   const [W8, setW8] = useState(0);
   const token = cookies.get(env.cookieName);
 
@@ -26,98 +31,49 @@ function Message(props) {
     setFilters(newFilters);
     updateUrlWithFilters(newFilters);
   }
-
+  const formalCustomer = async (id) => {
+    const result = await PostReq({
+      method: "Post",
+      url: "/panel/user/official-customer",
+      body: { userId: id },
+    });
+  };
   useEffect(() => {
     setLoading(1);
-    const body = {
-      offset: filters.offset || "0",
-      pageSize: filters.pageSize || "10",
-      // customer: filters.customer,
-      // orderNo: filters.orderNo,
-      // status: filters.status,
-      // brand: filters.brand,
-      // dateFrom: filters.date && filters.date.dateFrom,
-      // dateTo: filters.date && filters.date.dateTo,
-      access: "manager",
-      status: "unread",
-      kind: "manager",
-      user: "true",
-    };
+
     const postOptions = {
-      method: "post",
+      method: "get",
       headers: {
         "Content-Type": "application/json",
         "x-access-token": token && token.token,
         userId: token && token.userId,
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify(),
     };
     console.log(postOptions);
-    fetch(env.siteApi + "/setting/log", postOptions)
+    fetch(env.siteApi + "/setting/list-notif", postOptions)
       .then((res) => res.json())
       .then(
         (result) => {
           setLoading(0);
           setContent("");
-          setTimeout(() => setContent(result), 200);
+          setUnreadContent("");
+          setTimeout(() => setContent(result.filter), 200);
+          setTimeout(() => setUnreadContent(result.unread), 200);
         },
         (error) => {
           setLoading(0);
           console.log(error);
         }
       );
-  }, [filters]);
-  const updateUser = (userId, logId) => {
-    setW8(1);
-    const postOptions = {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": token && token.token,
-        userId: token && token.userId,
-      },
-      body: JSON.stringify({ id: userId, hesabfa: "new" }),
-    };
-    const logOptions = {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: logId, status: "done", kind: token.access }),
-    };
-    //console.log(logOptions)
-    fetch(env.siteApi + "/panel/user/new-hesabfa", postOptions)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          result &&
-            fetch(env.siteApi + "/setting/log/update", logOptions)
-              .then((res) => res.json())
-              .then((result) => {
-                setTimeout(() => window.location.reload(), 500);
-                setW8(0);
-              });
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  };
-  const updateLog = (logId) => {
-    const logOptions = {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: logId, status: "delete", kind: token.access }),
-    };
-    fetch(env.siteApi + "/setting/log/update", logOptions)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setTimeout(() => window.location.reload(), 1000);
-        },
-
-        (error) => {
-          console.log(error);
-        }
-      );
+  }, [filters, Loader]);
+  const ReadNotif = async (id) => {
+    const result = await PostReq({
+      method: "Post",
+      url: "/setting/update-notif",
+      body: { status: false, notifCode: id },
+    });
+    setLoader(Loader + 1);
   };
 
   return (
@@ -125,19 +81,26 @@ function Message(props) {
       <div className="od-header">
         <div className="od-header-info">
           <div className="od-header-name">
-            <p>{"پیام ها"+ "(" + content.size + ")"}</p>
+            <p>{"پیام ها"}</p>
           </div>
         </div>
       </div>
       <div className="list-container">
-        <div className="user-list">
+        <div className="user-list" style={{ padding: ".5rem" }}>
           {loading
             ? env.loader
-            : content.log &&
-              content.log.map((item, i) => (
-                <div className="message-wrapper" key={i}>
+            : content &&
+              content.map((item, i) => (
+                <div
+                  className="message-wrapper"
+                  key={i}
+                  style={{
+                    backgroundColor:
+                      item.status === false ? "lightgrey" : "white",
+                  }}
+                >
                   <div className="title">{i + 1 + " - " + item.title}</div>
-                  <div className="description">{item.description}</div>
+                  <div className="description">{item.content}</div>
                   <div className="date">
                     <span>{new Date(item.date).toLocaleTimeString("fa")}</span>
                     <span>-</span>
@@ -148,12 +111,12 @@ function Message(props) {
                       className="detail-btn"
                       onClick={() =>
                         (window.location.href =
-                          "/customers/detail/" + item.user)
+                          "/customers/detail/" + item.customerId)
                       }
                     >
                       جزئیات
                     </button>
-                    {W8 ? (
+                    {/* {W8 ? (
                       <button className="active-btn">در حال پردازش</button>
                     ) : (
                       <button
@@ -162,16 +125,32 @@ function Message(props) {
                       >
                         فعال سازی مشتری
                       </button>
-                    )}
+                    )} */}
                   </div>
-                  <i
-                    className="fa-solid fa-close close-btn"
-                    style={{ color: "#ff0000", cursor: "pointer" }}
-                    onClick={() => updateLog(item._id)}
-                  ></i>
+                  {item.status ? (
+                    <i
+                      className="fa fa-check close-btn"
+                      style={{ color: "green", cursor: "pointer" }}
+                      onClick={() => ReadNotif(item._id)}
+                    ></i>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               ))}
         </div>
+        {formalShow ? (
+          <ErrorAction
+            title="فعال کردن مشتری"
+            color="darkslateblue"
+            text="مشتری بعد از ثبت در سپیدار، به عنوان مشتری فعال در خواهد آمد."
+            close={() => setFormal(0)}
+            buttonText="تایید"
+            action={(e) => formalCustomer(e)}
+          />
+        ) : (
+          <></>
+        )}
         <Paging
           content={content}
           setFilters={handleFilterChange}

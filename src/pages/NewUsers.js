@@ -10,6 +10,7 @@ function NewUsers(props) {
   const direction = props.lang ? props.lang.dir : errortrans.defaultDir;
   const lang = props.lang ? props.lang.lang : errortrans.defaultLang;
   const [content, setContent] = useState("");
+  const [contentSize, setContentSize] = useState("");
   const [filters, setFilters] = useState(getFiltersFromUrl());
   const [loading, setLoading] = useState(0);
 
@@ -38,6 +39,7 @@ function NewUsers(props) {
     setLoading(0);
     setContent("");
     setTimeout(() => setContent(result.filter), 200);
+    setContentSize(result.size);
   };
   // Function to get filters from URL
   function getFiltersFromUrl() {
@@ -96,6 +98,7 @@ function NewUsers(props) {
           />
         </div>
         <Paging
+          size={contentSize}
           content={content}
           setFilters={setFilters}
           filters={filters}

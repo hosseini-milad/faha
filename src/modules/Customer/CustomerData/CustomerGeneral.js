@@ -144,11 +144,11 @@ function CustomerGeneral(props) {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        userData,
+        userId: userData._id,
       }),
     };
     //console.log(postOptions)
-    fetch(env.siteApi + "/panel/user/formal-customer", postOptions)
+    fetch(env.siteApi + "/panel/user/official-customer", postOptions)
       .then((res) => res.json())
       .then(
         (result) => {
@@ -314,21 +314,6 @@ function CustomerGeneral(props) {
 
             <span style={{ whiteSpace: "pre-wrap" }}></span>
 
-            {/* <StyleSelect
-              title={"گروه بندی"}
-              direction={props.direction}
-              defaultValue={userData.group}
-              class={"formInput custome-input"}
-              label="group"
-              options={notNull(props.groupList, "group")}
-              action={(e) =>
-                setFormData((prevState) => ({
-                  ...prevState,
-                  groupCode: e.groupCode,
-                  group: e.group,
-                }))
-              }
-            /> */}
             <div className="dense-btn">
               <label htmlFor="view">
                 {/* Text indicating the radio button */}
@@ -346,7 +331,17 @@ function CustomerGeneral(props) {
                 className={true ? "switch-label" : "switch-label disable-label"}
               ></label>
             </div>
-
+            {userData.cCode ? (
+              <></>
+            ) : (
+              <div
+                className="save-btn"
+                style={{ margin: "15px" }}
+                onClick={() => setFormal(1)}
+              >
+                فعال سازی مشتری
+              </div>
+            )}
             <span style={{ whiteSpace: "pre-wrap" }}></span>
             <div className="info-input">
               <label htmlFor="address">{formtrans.address[props.lang]}</label>
@@ -384,9 +379,9 @@ function CustomerGeneral(props) {
           <ErrorShow message={error.errorText} color={error.errorColor} />
           {formalShow ? (
             <ErrorAction
-              title="رسمی کردن مشتری"
+              title="فعال کردن مشتری"
               color="darkslateblue"
-              text="مشتری بعد از ثبت در سپیدار، به عنوان مشتری رسمی در خواهد آمد."
+              text="مشتری بعد از ثبت در سپیدار، به عنوان مشتری فعال در خواهد آمد."
               close={() => setFormal(0)}
               buttonText="تایید"
               action={(e) => formalCustomer(e)}

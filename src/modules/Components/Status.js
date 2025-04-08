@@ -2,7 +2,7 @@ import statustrans from "../../translate/status";
 
 function Status(props) {
   const status = statustrans[props.status];
-  const text = props.text?props.text:status&&status[props.lang]
+  const text = props.text ? props.text : status && status[props.lang];
 
   // Handler to call the changeStatus function passed from props
   const handleClick = () => {
@@ -10,7 +10,7 @@ function Status(props) {
       props.changeStatus();
     }
   };
-//   if(text==="فعال") status={color:"green",background:"lightGreen"}
+  //   if(text==="فعال") status={color:"green",background:"lightGreen"}
   return (
     <div
       className={props.class}
@@ -18,8 +18,7 @@ function Status(props) {
         color: status ? status.color : "gray",
         backgroundColor: status ? status.background : "silver",
       }}
-      onClick={handleClick} // Attaching onClick event
-
+      // onClick={handleClick} // Attaching onClick event
     >
       {text}
     </div>

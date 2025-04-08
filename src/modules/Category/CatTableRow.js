@@ -70,7 +70,7 @@ function CatTableRow(props) {
 
         <td>
           <Status
-            status={cat.status}
+            status={cat.active ? "active" : "deActive"}
             class={"order-status"}
             lang={props.lang}
           />

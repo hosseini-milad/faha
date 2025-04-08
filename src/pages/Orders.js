@@ -72,6 +72,7 @@ function Orders(props) {
             setContent(result.data);
             setContentSize(result.size);
             setError("");
+            setStatusList(result.status);
           }
         },
         (error) => {

@@ -1716,3 +1716,50 @@ dialog {
     font-size: 1.2rem;
   }
 }
+.message-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
+  border-radius: 0.5rem;
+  border: 2px solid grey;
+  margin-bottom: 0.5rem;
+  padding: 1rem;
+
+  .title {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  .date {
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+    color: grey;
+
+    span {
+      font-size: 0.8rem;
+    }
+  }
+  .action {
+    margin-top: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+
+    .detail-btn {
+      padding: 0.2rem 1rem;
+      color: white;
+      background-color: rgb(86, 86, 86);
+      border-radius: 8px;
+    }
+  }
+  .close-btn {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-size: 1.2rem;
+  }
+}

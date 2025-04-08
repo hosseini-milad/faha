@@ -19,7 +19,8 @@ const CalcFaktorData=async(faktorNo)=>{
         purePrice:itemPrice,
         totalPrice:itemPrice-discountTotal,
         totalDiscount:discountTotal,
-        totalCount:totalData&&totalData.totalCount
+        totalCount:totalData&&totalData.totalCount,
+        totalData:totalData
     }})
     const faktorResult = await faktor.findOne({faktorNo:faktorNo}).lean()
     const faktorItemResult = await faktorItems.find({faktorNo:faktorNo})

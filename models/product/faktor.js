@@ -20,6 +20,7 @@ const FaktorSchema = new Schema({
     purePrice:{ type: String },
     discount:{ type: String },
     totalDiscount:{ type: String },
+    totalData:{ type: Object },
  
     transportWay:{ type: String },
     transportBarCode:{ type: String },

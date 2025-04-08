@@ -13,7 +13,7 @@ const ItemToDetail=(items)=>{
         result.totalPrice += totalC
         var totalD = totalPriceCalc(totalC,discPer/100)
         result.totalDiscount += totalD
-        result.finalPrice += totalC-totalD
+        result.finalPrice += totalC
     }
     return(result)
 }

@@ -7,11 +7,18 @@ var ObjectID = require('mongodb').ObjectID;
 
 const CalcFaktorData=async(faktorNo)=>{
     
+    const faktorOld = await faktor.findOne({faktorNo:faktorNo})
+    var faktorDiscount = faktorOld.discount
     const faktorItemDetail = await faktorItems.find({faktorNo:faktorNo})
+    var itemPrice = totalData&&totalData.finalPrice
+    var itemDiscount = totalData&&totalData.totalDiscount
+    var faktorDiscountValue =itemPrice* Number(faktorDiscount)
     var totalData = ItemToDetail(faktorItemDetail)
+    var discountTotal = faktorDiscountValue+itemDiscount
     await faktor.updateOne({faktorNo:faktorNo},{$set:{
-        totalPrice:totalData&&totalData.finalPrice,
-        totalDiscount:totalData&&totalData.totalDiscount,
+        purePrice:itemPrice,
+        totalPrice:itemPrice-discountTotal,
+        totalDiscount:discountTotal,
         totalCount:totalData&&totalData.totalCount
     }})
     const faktorResult = await faktor.findOne({faktorNo:faktorNo}).lean()

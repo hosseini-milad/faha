@@ -1154,7 +1154,7 @@ router.post('/update-faktor',jsonParser,auth, async (req,res)=>{
         await FaktorSchema.updateOne({faktorNo:faktorNo},{
             $set:data
         })
-        const faktorData = await FetchFaktorFunc(faktorNo)
+        const faktorData = await CalcFaktorData(faktorNo)
         res.json({...faktorData})
     }
     catch(error){

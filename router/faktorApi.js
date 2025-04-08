@@ -774,8 +774,7 @@ router.post('/fetch-faktor',auth, async (req,res)=>{
 const FetchFaktorFunc=async(faktorNo)=>{
     const faktorData = await FaktorSchema.findOne({faktorNo:faktorNo}).lean()
     if(!faktorData){
-        res.status(400).json({error:"سفارش پیدا نشد"})
-        return
+        return({error:"سفارش پیدا نشد"})
     }
     const FaktorItems = await faktorItems.find({faktorNo:faktorNo}).sort({purchase:-1})
     const saleItems = []

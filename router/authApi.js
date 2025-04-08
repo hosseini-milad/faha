@@ -171,7 +171,8 @@ router.post('/customer-otp',jsonParser,async(req,res)=>{
       const managerList = await users.find({access:"manager"})
       for(var i=0;i<managerList.length;i++)
         await CreateNotif("کاربر جدید",managerList[i]._id,"","","users","",
-          "کاربر جدیدی با شماره موبایل "+phone+"در سایت ثبت نام کرده است")
+          "کاربر جدیدی با شماره موبایل "+phone+"در سایت ثبت نام کرده است",
+          newUser._id)
       
       res.status(200).json({message:"welcome to sharif, sms sent for "+phone,
       smsResult:smsResult});

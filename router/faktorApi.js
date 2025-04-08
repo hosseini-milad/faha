@@ -777,15 +777,7 @@ const FetchFaktorFunc=async(faktorNo)=>{
         return({error:"سفارش پیدا نشد"})
     }
     const FaktorItems = await faktorItems.find({faktorNo:faktorNo}).sort({purchase:-1})
-    const saleItems = []
-    const purchaseItems = []
-    for(var i=0;i<FaktorItems.length;i++){
-        if(FaktorItems[i].purchase!== true)
-            saleItems.push(FaktorItems[i])
-        else
-            purchaseItems.push(FaktorItems[i])
-    }
-        
+            
     
     faktorData.items = FaktorItems
     const userDetail = await customers.findOne({_id:ObjectID(faktorData.userId)})

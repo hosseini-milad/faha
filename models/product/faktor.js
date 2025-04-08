@@ -17,6 +17,7 @@ const FaktorSchema = new Schema({
     status:{ type: String },
 
     totalPrice:{ type: String },
+    discount:{ type: String },
     totalDiscount:{ type: String },
  
     transportWay:{ type: String },

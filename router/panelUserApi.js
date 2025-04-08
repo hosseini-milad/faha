@@ -184,12 +184,12 @@ router.post('/list-customers',jsonParser,async (req,res)=>{
         offset:req.body.offset,
         brand:req.body.brand,
         new:req.body.new,
-        official:req.body.official
+        unOfficial:req.body.unOfficial
     }
         const reportList = await customer.aggregate([
             { $match:data.access?{access:data.access}:{}},
             { $match:data.groupCode?{groupCode:data.groupCode}:{}},
-            { $match:data.official?{cCode:{$exists:official}}:{}},
+            { $match:data.unOfficial?{cCode:{$exists:false}}:{}},
             { $match:data.customer?{$or:[
                 {meli:new RegExp('.*' + data.customer + '.*')},
                 {phone:new RegExp('.*' + data.customer + '.*')},

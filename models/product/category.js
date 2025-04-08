@@ -11,6 +11,7 @@ const CategorySchema = new mongoose.Schema({
     description:String,
     color: String,
     children:Array,
+    active:Boolean,
 
     imageUrl: String,
     iconUrl:  String,

@@ -1146,10 +1146,27 @@ router.post('/register-faktor-item',auth, async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
-router.post('/update-faktor',jsonParser, async (req,res)=>{
+router.post('/update-faktor',jsonParser,auth, async (req,res)=>{
+    const faktorNo =req.body.faktorNo
+    const data=req.body
+
+    try{
+        await FaktorSchema.updateOne({faktorNo:faktorNo},{
+            $set:data
+        })
+        const faktorData = await FetchFaktorFunc(faktorNo)
+        res.json({...faktorData})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+}
+)
+
+/*router.post('/update-faktor',jsonParser, async (req,res)=>{
     const userId =req.body.userId?req.body.userId:req.headers['userid']
     const data={
-        //
+        discount:req.body.discount,
         manageId:req.headers['userid'],
         date:req.body.date,
         progressDate:Date.now() 
@@ -1228,7 +1245,7 @@ router.post('/update-faktor',jsonParser, async (req,res)=>{
     catch(error){
         res.status(500).json({message: error.message})
     }
-})
+})*/
 const IntegrateCarts = async(carts)=>{
     var cartList=carts
     for(var i =0 ;i<cartList.length;i++){

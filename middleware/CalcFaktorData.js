@@ -15,6 +15,7 @@ const CalcFaktorData=async(faktorNo)=>{
     var itemDiscount = totalData&&totalData.totalDiscount
     var faktorDiscountValue =itemPrice* Number(faktorDiscount)
     var discountTotal = faktorDiscountValue+itemDiscount
+    console.log(totalData)
     await faktor.updateOne({faktorNo:faktorNo},{$set:{
         purePrice:itemPrice,
         totalPrice:itemPrice-discountTotal,

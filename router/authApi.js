@@ -17,6 +17,8 @@ const customers = require('../models/auth/customers');
 var Kavenegar = require('kavenegar');
 const address = require('../models/auth/address');
 const orders = require('../models/orders/orders');
+const CreateNotif = require('../middleware/CreateNotif');
+const users = require('../models/auth/users');
 var api = Kavenegar.KavenegarApi({
   apikey: process.env.SMS_API
 });
@@ -166,7 +168,11 @@ router.post('/customer-otp',jsonParser,async(req,res)=>{
         status: "unread",
         date:Date.now()
       })
-      ////console.log((newUserLog)
+      const managerList = await users.find({access:"manager"})
+      for(var i=0;i<managerList.length;i++)
+        await CreateNotif("کاربر جدید",managerList[i]._id,"","","users","",
+          "کاربر جدیدی با شماره موبایل "+phone+"در سایت ثبت نام کرده است")
+      
       res.status(200).json({message:"welcome to sharif, sms sent for "+phone,
       smsResult:smsResult});
     }

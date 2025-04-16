@@ -1157,7 +1157,7 @@ router.post('/update-faktor',jsonParser,auth, async (req,res)=>{
                     totalDiscount:totalDiscount,
                     price: price
                 }
-                await faktorItems.updateMany({faktorNo:faktorNo},{
+                await faktorItems.updateOne({_id:faktorItemData[i]._id},{
                 $set:query})
             }
         }

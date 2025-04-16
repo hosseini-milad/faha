@@ -1140,10 +1140,14 @@ router.post('/register-faktor-item',auth, async (req,res)=>{
 router.post('/update-faktor',jsonParser,auth, async (req,res)=>{
     const faktorNo =req.body.faktorNo
     const data=req.body
+    const discount = req.body.discount
 
     try{
-        await FaktorSchema.updateOne({faktorNo:faktorNo},{
+        0&&await FaktorSchema.updateOne({faktorNo:faktorNo},{
             $set:data
+        })
+        if(discount) await faktorItems.updateMany({faktorNo:faktorNo},{
+            $set:{discount:discount}
         })
         const faktorData = await CalcFaktorData(faktorNo)
         res.json({...faktorData})

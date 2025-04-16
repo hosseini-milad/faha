@@ -1146,9 +1146,21 @@ router.post('/update-faktor',jsonParser,auth, async (req,res)=>{
         0&&await FaktorSchema.updateOne({faktorNo:faktorNo},{
             $set:data
         })
-        if(discount) await faktorItems.updateMany({faktorNo:faktorNo},{
-            $set:{discount:discount}
-        })
+        if(discount) {
+            const faktorItemData = await faktorItems.find({faktorNo:faktorNo})
+            for(var i=0;i<faktorItemData.length;i++){
+                var rawPrice = Number(faktorItemData[i].unitPrice) * Number(faktorItemData[i].unitPrice)
+                var totalDiscount = Number(discount) * rawPrice
+                var price = rawPrice - totalDiscount
+                var query = {
+                    discount: discount,
+                    totalDiscount:totalDiscount,
+                    price: price
+                }
+                await faktorItems.updateMany({faktorNo:faktorNo},{
+                $set:query})
+            }
+        }
         const faktorData = await CalcFaktorData(faktorNo)
         res.json({...faktorData})
     }

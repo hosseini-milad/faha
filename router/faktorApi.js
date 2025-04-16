@@ -1150,7 +1150,7 @@ router.post('/update-faktor',jsonParser,auth, async (req,res)=>{
             const faktorItemData = await faktorItems.find({faktorNo:faktorNo})
             for(var i=0;i<faktorItemData.length;i++){
                 var rawPrice = Number(faktorItemData[i].unitPrice) * Number(faktorItemData[i].unitPrice)
-                var totalDiscount = Number(discount) * rawPrice
+                var totalDiscount = Number(discount) * rawPrice/100
                 var price = rawPrice - totalDiscount
                 var query = {
                     discount: discount,

@@ -715,7 +715,7 @@ router.post('/cart-to-faktor-from',auth,jsonParser, async (req,res)=>{
             phone:userData.phone
         }
         await faktor.create(faktorData)
-        await cart.deleteMany({userId:userId})
+        await cart.deleteMany({userId:manageId})
         userData.phone&&await SendSMS(userData.phone,"sabt",userData.username,faktorNo)
         res.json({faktorNo:faktorNo,message:"سفارش ثبت شد"})
         return
@@ -905,7 +905,7 @@ router.post('/recieve-faktor-item',auth, async (req,res)=>{
     await faktorItems.updateOne( 
         {faktorNo:rFaktorNo,sku:rSku},{$set:query})
     const faktorResult = await FetchFaktorFunc(rFaktorNo)
-    res.json({...faktorResult})
+    res.json({...faktorResult,message:"آیتم رسید شد"})
 })
 
 router.post('/list-faktor',auth, async (req,res)=>{

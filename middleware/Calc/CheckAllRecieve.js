@@ -5,13 +5,11 @@ const CheckAllRecieve=async(faktorNo)=>{
     if(!faktorItemsList||!faktorItemsList.length) return(0)
     
     for(var i=0;i<faktorItemsList.length;i++){
-        console.log(faktorItemsList[i])
         if(!faktorItemsList[i].isRecieved){
             return(0) 
         }
         
     }
-    console.log()
     return(1)
 }
 

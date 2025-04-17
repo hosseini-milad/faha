@@ -211,7 +211,7 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
             ]
         }
         if(faktorItem.status =="prepair"){
-            const allCheck = CheckAllRecieve(faktorItem&&faktorItem.faktorNo)
+            const allCheck = await CheckAllRecieve(faktorItem&&faktorItem.faktorNo)
             buttons=allCheck?[
                 /*{title:"کد محصول",parameter:"newSku",
                     type:"text",color:"silver",value:0},*/

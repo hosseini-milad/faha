@@ -895,9 +895,17 @@ router.post('/recieve-faktor-item',auth, async (req,res)=>{
         res.status(400).json({error:true,message:"آیتم قبلا رسید شده است"})
         return
     }
-    await faktorItems.updateOne(
-        {faktorNo:rFaktorNo,sku:rSku},
-    {$set:{isRecieved:true,recieveDate:Date.now()}})
+    var count = faktorData.count
+    var recCount = faktorData.recieveCount?faktorData.recieveCount:0
+    var query = {isRecieved:false,
+        recieveDate:Date.now(),recieveCount: recCount+1}
+    if(count == recCount + 1){
+        query.isRecieved = true
+        await faktor.updateOne( 
+            {faktorNo:rFaktorNo},{$set:{isRecieved:true}})
+    }
+    await faktorItems.updateOne( 
+        {faktorNo:rFaktorNo,sku:rSku},{$set:query})
     const faktorResult = await FetchFaktorFunc(rFaktorNo)
     res.json({...faktorResult})
 })

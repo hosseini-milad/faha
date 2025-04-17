@@ -37,6 +37,7 @@ const FaktorItems = new Schema({
     isActive:{ type: Boolean },
     isEdit:{ type: Boolean },
     isRecieved:{type: Boolean},
+    recieveCount:{type: Number},
     recieveDate:{ type: Date },
 
     payStatus:{ type: String }, //unpaid, deposit , paid

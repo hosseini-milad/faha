@@ -34,6 +34,7 @@ const FaktorSchema = new Schema({
     totalWeight:{ type: String },
     isActive:{ type: Boolean },
     isEdit:{ type: Boolean },
+    isRecieved:{ type: Boolean ,default:false},
     query:{ type: Object },
     result:{ type: Object },
     waitPay:{type:Boolean},

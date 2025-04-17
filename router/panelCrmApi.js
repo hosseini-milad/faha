@@ -24,6 +24,7 @@ const FindSideEffect = require('../middleware/FindSideEffect');
 const FindPrice = require('../middleware/FindPrice');
 const MergeOrders = require('../middleware/Calc/MergeOrders');
 const ClassifyOrders = require('../middleware/Calc/ClassifyOrders');
+const CheckAllRecieve = require('../middleware/Calc/CheckAllRecieve');
 
 router.post('/fetch-crm',jsonParser,async (req,res)=>{
     const userId=req.body.userId?req.body.userId:req.headers['userid']

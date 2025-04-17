@@ -901,8 +901,6 @@ router.post('/recieve-faktor-item',auth, async (req,res)=>{
         recieveDate:Date.now(),recieveCount: recCount+1}
     if(count == recCount + 1){
         query.isRecieved = true
-        await faktor.updateOne( 
-            {faktorNo:rFaktorNo},{$set:{isRecieved:true}})
     }
     await faktorItems.updateOne( 
         {faktorNo:rFaktorNo,sku:rSku},{$set:query})

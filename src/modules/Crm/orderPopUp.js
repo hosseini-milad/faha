@@ -7,12 +7,13 @@ import TaskAction from "./Tasks/TaskAction";
 import QuickRow from "../../Order/QuickCart/QuickRow";
 import TaskBtns from "./Tasks/TaskBtns";
 import TaskBarcode from "./Tasks/TaskBarcode";
-
+import TaskDiscount from "./Tasks/TaskDiscount";
 function OrderPopUp(props) {
   const data = props.data;
   const token = props.token;
   const [payValue, setPayValue] = useState(defPay);
   const [content, setContent] = useState();
+  const [BarcodeLoader, setBarcodeLoader] = useState("");
   //console.log(content)
   const [error, setError] = useState({ message: "", color: "brown" });
   useEffect(() => {
@@ -117,6 +118,8 @@ function OrderPopUp(props) {
                             canEdit={props.canEdit}
                             isEdit={content.canEdit}
                             setContent={setContent}
+                            faktorData={content.data}
+                            setBarcodeLoader={setBarcodeLoader}
                           />
                         ))
                       ) : (
@@ -137,11 +140,23 @@ function OrderPopUp(props) {
                   setBoard={(e) => props.setBoardArray(e)}
                   close={props.close}
                   setLoading={props.setLoading}
+                  BarcodeLoader={BarcodeLoader}
                 />
                 {props.columnData.isStore ? (
                   <TaskBarcode
                     faktorNum={data.faktorNo}
                     setContent={setContent}
+                    setBarcodeLoader={setBarcodeLoader}
+                    BarcodeLoader={BarcodeLoader}
+                  />
+                ) : (
+                  <></>
+                )}
+                {content.canEdit ? (
+                  <TaskDiscount
+                    faktorNum={data.faktorNo}
+                    setContent={setContent}
+                    setLoading={props.setLoading}
                   />
                 ) : (
                   <></>

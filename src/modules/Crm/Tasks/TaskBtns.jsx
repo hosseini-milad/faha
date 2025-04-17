@@ -30,7 +30,7 @@ function TaskBtns(props) {
           console.log(error);
         }
       );
-  }, []);
+  }, [props.BarcodeLoader]);
   return (
     <div className="taskAction">
       {BtnObj ? (

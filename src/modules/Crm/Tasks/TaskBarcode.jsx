@@ -17,6 +17,9 @@ function TaskBarcode(props) {
       url: "/panel/faktor/recieve-faktor-item",
       body: { faktorNo: faktorNum, sku: sku },
     });
+    setContent("");
+    setContent(result);
+    props.setBarcodeLoader(props.BarcodeLoader + 1);
   };
   return (
     <div className="taskAction">

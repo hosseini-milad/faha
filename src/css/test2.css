@@ -38493,3 +38493,6 @@ table {
     font-size: 1.2rem;
   }
 }
+.receivedTr {
+  background-color: lightgreen !important;
+}

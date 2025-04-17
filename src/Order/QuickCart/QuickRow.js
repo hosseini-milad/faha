@@ -13,6 +13,7 @@ function QuickRow(props) {
   const [Count, setCount] = useState(data.count);
   const [Discount, setDiscount] = useState(data.discount);
   const [Price, setPrice] = useState(data.unitPrice);
+  const Status = props.faktorData.status;
   const DeleteItem = async () => {
     const result = await PostReq({
       method: "Post",
@@ -38,7 +39,7 @@ function QuickRow(props) {
   console.log(Count);
   return (
     <>
-      <tr className="product-tr">
+      <tr className={`product-tr ${data.isRecieved ? "receivedTr" : ""}`}>
         <td data-cell="ردیف">
           <p>{props.index}</p>
         </td>
@@ -56,7 +57,14 @@ function QuickRow(props) {
           {Edit ? (
             <QuickCounter setCount={setCount} count={Count} unit={10} />
           ) : (
-            <p>{data.count}</p>
+            <p>
+              {data.count}
+              {Status == "prepair" && (
+                <span style={{ color: "green" }}>
+                  ({data.recieveCount ? data.recieveCount : "0"})
+                </span>
+              )}
+            </p>
           )}
         </td>
         <td data-cell="قیمت واحد(ریال)">

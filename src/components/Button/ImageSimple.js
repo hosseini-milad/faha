@@ -13,118 +13,136 @@ import Avatar from "@material-ui/core/Avatar";
 import red from "@material-ui/core/colors/red";
 import blue from "@material-ui/core/colors/blue";
 
-
-
 import InputBase from "@material-ui/core/InputBase";
 import Divider from "@material-ui/core/Divider";
 
 // Search
 
-
 //Tabs
 import { withStyles } from "@material-ui/core/styles";
 
-const resizeFile = (file,type) =>
+const resizeFile = (file, type) =>
   new Promise((resolve) => {
     Resizer.imageFileResizer(
-      file,1500,900,type,100,0,
+      file,
+      1500,
+      900,
+      type,
+      100,
+      0,
       (uri) => {
         resolve(uri);
-      },"base64");
+      },
+      "base64"
+    );
   });
-const resizeThumb = (file,type) =>
+const resizeThumb = (file, type) =>
   new Promise((resolve) => {
     Resizer.imageFileResizer(
-      file,150,150,type,70,0,
+      file,
+      300,
+      300,
+      type,
+      100,
+      0,
       (uri) => {
         resolve(uri);
-      },"base64");
+      },
+      "base64"
+    );
   });
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
     width: 260,
     display: "flex",
     justifyContent: "center",
-    alignItems: "flex-end"
+    alignItems: "flex-end",
   },
   icon: {
-    margin: theme.spacing(2)
+    margin: theme.spacing(2),
   },
   iconHover: {
     margin: theme.spacing(2),
     "&:hover": {
-      color: red[800]
-    }
+      color: red[800],
+    },
   },
   cardHeader: {
     textalign: "center",
     align: "center",
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   input: {
-    display: "none"
+    display: "none",
   },
   title: {
     color: blue[800],
     fontWeight: "bold",
     fontFamily: "Montserrat",
-    align: "center"
+    align: "center",
   },
   button: {
     color: blue[900],
-    margin: 10
+    margin: 10,
   },
   secondaryButton: {
     color: "gray",
-    margin: 10
+    margin: 10,
   },
   typography: {
     margin: theme.spacing(2),
-    backgroundColor: "default"
+    backgroundColor: "default",
   },
 
   searchRoot: {
     padding: "2px 4px",
     display: "flex",
     alignItems: "center",
-    width: 200
+    width: 200,
   },
   searchInput: {
     marginLeft: 8,
-    flex: 1
+    flex: 1,
   },
   searchIconButton: {
-    padding: 10
+    padding: 10,
   },
   searchDivider: {
     width: 1,
     height: 28,
-    margin: 4
-  }
+    margin: 4,
+  },
 });
 
 class ImageUploadCard extends React.Component {
   state = {
     mainState: "initial", // initial, search, gallery, uploaded
     imageUploaded: 0,
-    selectedFile: null
+    selectedFile: null,
   };
 
-  handleUploadClick = async event => {
+  handleUploadClick = async (event) => {
     var fileRaw = event.target.files[0];
-    var fileType= fileRaw.type
-    if(fileType==="image/png")fileType="PNG"
-    else fileType="JPEG"
-    const tempfile = await resizeFile(fileRaw,fileType);
-    const thumbFile = await resizeThumb(fileRaw,fileType);
+    var fileType = fileRaw.type;
+    if (fileType === "image/png") fileType = "PNG";
+    else fileType = "JPEG";
+    const tempfile = await resizeFile(fileRaw, fileType);
+    const thumbFile = await resizeThumb(fileRaw, fileType);
     //console.log(fileRaw.name.replaceAll(' ','_'))
     //console.log(this.props)
     //this.props.setSender(this.props.sender)
-    this.props.setImage({base64:tempfile,fileName:fileRaw.name.replaceAll(' ','_').replaceAll(',','_')});
-    this.props.setThumb&&
-    this.props.setThumb({base64:thumbFile,fileName:"Thumb"+fileRaw.name.replaceAll(' ','_').replaceAll(',','_')});
+    this.props.setImage({
+      base64: tempfile,
+      fileName: fileRaw.name.replaceAll(" ", "_").replaceAll(",", "_"),
+    });
+    this.props.setThumb &&
+      this.props.setThumb({
+        base64: thumbFile,
+        fileName:
+          "Thumb" + fileRaw.name.replaceAll(" ", "_").replaceAll(",", "_"),
+      });
   };
 
   renderInitialState() {
@@ -135,30 +153,30 @@ class ImageUploadCard extends React.Component {
       <React.Fragment>
         <CardContent>
           <Grid container justifyContent="center" alignItems="center">
-            <label htmlFor="pd-image" style={{display:"flex"}}>
-             
-            <input
-              accept="image/*"
-              className={classes.input}
-              id={"contained-button-file"+this.props.part}
-              multiple
-              type="file"
-              capture="camera" 
-              onChange={this.handleUploadClick}
-            />
-            <label htmlFor={"contained-button-file"+this.props.part} 
-              style={{display:"grid"}}>
-              <Fab component="span" className={classes.button}>
-                <i className="uploadSize fas fa-upload"></i>
-              </Fab>
-            </label>
+            <label htmlFor="pd-image" style={{ display: "flex" }}>
+              <input
+                accept="image/*"
+                className={classes.input}
+                id={"contained-button-file" + this.props.part}
+                multiple
+                type="file"
+                capture="camera"
+                onChange={this.handleUploadClick}
+              />
+              <label
+                htmlFor={"contained-button-file" + this.props.part}
+                style={{ display: "grid" }}
+              >
+                <Fab component="span" className={classes.button}>
+                  <i className="uploadSize fas fa-upload"></i>
+                </Fab>
+              </label>
             </label>
           </Grid>
         </CardContent>
       </React.Fragment>
     );
   }
-
 
   render() {
     const { classes, theme } = this.props;
@@ -167,9 +185,7 @@ class ImageUploadCard extends React.Component {
       <React.Fragment>
         <div className={classes.root}>
           <Card className={this.props.cardName}>
-            
-            {this.renderInitialState() }
-            
+            {this.renderInitialState()}
           </Card>
         </div>
       </React.Fragment>

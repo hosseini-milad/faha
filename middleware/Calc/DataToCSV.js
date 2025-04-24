@@ -1,8 +1,9 @@
 const { stringify } = require("csv-stringify");
 var fs = require('fs');
-const writableStream = fs.createWriteStream("./upload/csv/result.csv")
 
 const DataToCSV=async(data)=>{
+    const random = Math.random()
+    const writableStream = fs.createWriteStream("./upload/csv/result"+random.toString()+".csv")
     const columns = [
         "i",
         "x",
@@ -15,7 +16,7 @@ const DataToCSV=async(data)=>{
       }
       stringifier.pipe(writableStream);
 
-    return("https://admin.fahascrubs.com/upload/csv/result.csv")
+    return("https://admin.fahascrubs.com/upload/csv/result"+random.toString()+".csv")
 }
 
 module.exports =DataToCSV

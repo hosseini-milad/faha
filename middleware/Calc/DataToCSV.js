@@ -1,6 +1,6 @@
 const { stringify } = require("csv-stringify");
 var fs = require('fs');
-const writableStream = fs.createWriteStream("result.csv")
+const writableStream = fs.createWriteStream("./upload/csv/result.csv")
 
 const DataToCSV=async(data)=>{
     const columns = [

@@ -10,6 +10,7 @@ const DataToCSV=async(data)=>{
         "Z"
       ];
       const stringifier = stringify({ header: true, columns: columns });
+      console.log(data)
       for (var i=0;i<data.length;i++){
         stringifier.write(data[i]);
       }

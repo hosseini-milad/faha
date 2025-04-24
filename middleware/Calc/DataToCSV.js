@@ -5,7 +5,7 @@ const DataToCSV=async(data)=>{
 
 fs.writeFile('/upload/csv/result.csv', data, 'utf8', function (err) {
   if (err) {
-    console.log('Some error occured - file either not saved or corrupted file saved.');
+    console.log(err);
   } else{
     console.log('It\'s saved!');
   }

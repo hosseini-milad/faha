@@ -20,6 +20,7 @@ const notif = require('../models/param/notif');
 const docSchema = require('../models/param/document')
 const docCat = require('../models/param/docCat');
 const customers = require('../models/auth/customers');
+const DataToCSV = require('../middleware/Calc/DataToCSV');
 
 router.post('/sliders', async (req,res)=>{
     try{
@@ -409,6 +410,21 @@ router.post('/show-news',jsonParser,async (req,res)=>{
         }
         var result = await customers.updateOne({_id:ObjectID(userId)},
             {$set:{showNews:newsCode}})
+        
+        res.json(result)
+        return
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+
+router.post('/uploadData',jsonParser,async (req,res)=>{
+    var data = req.body.data
+
+    try{ 
+        var result = await DataToCSV(data)
         
         res.json(result)
         return

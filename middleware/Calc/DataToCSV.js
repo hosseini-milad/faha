@@ -4,7 +4,7 @@ const writableStream = fs.createWriteStream("./upload/csv/result.csv")
 
 const DataToCSV=async(data)=>{
     const columns = [
-        "Row No",
+        "#",
         "X",
         "Y",
         "Z"

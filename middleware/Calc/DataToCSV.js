@@ -4,10 +4,10 @@ const writableStream = fs.createWriteStream("./upload/csv/result.csv")
 
 const DataToCSV=async(data)=>{
     const columns = [
-        "#",
-        "X",
-        "Y",
-        "Z"
+        "i",
+        "x",
+        "y",
+        "z"
       ];
       const stringifier = stringify({ header: true, columns: columns });
       console.log(data)

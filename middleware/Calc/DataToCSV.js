@@ -3,7 +3,7 @@ var fs = require('fs');
 
 const DataToCSV=async(data)=>{
 
-fs.writeFile('/upload/csv/result.csv', data, 'utf8', function (err) {
+fs.writeFile('./upload/csv/result.csv', data, 'utf8', function (err) {
   if (err) {
     console.log(err);
   } else{

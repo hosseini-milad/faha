@@ -1,6 +1,6 @@
 const NormalNumber = require("../NormalNumber")
 
-const DataToCSV=(data)=>{
+const DataToCSV=async(data)=>{
     return("https://admin.fahascrubs.com/upload/csv/result.csv")
 }
 

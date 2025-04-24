@@ -1,15 +1,20 @@
-
+const { stringify } = require("csv-stringify");
 var fs = require('fs');
+const writableStream = fs.createWriteStream("result.csv")
 
 const DataToCSV=async(data)=>{
+    const columns = [
+        "Row No",
+        "X",
+        "Y",
+        "Z"
+      ];
+      const stringifier = stringify({ header: true, columns: columns });
+      for (var i=0;i<data.length;i++){
+        stringifier.write(data[i]);
+      }
+      stringifier.pipe(writableStream);
 
-fs.writeFile('./upload/csv/result.csv', data, 'utf8', function (err) {
-  if (err) {
-    console.log(err);
-  } else{
-    console.log('It\'s saved!');
-  }
-});
     return("https://admin.fahascrubs.com/upload/csv/result.csv")
 }
 

@@ -6,7 +6,7 @@ function TaskBarcode(props) {
   const [Barcode, setBarcode] = useState("");
 
   useEffect(() => {
-    if (Barcode && Barcode.length > 9) {
+    if (Barcode && Barcode.length > 8) {
       CheckBarcode(Barcode);
     } else return;
   }, [Barcode]);
@@ -17,9 +17,11 @@ function TaskBarcode(props) {
       url: "/panel/faktor/recieve-faktor-item",
       body: { faktorNo: faktorNum, sku: sku },
     });
-    setContent("");
-    setContent(result);
-    props.setBarcodeLoader(props.BarcodeLoader + 1);
+    if (result) {
+      setContent(result);
+      props.setBarcodeLoader(props.BarcodeLoader + 1);
+    }
+    setBarcode("");
   };
   return (
     <div className="taskAction">
@@ -28,6 +30,8 @@ function TaskBarcode(props) {
         style={{ backgroundColor: "lightgrey" }}
         type="text"
         placeholder="بارکد"
+        autoFocus
+        value={Barcode}
         onChange={(e) => setBarcode(e.target.value)}
       />
     </div>

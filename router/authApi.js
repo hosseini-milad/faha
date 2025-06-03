@@ -151,7 +151,10 @@ router.post('/customer-otp',jsonParser,async(req,res)=>{
         token: otpValue,
         template: process.env.template,//"mgmVerify",
         receptor: phone 
-    },);
+    },function(response, status) {
+        console.log(response);
+        console.log(status);
+    });
       const newUser = await customers.create(
         { username:phone,
           phone:phone,

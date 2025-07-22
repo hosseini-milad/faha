@@ -32,7 +32,7 @@ function QuickActions(props) {
       }),
     };
     console.log(postOptions);
-    fetch(env.siteApi + "/panel/faktor/update-desc", postOptions)
+    fetch(env.siteApi + "/panel/faktor/update-cart-data", postOptions)
       .then((res) => res.json())
       .then(
         (result) => {
@@ -113,7 +113,7 @@ function QuickActions(props) {
             <i className="fa-solid fa-credit-card"></i>
             </div>
         </button> */}
-      
+
       {showDisc ? (
         <button type="button" className="product-table-btn">
           <input

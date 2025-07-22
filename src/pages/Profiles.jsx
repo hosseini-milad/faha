@@ -3,7 +3,6 @@ import env from "../env";
 import PostReq from "../utils/PostReq";
 import formtrans from "../translate/forms";
 import errortrans from "../translate/error";
-import ProfilesFilters from "../modules/Profiles/ProfilesFilters";
 import ProfilesSetting from "../modules/Profiles/ProfilesSetting";
 import ProfilesCardList from "../modules/Profiles/ProfilesCardList";
 import Paging from "../modules/Components/Paging";

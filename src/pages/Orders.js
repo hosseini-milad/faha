@@ -120,7 +120,7 @@ function Orders(props) {
           lang={props.lang}
           setFilters={handleFilterChange}
           updateUrlWithFilters={updateUrlWithFilters} // Pass the function as a prop
-          options={content.brand}
+          // options={content.brand}
           filters={filters}
           StatusList={StatusList}
         />
